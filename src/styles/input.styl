@@ -1,0 +1,113 @@
+$small-input-padding = 0.25rem 0.45rem
+$small-font-size = 14px
+
+$input-padding = 0.5rem 0.75rem
+$input-font-size = 16px
+
+$medium-input-padding = 0.65rem 0.75rem
+$medium-input-font-size = 18px
+
+$big-input-padding = 0.85rem 0.75rem
+$big-input-font-size = 20px
+
+$input-active-border-colour = $green
+$input-active-box-shadow = 0 0 7px rgba(39, 128, 248, 0.15)
+
+
+.input-group
+	margin-bottom 1rem
+
+	&:last-of-type
+		margin-bottom 0
+
+	&.disabled
+		.input
+			border none
+			padding 0
+
+	label
+		$bold()
+		display block
+		margin-bottom 0.5rem
+		font-size 1rem
+
+		.hint
+			color $grey
+			font-weight 400
+
+	.note
+		font-size 0.8rem
+		color $grey
+		margin-top 0.25rem
+		line-height 1rem
+
+textarea.input
+	min-height 4.5rem
+
+.input
+	$font-family()
+	height auto
+	width 100%
+	max-width 100%
+	margin 0
+	padding $input-padding
+	color $black
+	border 1px solid $grey-light
+	border-radius $small-border-radius
+	font-size $input-font-size
+	appearance none
+	outline 0
+	transition box-shadow 70ms ease-out, border-color 70ms ease-out
+	box-shadow none
+	line-height 1.2
+
+	&:active
+	&:focus
+		border-color $input-active-border-colour
+		box-shadow $input-active-box-shadow
+
+	&.small
+		padding $small-input-padding
+		font-size $small-font-size
+
+	&.medium
+		padding $medium-input-padding
+		font-size $medium-input-font-size
+
+	&.big
+		padding $big-input-padding
+		font-size $big-input-font-size
+
+		& ~ .search-icon
+			font-size 28px
+			top 12px
+
+		& ~ .clear-icon
+			font-size 24px
+			top 14px
+
+	&.uneditable
+		border none
+		padding 0
+
+.search-input
+	position relative
+
+	.input
+		padding-left 2.5rem
+		padding-right 2.5rem
+
+	i
+		position absolute
+		color $grey
+
+	.search-icon
+		top 7px
+		left 10px
+
+	.clear-icon
+		top 8px
+		right 10px
+		transform rotate(45deg)
+		font-size 20px
+		cursor pointer

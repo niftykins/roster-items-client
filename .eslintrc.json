@@ -1,0 +1,144 @@
+{
+	"parser": "babel-eslint",
+	"parserOptions": {
+		"sourceType": "module",
+
+		"ecmaFeatures": {
+			"ecmaVersion": 8,
+			"jsx": true
+		}
+	},
+
+	"ecmaFeatures": {
+		"jsx": true
+	},
+
+	"extends": "airbnb-base",
+
+	"settings": {
+		"import/resolver": "webpack"
+	},
+
+	"plugins": [
+		"react"
+	],
+
+	"env": {
+		"browser": true,
+		"node": true,
+		"es6": true
+	},
+
+	"rules": {
+		"no-tabs": "off",
+		"no-console": "off",
+		"comma-dangle": ["error", "never"],
+		"object-curly-spacing": ["error", "never"],
+		// "consistent-return": "off",
+		// "arrow-body-style": "off",
+		"arrow-parens": ["error", "always"],
+		"space-before-function-paren": ["error", "never"],
+		"no-cond-assign": ["error", "except-parens"],
+		"no-mixed-operators": ["error", {"allowSamePrecedence": true}],
+		"indent": ["error", "tab", {"SwitchCase": 1}],
+
+		// "max-len": ["off", 120, 2, {
+		//   "ignoreUrls": true,
+		//   "ignoreComments": false,
+		//   "ignoreRegExpLiterals": true,
+		//   "ignoreStrings": true,
+		//   "ignoreTemplateLiterals": true
+		// }],
+
+		// meteor has a lot of these
+		"no-underscore-dangle": "off",
+
+
+		// import
+		// "import/no-extraneous-dependencies": "off",
+		// "import/prefer-default-export": "off",
+		"import/newline-after-import": "off",
+		// "import/no-absolute-path": "off",
+		// "import/extensions": "off",
+		"import/first": "off",
+
+
+		// jsx
+		"react/display-name": ["error", {"ignoreTranspilerName": false}],
+		"react/jsx-boolean-value": ["error", "always"],
+		"react/jsx-closing-bracket-location": ["error", "tag-aligned"],
+		"react/jsx-handler-names": ["error", {
+			"eventHandlerPrefix": "handle",
+			"eventHandlerPropPrefix": "on"
+		}],
+		"react/jsx-indent-props": ["error", "tab"],
+		"react/jsx-key": "error",
+		"react/jsx-max-props-per-line": ["error", {"maximum": 2}],
+		"react/jsx-no-duplicate-props": ["error", {"ignoreCase": true}],
+		"react/jsx-no-undef": "error",
+		"react/jsx-uses-react": "error",
+		"react/jsx-uses-vars": "error",
+		"react/no-danger": "error",
+		"react/no-deprecated": "error",
+		"react/no-did-mount-set-state": "error",
+		"react/no-did-update-set-state": "error",
+		"react/no-direct-mutation-state": "error",
+		"react/no-is-mounted": "error",
+		"react/no-string-refs": "error",
+		"react/no-unknown-property": "error",
+		"react/prefer-es6-class": ["error", "always"],
+		"react/prefer-stateless-function": "error",
+		"react/prop-types": ["error", {"skipUndeclared": true}],
+		"react/require-render-return": "error",
+		"react/self-closing-comp": "error",
+		"react/jsx-space-before-closing": ["error", "always"],
+		"react/sort-comp": ["error", {
+			"order": [
+				"static-methods",
+				"displayName",
+				"propTypes",
+				"contextTypes",
+				"childContextTypes",
+				"mixins",
+				"statics",
+				"defaultProps",
+				"state",
+				"/^_.+$/",
+				"getDefaultProps",
+				"getInitialState",
+				"getMeteorData",
+				"getChildContext",
+				"constructor",
+				"componentWillMount",
+				"componentDidMount",
+				"componentWillReceiveProps",
+				"shouldComponentUpdate",
+				"componentWillUpdate",
+				"componentDidUpdate",
+				"componentWillUnmount",
+				"everything-else",
+				"/^on.+$/",
+				"/^handle+$/",
+				"/^render.+$/",
+				"render"
+			]
+		}],
+		"react/jsx-wrap-multilines": "error",
+		"react/jsx-first-prop-new-line": ["error", "multiline"],
+		"react/jsx-equals-spacing": ["error", "never"],
+		"react/jsx-indent": ["error", "tab"],
+		"react/jsx-no-target-blank": "error",
+		"react/jsx-no-comment-textnodes": "error",
+		"react/no-render-return-value": "error",
+		"react/no-find-dom-node": "error",
+		"react/no-danger-with-children": "error",
+		"react/no-unused-prop-types": ["error", {"skipShapeProps": true}],
+		"react/style-prop-object": "error",
+		// "react/no-unescaped-entities": "error",
+		"react/jsx-tag-spacing": ["error", {
+			"closingSlash": "never",
+			"beforeSelfClosing": "always",
+			"afterOpening": "never"
+		}]
+	}
+}
