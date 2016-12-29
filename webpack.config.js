@@ -4,6 +4,9 @@ var path = require('path');
 var webpack = require('webpack');
 var nib = require('nib');
 
+var dotenv = require('dotenv');
+dotenv.config({silent: true});
+
 module.exports = {
 	devtool: 'eval-source-map',
 
@@ -25,7 +28,11 @@ module.exports = {
 
 	plugins: [
 		new webpack.optimize.OccurenceOrderPlugin(),
-		new webpack.HotModuleReplacementPlugin()
+		new webpack.HotModuleReplacementPlugin(),
+
+		new webpack.DefinePlugin({
+			'process.env.API_URL': JSON.stringify(process.env.API_URL)
+		})
 	],
 
 	module: {

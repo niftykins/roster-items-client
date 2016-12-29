@@ -1,4 +1,4 @@
-const API_URL = 'https://busybot2.ngrok.io';
+const API_URL = process.env.API_URL;
 
 export function loginWithBlizzard() {
 	return () => {
@@ -6,7 +6,7 @@ export function loginWithBlizzard() {
 	};
 }
 
-function check() {
+window.check = function check() {
 	fetch(`${API_URL}/graphql?`, {
 		method: 'POST',
 		headers: {'Content-Type': 'application/json'},
@@ -17,6 +17,13 @@ function check() {
 	})
 		.then((r) => r.json())
 		.then((json) => console.log(json));
-}
+};
 
-window.check = check();
+window.logout = function logout() {
+	fetch(`${API_URL}/auth/logout`, {
+		method: 'GET',
+		credentials: 'include'
+	})
+		.then((r) => r.json())
+		.then((json) => console.log(json));
+};
