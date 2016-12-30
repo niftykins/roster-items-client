@@ -1,13 +1,15 @@
-import {Router, Route, Redirect} from 'react-router';
+import {Router, Route} from 'react-router';
 
-import SignInContainer from 'containers/SignInContainer';
+import ItemsView from 'components/Items/ItemsView';
+
+import IssuesView from 'components/Issues/IssuesView';
 
 export default function makeRouter(history) {
 	return (
 		<Router history={history}>
-			<Redirect from="/" to="/sign-in" />
+			<Route path="/" component={ItemsView} />
 
-			<Route path="/sign-in" component={SignInContainer} />
+			<Route path="/issues" component={IssuesView} />
 		</Router>
 	);
 }

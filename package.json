@@ -32,10 +32,14 @@
       "webpack-hot-middleware": "2.14.0"
    },
    "dependencies": {
+      "apollo-client": "0.5.25",
       "babel-polyfill": "6.20.0",
       "classnames": "2.2.5",
+      "graphql-tag": "1.1.2",
+      "isomorphic-fetch": "2.2.1",
       "nib": "1.1.2",
       "react": "15.4.1",
+      "react-apollo": "0.7.2",
       "react-dom": "15.4.1",
       "react-ladda": "5.0.4",
       "react-redux": "5.0.1",
