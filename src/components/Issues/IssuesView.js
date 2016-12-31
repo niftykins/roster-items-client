@@ -1,9 +1,9 @@
-import Header from 'containers/HeaderContainer';
+import HeaderContainer from 'containers/HeaderContainer';
 
 export default function IssuesView() {
 	return (
 		<div className="page-container">
-			<Header />
+			<HeaderContainer />
 
 			<div className="issues-vew" />
 		</div>

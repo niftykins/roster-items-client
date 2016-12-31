@@ -1,11 +1,17 @@
-import Header from 'containers/HeaderContainer';
+import HeaderContainer from 'containers/HeaderContainer';
+import ItemsListContainer from 'containers/ItemsListContainer';
+import ItemContainer from 'containers/ItemContainer';
 
 export default function ItemsView() {
 	return (
 		<div className="page-container">
-			<Header />
+			<HeaderContainer />
 
-			<div className="items-vew" />
+			<div className="items-view">
+				<ItemsListContainer />
+
+				<ItemContainer />
+			</div>
 		</div>
 	);
 }
