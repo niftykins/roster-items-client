@@ -13,21 +13,3 @@ export function logout(apolloClient) {
 		});
 	};
 }
-
-window.check = function check() {
-	call('/graphql', {
-		method: 'POST',
-		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify({
-			query: 'query {stuff}'
-		})
-	})
-		.then((r) => r.json())
-		.then((json) => console.log(json));
-};
-
-window.logout = function logoutDirect() {
-	call('/auth/logout')
-		.then((r) => r.json())
-		.then((json) => console.log(json));
-};

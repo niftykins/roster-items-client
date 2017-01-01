@@ -35,10 +35,10 @@ export default class Input extends Component {
 
 	getValue() {
 		if (this.props.disabled) return this.props.defaultValue;
-		return this.input.value;
+		return this.input.value.trim();
 	}
 
-	setValue(value) {
+	setValue(value = '') {
 		this.input.value = value;
 	}
 
@@ -68,6 +68,7 @@ export default class Input extends Component {
 
 		// exclude this from getting into props
 		delete props.className;
+		delete props.note;
 
 		const p = {
 			className: `${size} input`,

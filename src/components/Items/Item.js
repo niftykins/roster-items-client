@@ -102,8 +102,8 @@ export default class Item extends Component {
 		));
 
 		return (
-			<div className="item-details-container">
-				<div className="item-details">
+			<div className="view-details-container">
+				<div className="view-details items-details">
 					<h1>Add new item</h1>
 
 					<div className="card">

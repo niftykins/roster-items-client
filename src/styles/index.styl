@@ -64,6 +64,8 @@ h1, h2, h3, h4, h5
 @require 'input'
 @require '../components/*'
 
+@require 'layout'
+
 @keyframes stretchdelay
 	0%, 40%, 100%
 		transform scaleY(0.3)
@@ -71,8 +73,9 @@ h1, h2, h3, h4, h5
 		transform scaleY(0.6)
 
 .loader
-	$center()
-	position fixed
+	&.center
+		$center()
+
 	height 8rem
 	font-size 0
 

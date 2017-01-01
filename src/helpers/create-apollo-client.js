@@ -1,4 +1,12 @@
-import ApolloClient, {createNetworkInterface} from 'apollo-client';
+import ApolloClient, {createNetworkInterface, toIdValue} from 'apollo-client';
+
+function dataIdFromObject(result) {
+	if (result.id && result.__typename) {
+		return `${result.__typename}:${result.id}`;
+	}
+
+	return null;
+}
 
 export default function createApolloClient() {
 	const networkInterface = createNetworkInterface({
@@ -9,15 +17,20 @@ export default function createApolloClient() {
 	});
 
 	return new ApolloClient({
+		connectToDevTools: true,
 		addTypename: true,
 		networkInterface,
+		dataIdFromObject,
 
-		dataIdFromObject(result) {
-			if (result.id && result.__typename) {
-				return result.__typename + result.id;
+		customResolvers: {
+			Query: {
+				instance(root, args) {
+					return toIdValue(dataIdFromObject({
+						__typename: 'instance',
+						id: args.id
+					}));
+				}
 			}
-
-			return null;
 		}
 	});
 }

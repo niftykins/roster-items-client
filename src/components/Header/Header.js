@@ -15,6 +15,13 @@ export default function Header({onLogin, onLogout, client, user}) {
 
 			<div className="links">
 				<Link
+					to="/instances"
+					activeClassName="active"
+				>
+					Instances
+				</Link>
+
+				<Link
 					to="/"
 					activeClassName="active"
 				>

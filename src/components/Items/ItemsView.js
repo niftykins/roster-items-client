@@ -7,7 +7,7 @@ export default function ItemsView() {
 		<div className="page-container">
 			<HeaderContainer />
 
-			<div className="items-view">
+			<div className="standard-view items-view">
 				<ItemsListContainer />
 
 				<ItemContainer />

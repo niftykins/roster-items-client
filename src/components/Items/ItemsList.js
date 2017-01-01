@@ -1,13 +1,13 @@
 import {PropTypes} from 'react';
 
 export default function ItemsList({items}) {
-	const itemItems = items && items.map((item) => {
-		return <Item key={item.id} item={item} />;
-	});
+	const itemItems = items && items.map((item) => (
+		<Item key={item.id} item={item} />
+	));
 
 	return (
-		<div className="items-list-container">
-			<div className="items-list">
+		<div className="view-list-container">
+			<div className="view-list">
 				{itemItems}
 			</div>
 		</div>
@@ -21,7 +21,7 @@ ItemsList.propTypes = {
 
 function Item({item}) {
 	return (
-		<div className="item-list-item">
+		<div className="view-list-item">
 			{item.name}
 		</div>
 	);

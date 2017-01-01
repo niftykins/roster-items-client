@@ -1,0 +1,52 @@
+.standard-view
+	display flex
+	flex-direction row
+	flex 1 1 auto
+
+	.view-list-container
+		flex-shrink 0
+		width 18rem
+		background-color $white
+		border-right 1px solid $card-border-dark
+
+	.view-list-item
+		display block
+		padding 1rem 1.5rem
+		cursor pointer
+
+		&:hover
+			background-color $grey-lighter
+
+		&.active .name
+			color $blue
+
+	& > .loader
+		width 100%
+		align-self center
+		text-align center
+
+.standard-view > .view-details-container
+	$overflow-auto()
+	display flex
+	flex-direction column
+	flex 1 1 auto
+
+	.view-details
+		padding 1.5rem 1.5rem 1rem
+		width 100%
+		max-width 45rem
+		margin 0 auto
+		flex 1 1 auto
+
+	.view-actions-bar
+		display flex
+		flex-direction row
+		justify-content flex-end
+		align-items center
+		flex-shrink 0
+		padding 1rem
+		background-color $white
+		border-top 1px solid $card-border-dark
+
+		.button
+			width 8rem

@@ -1,60 +1,44 @@
-.items-view
-	display flex
-	flex-direction row
-	flex 1 1 auto
+.items-view .view-details
+	padding 1.5rem 1.5rem 1rem
+	max-width 45rem
+	margin 0 auto
 
-	.items-list-container
-		flex-shrink 0
-		width 18rem
-		background-color $white
-		border-right 1px solid $card-border
+	.role-groups
+		display flex
+		flex-direction row
+		flex-wrap wrap
+		justify-content space-between
+		margin -0.25rem
 
+	.role-group
+		margin 0.25rem
 
-.items-view > .item-details-container
-	$overflow-auto()
-	flex 1 1 auto
+	.role-label
+		$bold()
+		text-transform capitalize
+		margin-bottom 0.5rem
+		font-size 1rem
 
-	.item-details
-		padding 1.5rem 1.5rem 1rem
-		max-width 45rem
-		margin 0 auto
+	.class
+		position relative
+		display table
+		flex-direction row
+		align-items center
+		font-size 0.95rem
+		margin-bottom 0.25rem
+		cursor pointer
+		padding 0.25rem 0
+		user-select none
 
-		.role-groups
-			display flex
-			flex-direction row
-			flex-wrap wrap
-			justify-content space-between
-			margin -0.25rem
+		i
+			position absolute
+			top 1px
+			left -2px
 
-		.role-group
-			margin 0.25rem
+			&.toggled
+				color $blue
 
-		.role-label
-			$bold()
-			text-transform capitalize
-			margin-bottom 0.5rem
-			font-size 1rem
-
-		.class
-			position relative
-			display table
-			flex-direction row
-			align-items center
-			font-size 0.95rem
-			margin-bottom 0.25rem
-			cursor pointer
-			padding 0.25rem 0
-			user-select none
-
-			i
-				position absolute
-				top 1px
-				left -2px
-
-				&.toggled
-					color $blue
-
-			span
-				padding 0.15rem 0.25rem
-				border-radius $small-border-radius
-				margin-left 1.25rem
+		span
+			padding 0.15rem 0.25rem
+			border-radius $small-border-radius
+			margin-left 1.25rem
