@@ -1,8 +1,8 @@
 import {PropTypes} from 'react';
 import {Link} from 'react-router';
 
-export default function InstancesList({instances}) {
-	const instanceItems = instances && instances.map((instance) => (
+export default function InstancesList({instances = []}) {
+	const instanceItems = instances.map((instance) => (
 		<Instance key={instance.id} instance={instance} />
 	));
 

@@ -26,7 +26,7 @@ export default function createApolloClient() {
 			Query: {
 				instance(root, args) {
 					return toIdValue(dataIdFromObject({
-						__typename: 'instance',
+						__typename: 'Instance',
 						id: args.id
 					}));
 				}

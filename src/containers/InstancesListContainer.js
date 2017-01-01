@@ -10,6 +10,7 @@ const INSTANCES_LIST_QUERY = gql`
 			id
 			wowId
 			name
+			created
 			bosses {
 				wowId
 				name
@@ -19,8 +20,8 @@ const INSTANCES_LIST_QUERY = gql`
 `;
 
 export default graphql(INSTANCES_LIST_QUERY, {
-	props: ({data: {loading, instances}}) => ({
-		instances,
+	props: ({data: {loading, instances = []}}) => ({
+		instances: instances.sort((a, b) => a.created > b.created),
 		loading
 	}),
 
@@ -28,10 +29,10 @@ export default graphql(INSTANCES_LIST_QUERY, {
 		reducer: (prev, action) => {
 			if (action.type !== 'APOLLO_MUTATION_RESULT') return prev;
 
-			if (action.operationName === 'submitInstance') {
+			if (action.operationName === 'createInstance') {
 				return update(prev, {
 					instances: {
-						$unshift: [action.result.data.submitInstance]
+						$unshift: [action.result.data.createInstance]
 					}
 				});
 			}
