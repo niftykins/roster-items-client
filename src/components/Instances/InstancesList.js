@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 
 export default function InstancesList({instances = []}) {
 	const instanceItems = instances.map((instance) => (
-		<Instance key={instance.id} instance={instance} />
+		<InstanceItem key={instance.id} instance={instance} />
 	));
 
 	return (
@@ -31,7 +31,7 @@ InstancesList.propTypes = {
 };
 
 
-function Instance({instance}) {
+function InstanceItem({instance}) {
 	return (
 		<Link
 			className="view-list-item"
