@@ -9,6 +9,14 @@ export default function InstancesList({instances = []}) {
 	return (
 		<div className="view-list-container">
 			<div className="view-list">
+				<Link
+					className="view-list-item add-new"
+					activeClassName="active"
+					to="/instances/new"
+				>
+					Add new instance
+				</Link>
+
 				{instanceItems}
 			</div>
 		</div>
