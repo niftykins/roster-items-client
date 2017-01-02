@@ -3,6 +3,28 @@ import {Component, PropTypes} from 'react';
 import Loading from '../Utils/Loading';
 import Input from '../Utils/Input';
 
+const DELIMITER = '@';
+
+function formatBosses(bosses = []) {
+	return bosses.map((b) => `${b.name}${DELIMITER}${b.wowId}`).join('\n');
+}
+
+function extractBosses(text) {
+	return text.split(/\r?\n/).map((line) => {
+		const [name, wowId] = line.split(DELIMITER);
+		return {
+			wowId: wowId.trim(),
+			name: name.trim()
+		};
+	});
+}
+
+// does minimal validation ensuring each boss has a name and wowId
+function validateBosses(bosses) {
+	return bosses.every((boss) => boss.name && boss.wowId);
+}
+
+
 export default class Instance extends Component {
 	static propTypes = {
 		onCreate: PropTypes.func.isRequired,
@@ -35,16 +57,23 @@ export default class Instance extends Component {
 	setFields = (data = {}) => {
 		if (this.fields.name) this.fields.name.setValue(data.name);
 		if (this.fields.wowId) this.fields.wowId.setValue(data.wowId);
+		if (this.fields.bosses) {
+			const bosses = formatBosses(data.bosses);
+			this.fields.bosses.setValue(bosses);
+		}
 	}
 
 	handleSave = () => {
 		const name = this.fields.name.getValue();
 		const wowId = this.fields.wowId.getValue();
 
-		if (!name || !wowId) return;
+		const bossText = this.fields.bosses.getValue();
+		const bosses = extractBosses(bossText);
+
+		if (!name || !wowId || !validateBosses(bosses)) return;
 
 		const data = {
-			bosses: [],
+			bosses,
 			wowId,
 			name
 		};
@@ -85,6 +114,16 @@ export default class Instance extends Component {
 							defaultValue={instance && instance.wowId}
 							placeholder="1337"
 							label="ID"
+						/>
+
+						<Input
+							ref={(r) => (this.fields.bosses = r)}
+							defaultValue={instance && formatBosses(instance.bosses)}
+							placeholder={`Algalon the Observer${DELIMITER}32871`}
+							textareaProps={{minRows: 10}}
+							textarea={true}
+							label="Bosses"
+							note={`One boss per line in the format: name${DELIMITER}id`}
 						/>
 					</div>
 				</div>

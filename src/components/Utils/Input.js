@@ -1,10 +1,14 @@
 import {Component, PropTypes} from 'react';
 import classnames from 'classnames';
+import Textarea from 'react-textarea-autosize';
 
 export default class Input extends Component {
 	static propTypes = {
 		size: PropTypes.string,
 		type: PropTypes.string,
+
+		textarea: PropTypes.bool,
+		textareaProps: PropTypes.object,
 
 		defaultValue: PropTypes.string,
 
@@ -25,6 +29,7 @@ export default class Input extends Component {
 	}
 
 	static defaultProps = {
+		textareaProps: {},
 		type: 'text',
 		size: ''
 	}
@@ -56,8 +61,13 @@ export default class Input extends Component {
 		const {
 			type,
 			size,
+
+			textareaProps,
+			textarea,
+
 			onChange,
 			onSubmit,
+
 			disabled,
 
 			withActionButton,
@@ -84,6 +94,7 @@ export default class Input extends Component {
 
 		let input = <input {...p} />;
 		if (disabled) input = <div {...p}>{this.props.defaultValue}</div>;
+		if (textarea) input = <Textarea {...p} {...textareaProps} />;
 
 		const wrapperClassName = classnames({
 			'with-action-button': withActionButton
