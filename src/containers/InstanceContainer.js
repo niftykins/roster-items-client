@@ -53,8 +53,8 @@ export default compose(
 		props: ({mutate}) => ({
 			onCreate(instance) {
 				mutate({variables: {instance}})
-				.then((r) => browserHistory.push(`/instances/${r.data.createInstance.id}`))
-				.catch((r) => console.error(r));
+					.then((r) => browserHistory.push(`/instances/${r.data.createInstance.id}`))
+					.catch((r) => console.error(r));
 			}
 		})
 	}),
@@ -63,7 +63,7 @@ export default compose(
 		props: ({mutate}) => ({
 			onUpdate(id, instance) {
 				mutate({variables: {id, instance}})
-				.catch((r) => console.error(r));
+					.catch((r) => console.error(r));
 			}
 		})
 	}),

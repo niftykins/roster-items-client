@@ -14,10 +14,13 @@ function formatBosses(bosses = []) {
 
 function extractBosses(text) {
 	return text.split(/\r?\n/).map((line) => {
+		if (!line) return {};
+
 		const [name, wowId] = line.split(DELIMITER);
+
 		return {
-			wowId: wowId.trim(),
-			name: name.trim()
+			wowId: wowId && wowId.trim(),
+			name: name && name.trim()
 		};
 	});
 }
@@ -52,27 +55,32 @@ export default class Instance extends Component {
 
 		this.fields = {};
 
+		console.warn(props.instance, !props.instance);
+
 		this.state = {
-			disabled: !props.instance
+			disabled: !props.instance,
+			saving: false
 		};
 	}
 
 	componentWillReceiveProps({instance: next = {}}) {
 		const current = this.props.instance || {};
 
-		if (current.id !== next.id) this.updateFieldsToNewValues(next);
+		if (current.id !== next.id) {
+			// component might not have rendered yet, so wait a bit
+			setTimeout(() => this.updateToNewInstance(next));
+		}
 	}
 
-	updateFieldsToNewValues = (data = {}) => {
-		if (this.fields.name) this.fields.name.setValue(data.name);
-		if (this.fields.wowId) this.fields.wowId.setValue(data.wowId);
+	updateToNewInstance = (data = {}) => {
+		this.fields.name.setValue(data.name);
+		this.fields.wowId.setValue(data.wowId);
 
-		if (this.fields.bosses) {
-			const bosses = formatBosses(data.bosses);
-			this.fields.bosses.setValue(bosses);
-		}
+		const bosses = formatBosses(data.bosses);
+		this.fields.bosses.setValue(bosses);
 
 		this.handleCheckForDisabled();
+		this.setState({saving: false});
 	}
 
 	handleSave = () => {
@@ -90,12 +98,18 @@ export default class Instance extends Component {
 			name
 		};
 
+		this.setState({saving: true});
+		return;
+
 		// update or create
+		let p;
 		if (this.props.instance) {
-			this.props.onUpdate(this.props.instance.id, data);
+			p = this.props.onUpdate(this.props.instance.id, data);
 		} else {
-			this.props.onCreate(data);
+			p = this.props.onCreate(data);
 		}
+
+		p.then(() => this.setState({saving: false}));
 	}
 
 	render() {
