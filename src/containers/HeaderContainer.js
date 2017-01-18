@@ -1,33 +1,18 @@
 import {connect} from 'react-redux';
-import {compose, withApollo, graphql} from 'react-apollo';
-import gql from 'graphql-tag';
 
 import {login, logout} from 'actions/auth';
 
+import {getUser} from 'helpers/selectors';
+
 import Header from 'components/Header/Header';
 
-const USER_QUERY = gql`
-	query CurrentUserForHeader {
-		currentUser {
-			battletag
-		}
-	}
-`;
+function mapStateToProps(state) {
+	return {
+		user: getUser(state)
+	};
+}
 
-export default compose(
-	withApollo,
-
-	graphql(USER_QUERY, {
-		props({data: {loading, currentUser}}) {
-			return {
-				user: currentUser,
-				loading
-			};
-		}
-	}),
-
-	connect(() => ({}), {
-		onLogout: logout,
-		onLogin: login
-	})
-)(Header);
+export default connect(mapStateToProps, {
+	onLogout: logout,
+	onLogin: login
+})(Header);

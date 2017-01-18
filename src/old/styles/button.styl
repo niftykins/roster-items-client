@@ -12,22 +12,22 @@
 .button
 	$font-family()
 	$bold()
-	user-select none
 	position relative
 	display table
-	padding 0.5rem 1rem
-	outline 0
+	user-select none
+	color $black
+	text-decoration none
+	cursor pointer
 	border none
 	border-radius $small-border-radius
-	color $black
-	text-align center
-	text-decoration none
 	text-shadow 0 1px 1px $slight-black
+	text-align center
 	white-space nowrap
-	font-style normal
+	padding 0.5rem 1rem
 	font-size 16px
 	line-height 1.2
-	cursor pointer
+	outline 0
+	font-style normal
 
 	&:hover
 	&:focus
@@ -38,12 +38,12 @@
 
 	&:after
 		position absolute
+		content ''
 		top 0
-		right 0
 		bottom 0
 		left 0
+		right 0
 		border-radius @border-radius
-		content ''
 
 	&.right
 		float right
@@ -53,30 +53,30 @@
 		font-size 14px
 
 	&.medium
-		padding 0.625rem 1.25rem
 		border-radius $border-radius
+		padding 0.625rem 1.25rem
 		font-size 18px
 
 	&.large
 		$super-bold()
-		padding 0.75rem 1.5rem
 		border-radius $border-radius
+		padding 0.75rem 1.5rem
 		font-size 20px
 
 	&.fluid
 		width 100%
 
 	&.green
-		background-color $green
 		color $white
+		background-color $green
 
 	&.blue
-		background-color $blue
 		color $white
+		background-color $blue
 
 	&.red
-		background-color $red
 		color $white
+		background-color $red
 
 	&.link
 		text-shadow none
@@ -117,8 +117,8 @@
 				border-color $red
 
 	&.disabled
-		background-color $grey
 		color $white
+		background-color $grey
 		opacity 0.35
 		pointer-events none
 

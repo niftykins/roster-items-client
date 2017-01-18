@@ -22,8 +22,8 @@ $input-active-box-shadow = 0 0 7px rgba(39, 128, 248, 0.15)
 
 	&.disabled
 		.input
-			padding 0
 			border none
+			padding 0
 
 	label
 		$bold()
@@ -36,9 +36,9 @@ $input-active-box-shadow = 0 0 7px rgba(39, 128, 248, 0.15)
 			font-weight 400
 
 	.note
-		margin-top 0.25rem
-		color $grey
 		font-size 0.8rem
+		color $grey
+		margin-top 0.25rem
 		line-height 1rem
 
 	.input-child-wrapper.with-action-button
@@ -54,20 +54,20 @@ textarea.input
 
 .input
 	$font-family()
-	appearance none
+	height auto
+	width 100%
+	max-width 100%
 	margin 0
 	padding $input-padding
-	max-width 100%
-	width 100%
-	height auto
-	outline 0
+	color $black
 	border 1px solid $grey-light
 	border-radius $small-border-radius
-	box-shadow none
-	color $black
 	font-size $input-font-size
-	line-height 1.2
+	appearance none
+	outline 0
 	transition box-shadow 70ms ease-out, border-color 70ms ease-out
+	box-shadow none
+	line-height 1.2
 
 	&:active
 	&:focus
@@ -87,23 +87,23 @@ textarea.input
 		font-size $big-input-font-size
 
 		& ~ .search-icon
-			top 12px
 			font-size 28px
+			top 12px
 
 		& ~ .clear-icon
-			top 14px
 			font-size 24px
+			top 14px
 
 	&.uneditable
-		padding 0
 		border none
+		padding 0
 
 .search-input
 	position relative
 
 	.input
-		padding-right 2.5rem
 		padding-left 2.5rem
+		padding-right 2.5rem
 
 	i
 		position absolute

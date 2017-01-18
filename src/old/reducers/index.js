@@ -1,12 +1,9 @@
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 
-import user from './user';
-
-export default function createReducer() {
+export default function createReducer(apollo) {
 	return combineReducers({
 		routing: routerReducer,
-
-		user
+		apollo
 	});
 }

@@ -1,8 +1,8 @@
 import {PropTypes} from 'react';
 import {Link} from 'react-router';
-import logo from 'images/logo.png';
+import logo from 'images/unicorn256.png';
 
-export default function Header({onLogin, onLogout, user}) {
+export default function Header({onLogin, onLogout, client, user}) {
 	return (
 		<div className="header-nav">
 			<div className="brand">
@@ -37,7 +37,7 @@ export default function Header({onLogin, onLogout, user}) {
 
 				<UserButton
 					onLogin={onLogin}
-					onLogout={onLogout}
+					onLogout={() => onLogout(client)}
 					user={user}
 				/>
 			</div>
@@ -49,6 +49,7 @@ Header.propTypes = {
 	onLogin: PropTypes.func.isRequired,
 	onLogout: PropTypes.func.isRequired,
 
+	client: PropTypes.object.isRequired,
 	user: PropTypes.shape({
 		battletag: PropTypes.string.isRequired
 	})

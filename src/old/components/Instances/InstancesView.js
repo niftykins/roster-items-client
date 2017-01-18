@@ -1,5 +1,5 @@
 import HeaderContainer from 'containers/HeaderContainer';
-// import InstancesListContainer from 'containers/InstancesListContainer';
+import InstancesListContainer from 'containers/InstancesListContainer';
 
 export default function InstancesView({children}) {
 	return (
@@ -7,11 +7,10 @@ export default function InstancesView({children}) {
 			<HeaderContainer />
 
 			<div className="standard-view instances-view">
+				<InstancesListContainer />
 
 				{children}
 			</div>
 		</div>
 	);
 }
-
-// <InstancesListContainer />

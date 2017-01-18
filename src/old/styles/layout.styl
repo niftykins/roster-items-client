@@ -1,13 +1,13 @@
 .standard-view
 	display flex
-	flex 1 1 auto
 	flex-direction row
+	flex 1 1 auto
 
 	.view-list-container
 		flex-shrink 0
 		width 18rem
-		border-right 1px solid $card-border-dark
 		background-color $white
+		border-right 1px solid $card-border-dark
 
 	.view-list-item
 		display block
@@ -25,32 +25,32 @@
 			text-decoration underline
 
 	& > .loader
-		align-self center
 		width 100%
+		align-self center
 		text-align center
 
 .standard-view > .view-details-container
 	$overflow-auto()
 	display flex
-	flex 1 1 auto
 	flex-direction column
+	flex 1 1 auto
 
 	.view-details
-		flex 1 1 auto
-		margin 0 auto
 		padding 1.5rem 1.5rem 1rem
-		max-width 45rem
 		width 100%
+		max-width 45rem
+		margin 0 auto
+		flex 1 1 auto
 
 	.view-actions-bar
 		display flex
-		flex-shrink 0
-		justify-content flex-end
 		flex-direction row
+		justify-content flex-end
 		align-items center
+		flex-shrink 0
 		padding 1rem
-		border-top 1px solid $card-border-dark
 		background-color $white
+		border-top 1px solid $card-border-dark
 
 		.button
 			width 8rem

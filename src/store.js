@@ -1,12 +1,26 @@
 import {createStore, applyMiddleware} from 'redux';
-import logger from 'redux-logger';
+import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
+import {Iterable} from 'immutable';
 
 import createReducer from './reducers';
 
-export default function configureStore(apollo, initialState = {}) {
-	const reducer = createReducer(apollo.reducer());
-	const middlware = applyMiddleware(thunk, logger(), apollo.middleware());
+export default function configureStore(initialState = {}) {
+	const reducer = createReducer();
+
+	const logger = createLogger({
+		duration: true,
+		timestamp: false,
+		collapsed: true,
+
+		stateTransfer(state) {
+			if (Iterable.isIterable(state)) return state.toJS();
+			return state;
+		}
+	});
+
+	const middlware = applyMiddleware(thunk, logger);
+
 	const store = createStore(reducer, initialState, middlware);
 
 	if (module.hot) {

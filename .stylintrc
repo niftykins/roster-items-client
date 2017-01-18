@@ -1,0 +1,9 @@
+{
+	"colons": "never",
+	"loadingZero": "always",
+	"namingConvention": "lowercase-dash",
+	"namingConventionStrict": true,
+	"parenSpace": "never",
+	"quotePref": "single",
+	"sortOrder": "grouped"
+}
