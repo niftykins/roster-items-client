@@ -1,5 +1,7 @@
 import {Router, Route, IndexRedirect} from 'react-router';
 
+import GlobalContainer from 'containers/GlobalContainer';
+
 // import ItemsView from 'components/Items/ItemsView';
 // import IssuesView from 'components/Issues/IssuesView';
 
@@ -9,8 +11,8 @@ import InstancesView from 'components/Instances/InstancesView';
 export default function makeRouter(history) {
 	return (
 		<Router history={history}>
-			<Route path="/" component={InstancesView}>
-
+			<Route component={GlobalContainer}>
+				<Route path="/" component={InstancesView} />
 			</Route>
 		</Router>
 	);

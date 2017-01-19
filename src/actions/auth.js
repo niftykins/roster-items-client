@@ -1,13 +1,13 @@
 import {browserHistory} from 'react-router';
 
 import * as types from 'constants/types';
-import {user} from 'constants/dummy';
+import * as dummy from 'constants/dummy';
 
 export function login() {
 	return (dispatch, getState) => {
 		dispatch({
 			type: types.USER_LOGIN_SUCCESS,
-			payload: {user}
+			payload: {user: dummy.user}
 		});
 
 		const state = getState();
