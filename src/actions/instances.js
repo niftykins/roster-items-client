@@ -1,6 +1,8 @@
 import * as types from 'constants/types';
 import * as dummy from 'constants/dummy';
 
+import api from 'helpers/api';
+
 export function fetchInstances() {
 	return (dispatch) => {
 		dispatch({type: types.INSTANCES_FETCH_REQUEST});
@@ -20,18 +22,21 @@ export function createInstance() {
 	};
 }
 
-export function updateInstance(instanceId) {
+export function updateInstance(instanceId, data) {
 	return (dispatch) => {
 		dispatch({
-			type: types.INSTANCES_UPDATE_REQUEST,
+			type: types.INSTANCE_UPDATE_REQUEST,
 			payload: {instanceId}
 		});
 
-		setTimeout(() => {
+		api.call(types.RPC_INSTANCE_UPDATE, {
+			id: instanceId,
+			...data
+		}).then(() => {
 			dispatch({
-				type: types.INSTANCES_UPDATE_SUCCESS,
+				type: types.INSTANCE_UPDATE_SUCCESS,
 				payload: {instanceId}
 			});
-		}, 1500);
+		});
 	};
 }

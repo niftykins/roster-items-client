@@ -43,15 +43,15 @@ export default function instances(state = initialState, {type, payload}) {
 
 
 		// UPDATE
-		case types.INSTANCES_UPDATE_REQUEST: {
+		case types.INSTANCE_UPDATE_REQUEST: {
 			return state.setIn(
 				['byId', payload.instanceId, Instance.savingKey],
 				true
 			);
 		}
 
-		case types.INSTANCES_UPDATE_SUCCESS:
-		case types.INSTANCES_UPDATE_FAILURE: {
+		case types.INSTANCE_UPDATE_SUCCESS:
+		case types.INSTANCE_UPDATE_FAILURE: {
 			return state.setIn(
 				['byId', payload.instanceId, Instance.savingKey],
 				false

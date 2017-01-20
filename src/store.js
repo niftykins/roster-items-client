@@ -13,9 +13,20 @@ export default function configureStore(initialState = {}) {
 		timestamp: false,
 		collapsed: true,
 
-		stateTransfer(state) {
-			if (Iterable.isIterable(state)) return state.toJS();
-			return state;
+		stateTransformer(state) {
+			const s = {};
+
+			Object.keys(state).forEach((key) => {
+				const sub = state[key];
+
+				if (sub.toJS) {
+					s[key] = sub.toJS();
+				} else {
+					s[key] = sub;
+				}
+			});
+
+			return s;
 		}
 	});
 

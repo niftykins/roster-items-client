@@ -26,7 +26,7 @@ const Instance = Record({
 });
 
 class InstanceWrapper extends Instance {
-	savingKey: '__isSaving'
+	static savingKey = '__isSaving'
 
 	constructor(data = {}) {
 		const instance = {
@@ -44,7 +44,7 @@ class InstanceWrapper extends Instance {
 	}
 
 	isSaving() {
-		return this[this.savingKey];
+		return this[this.constructor.savingKey];
 	}
 }
 

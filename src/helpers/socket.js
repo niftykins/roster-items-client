@@ -1,35 +1,18 @@
-let store;
-export function syncSocketWithStore(s) {
-	store = s;
-}
+export default class Socket {
+	constructor(url, messageHandler) {
+		this.url = url;
 
+		this.messageHandler = messageHandler;
 
-function handleChange({table, op, record}) {
-	const type = `${table}_${op}`;
-
-	store.dispatch({
-		data: record,
-		type
-	});
-}
-
-// function handleResult(message, cb) {
-// 	cb(store.dispatch, message, store.getState);
-// }
-
-class Socket {
-	constructor(retry) {
-		this.url = 'wss://api.guildsy.io/u/ws';
-
-		this.retry = !!retry;
-
-		this.callbacks = {};
+		this.retry = true;
 		this.queue = [];
 	}
 
 	connect(cb) {
 		// if we're already connected we need to close it
-		if (this.socket && this.socket.readyState) this.socket.close();
+		if (this.socket && this.socket.readyState) {
+			this.socket.close();
+		}
 
 		this.onConnectCallback = cb;
 
@@ -87,29 +70,6 @@ class Socket {
 		}
 	}
 
-	addCallback(fn, cb) {
-		if (typeof cb !== 'function') {
-			console.error('[SOCKET] cb not a function:', cb);
-			return;
-		}
-
-		if (!this.callbacks[fn]) {
-			this.callbacks[fn] = [];
-		}
-
-		this.callbacks[fn].push(cb);
-	}
-
-	removeCallback(fn) {
-		let cb = function dummyCallback() {};
-
-		if (this.callbacks[fn] && this.callbacks[fn].length) {
-			cb = this.callbacks[fn].shift();
-		}
-
-		return cb;
-	}
-
 	ping() {
 		// every minute we need to ping to keep it alive
 		if ((Date.now() - this.lastPing) > 60 * 1000) {
@@ -118,7 +78,7 @@ class Socket {
 		}
 	}
 
-	send(data, cb) {
+	send(data) {
 		if (typeof data !== 'object') {
 			console.error('[SOCKET] not an object:', data);
 			return;
@@ -126,8 +86,6 @@ class Socket {
 
 		try {
 			const message = JSON.stringify(data);
-
-			if (cb) this.addCallback(data.fn, cb);
 
 			// queue the socket calls until it's actually connected
 			if (!this.socket || !this.socket.readyState) {
@@ -181,20 +139,6 @@ class Socket {
 			console.error('[SOCKET] message failed:', message);
 		}
 
-		// const go = handleResult.bind(null, message);
-
-		switch (message.fn) {
-			case 'change':
-				handleChange(message);
-				break;
-
-			default:
-				console.error('[SOCKET] unhandled message:', message);
-		}
-
-		const cb = this.removeCallback(message.fn);
-		cb(message);
+		this.messageHandler(message);
 	}
 }
-
-export default new Socket(true);
