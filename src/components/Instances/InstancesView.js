@@ -1,12 +1,13 @@
-// import InstancesListContainer from 'containers/InstancesListContainer';
+import {cloneElement} from 'react';
 
-export default function InstancesView({children}) {
+import InstancesListContainer from 'containers/InstancesListContainer';
+
+export default function InstancesView({children, params}) {
 	return (
 		<div className="standard-view instances-view">
+			<InstancesListContainer />
 
-			{children}
+			{cloneElement(children, {key: params.instanceId})}
 		</div>
 	);
 }
-
-// <InstancesListContainer />

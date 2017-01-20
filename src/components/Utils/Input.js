@@ -76,7 +76,8 @@ export default class Input extends Component {
 			...props
 		} = this.props;
 
-		// exclude this from getting into props
+		// exclude these from getting into props
+		delete props.labelHint;
 		delete props.className;
 		delete props.note;
 

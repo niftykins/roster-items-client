@@ -3,7 +3,7 @@ import {Record, List} from 'immutable';
 import {DIFFICULTIES} from 'constants/wow';
 
 const Boss = Record({
-	id: '',
+	wowId: '',
 	name: ''
 });
 
@@ -15,13 +15,19 @@ const WowheadBonuses = Record({
 
 const Instance = Record({
 	id: '',
+
+	wowId: '',
 	name: '',
 
 	wowheadBonuses: new WowheadBonuses(),
-	bosses: List()
+	bosses: List(),
+
+	__isSaving: false
 });
 
 class InstanceWrapper extends Instance {
+	savingKey: '__isSaving'
+
 	constructor(data = {}) {
 		const instance = {
 			...data,
@@ -31,6 +37,14 @@ class InstanceWrapper extends Instance {
 		};
 
 		super(instance);
+	}
+
+	isNew() {
+		return !this.id;
+	}
+
+	isSaving() {
+		return this[this.savingKey];
 	}
 }
 

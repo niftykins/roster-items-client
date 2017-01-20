@@ -13,3 +13,25 @@ export function fetchInstances() {
 		}, 150);
 	};
 }
+
+export function createInstance() {
+	return () => {
+
+	};
+}
+
+export function updateInstance(instanceId) {
+	return (dispatch) => {
+		dispatch({
+			type: types.INSTANCES_UPDATE_REQUEST,
+			payload: {instanceId}
+		});
+
+		setTimeout(() => {
+			dispatch({
+				type: types.INSTANCES_UPDATE_SUCCESS,
+				payload: {instanceId}
+			});
+		}, 1500);
+	};
+}

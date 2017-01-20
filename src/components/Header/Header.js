@@ -28,13 +28,6 @@ export default function Header({onLogin, onLogout, user}) {
 					Items
 				</Link>
 
-				<Link
-					to="/issues"
-					activeClassName="active"
-				>
-					Issues
-				</Link>
-
 				<UserButton
 					onLogin={onLogin}
 					onLogout={onLogout}
