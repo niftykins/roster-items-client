@@ -39,6 +39,24 @@ class InstanceWrapper extends Instance {
 		super(instance);
 	}
 
+	merge(...args) {
+		const fixed = args.map((data) => {
+			const merge = {...data};
+
+			if (merge.wowheadBonuses) {
+				merge.wowheadBonuses = new WowheadBonuses(data.wowheadBonuses);
+			}
+
+			if (merge.bosses) {
+				merge.bosses = List(data.bosses.map((b) => new Boss(b)));
+			}
+
+			return merge;
+		});
+
+		return super.merge(...fixed);
+	}
+
 	isNew() {
 		return !this.id;
 	}

@@ -97,11 +97,11 @@ export default class InstanceDetails extends Component {
 			name
 		};
 
-		// update or create
-		if (this.props.instance) {
-			this.props.onUpdate(this.props.instance.id, data);
-		} else {
+		// create or update
+		if (this.props.instance.isNew()) {
 			this.props.onCreate(data);
+		} else {
+			this.props.onUpdate(this.props.instance.id, data);
 		}
 	}
 
