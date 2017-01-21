@@ -1,3 +1,11 @@
+const typeCounts = {};
+export function newId(type = '') {
+	if (!typeCounts[type]) typeCounts[type] = 0;
+
+	const count = typeCounts[type] += 1;
+	return `${type}${count}`;
+}
+
 export const user = {
 	id: 'batman',
 
@@ -7,7 +15,7 @@ export const user = {
 
 export const instances = [
 	{
-		id: 'dbId1',
+		id: newId('instance'),
 
 		wowId: '8025',
 		name: 'The Nighthold',

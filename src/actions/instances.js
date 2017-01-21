@@ -30,7 +30,7 @@ export function createInstance(data) {
 			dispatch(setSuccessBanner('Instance saved'));
 
 			// XXX REMOVE
-			const id = 'dbId2';
+			const id = dummy.newId('instance');
 			dispatch({
 				type: types.FEED_INSTANCES_INSERT,
 				payload: {id, ...data}
