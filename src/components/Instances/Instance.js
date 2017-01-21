@@ -1,5 +1,6 @@
 import {Component, PropTypes} from 'react';
 import classnames from 'classnames';
+import Ladda from 'react-ladda';
 
 import checkForDisabled from 'helpers/checkForDisabled';
 
@@ -118,32 +119,33 @@ export default class InstanceDetails extends Component {
 
 					<div className="card">
 						<Input
+							onChange={this.handleCheckForDisabled}
 							ref={(r) => (this.fields.name = r)}
 							defaultValue={instance.name}
 							placeholder="Trial of Ulduarazan"
 							label="Name"
 							autoFocus={true}
-							onChange={this.handleCheckForDisabled}
 						/>
 
 						<Input
+							onChange={this.handleCheckForDisabled}
 							ref={(r) => (this.fields.wowId = r)}
 							defaultValue={instance.wowId}
 							placeholder="1337"
 							label="ID"
-							onChange={this.handleCheckForDisabled}
 						/>
 
 						<Input
+							onChange={this.handleCheckForDisabled}
 							ref={(r) => (this.fields.bonuses = r)}
 							defaultValue={formatBonuses(instance.wowheadBonuses)}
 							placeholder="0,3444,3445"
 							label="Wowhead Bonus IDs"
 							labelHint="(normal, heroic, mythic)"
-							onChange={this.handleCheckForDisabled}
 						/>
 
 						<Input
+							onChange={this.handleCheckForDisabled}
 							ref={(r) => (this.fields.bosses = r)}
 							defaultValue={formatBosses(instance.bosses)}
 							placeholder={`Algalon the Observer ${DELIMITER} 32871`}
@@ -151,18 +153,19 @@ export default class InstanceDetails extends Component {
 							textarea={true}
 							label="Bosses"
 							note={`One boss per line in the format: name${DELIMITER}id`}
-							onChange={this.handleCheckForDisabled}
 						/>
 					</div>
 				</div>
 
 				<div className="view-actions-bar">
-					<div
-						className={buttonClassName}
+					<Ladda
 						onClick={this.handleSave}
+						className={buttonClassName}
+						loading={instance.isSaving()}
+						buttonStyle="expand-right"
 					>
 						Save
-					</div>
+					</Ladda>
 				</div>
 			</div>
 		);
