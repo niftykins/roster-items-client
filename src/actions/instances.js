@@ -1,3 +1,5 @@
+import {browserHistory} from 'react-router';
+
 import * as types from 'constants/types';
 import * as dummy from 'constants/dummy';
 
@@ -18,9 +20,28 @@ export function fetchInstances() {
 	};
 }
 
-export function createInstance() {
-	return () => {
+export function createInstance(data) {
+	return (dispatch) => {
+		dispatch({type: types.INSTANCE_CREATE_REQUEST});
 
+		api.call(types.RPC_INSTANCE_CREATE, data).then(() => {
+			dispatch({type: types.INSTANCE_CREATE_SUCCESS});
+
+			dispatch(setSuccessBanner('Instance saved'));
+
+			// XXX REMOVE
+			const id = 'dbId2';
+			dispatch({
+				type: types.FEED_INSTANCES_INSERT,
+				payload: {id, ...data}
+			});
+
+			browserHistory.push(`/instances/${id}`);
+		}).catch((message) => {
+			dispatch({type: types.INSTANCE_CREATE_FAILURE});
+
+			dispatch(setErrorBanner(message.error));
+		});
 	};
 }
 

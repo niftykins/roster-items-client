@@ -7,6 +7,7 @@ import InstanceMap from 'models/instanceMap';
 import Instance from 'models/instance';
 
 const initialState = new Record({
+	formCreateNew: new Instance(),
 	byId: new InstanceMap(),
 	isLoading: false,
 	error: null
@@ -42,6 +43,26 @@ export default function instances(state = initialState, action) {
 		}
 
 
+		// CREATE
+		case types.INSTANCE_CREATE_REQUEST: {
+			return state.setIn(
+				['formCreateNew', Instance.savingKey],
+				true
+			);
+		}
+
+		case types.INSTANCE_CREATE_SUCCESS: {
+			return state.set('formCreateNew', new Instance());
+		}
+
+		case types.INSTANCE_CREATE_FAILURE: {
+			return state.setIn(
+				['formCreateNew', Instance.savingKey],
+				false
+			);
+		}
+
+
 		// UPDATE
 		case types.INSTANCE_UPDATE_REQUEST: {
 			return state.setIn(
@@ -60,6 +81,13 @@ export default function instances(state = initialState, action) {
 
 
 		// FEED
+		case types.FEED_INSTANCES_INSERT: {
+			return state.setIn(
+				['byId', action.payload.id],
+				new Instance(action.payload)
+			);
+		}
+
 		case types.FEED_INSTANCES_UPDATE: {
 			return state.mergeIn(
 				['byId', action.payload.id],
@@ -71,11 +99,12 @@ export default function instances(state = initialState, action) {
 	}
 }
 
-export function getInstance(state, id, createDefault) {
-	const instance = state.byId.get(id);
+export function getInstance(state, id, useForm) {
+	if (!id && useForm) {
+		return state.formCreateNew;
+	}
 
-	if (!instance && createDefault) return new Instance();
-	return instance;
+	return state.byId.get(id) || new Instance();
 }
 
 export function getInstances(state) {

@@ -6,8 +6,8 @@ export const getUser = (state) => fromUser.getUser(state.user);
 
 export const getBanner = (state) => fromBanner.getBanner(state.banner);
 
-export const getInstance = (state, id, createDefault) => (
-	fromInstances.getInstance(state.instances, id, createDefault)
+export const getInstance = (state, id, useForm) => (
+	fromInstances.getInstance(state.instances, id, useForm)
 );
 export const getInstances = (state) => (
 	fromInstances.getInstances(state.instances)
