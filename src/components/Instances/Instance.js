@@ -1,6 +1,6 @@
 import {Component, PropTypes} from 'react';
 import classnames from 'classnames';
-import Ladda from 'react-ladda';
+import Ladda, {EXPAND_RIGHT} from 'react-ladda';
 
 import checkForDisabled from 'helpers/checkForDisabled';
 
@@ -162,7 +162,7 @@ export default class InstanceDetails extends Component {
 						onClick={this.handleSave}
 						className={buttonClassName}
 						loading={instance.isSaving()}
-						buttonStyle="expand-right"
+						data-style={EXPAND_RIGHT}
 					>
 						Save
 					</Ladda>

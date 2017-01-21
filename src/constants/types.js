@@ -32,4 +32,5 @@ export const RPC_INSTANCE_UPDATE = 'instance_update';
 
 
 // -------
-// CHANGES
+// CHANGE FEED
+export const FEED_INSTANCES_UPDATE = 'feed_instances_update';

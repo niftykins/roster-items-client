@@ -41,6 +41,12 @@ export function updateInstance(instanceId, data) {
 			});
 
 			dispatch(setSuccessBanner('Instance saved'));
+
+			// XXX REMOVE
+			dispatch({
+				type: types.FEED_INSTANCES_UPDATE,
+				payload: {id: instanceId, ...data}
+			});
 		}).catch((message) => {
 			dispatch({
 				type: types.INSTANCE_UPDATE_FAILURE,

@@ -12,8 +12,8 @@ const initialState = new Record({
 	error: null
 })();
 
-export default function instances(state = initialState, {type, payload}) {
-	switch (type) {
+export default function instances(state = initialState, action) {
+	switch (action.type) {
 		// FETCH
 		case types.INSTANCES_FETCH_REQUEST: {
 			return state.merge({
@@ -23,7 +23,7 @@ export default function instances(state = initialState, {type, payload}) {
 		}
 
 		case types.INSTANCES_FETCH_SUCCESS: {
-			const data = payload.instances.map((instance) => {
+			const data = action.payload.instances.map((instance) => {
 				return [instance.id, new Instance(instance)];
 			});
 
@@ -37,7 +37,7 @@ export default function instances(state = initialState, {type, payload}) {
 		case types.INSTANCES_FETCH_FAILURE: {
 			return state.merge({
 				isLoading: false,
-				error: payload
+				error: action.payload
 			});
 		}
 
@@ -45,7 +45,7 @@ export default function instances(state = initialState, {type, payload}) {
 		// UPDATE
 		case types.INSTANCE_UPDATE_REQUEST: {
 			return state.setIn(
-				['byId', payload.instanceId, Instance.savingKey],
+				['byId', action.payload.instanceId, Instance.savingKey],
 				true
 			);
 		}
@@ -53,8 +53,17 @@ export default function instances(state = initialState, {type, payload}) {
 		case types.INSTANCE_UPDATE_SUCCESS:
 		case types.INSTANCE_UPDATE_FAILURE: {
 			return state.setIn(
-				['byId', payload.instanceId, Instance.savingKey],
+				['byId', action.payload.instanceId, Instance.savingKey],
 				false
+			);
+		}
+
+
+		// FEED
+		case types.FEED_INSTANCES_UPDATE: {
+			return state.mergeIn(
+				['byId', action.payload.id],
+				action.payload
 			);
 		}
 

@@ -7,7 +7,7 @@ export const syncApiWithStore = (s) => (store = s);
 
 
 function handleChange({table, operation, record}) {
-	const type = `${table}_${operation}`;
+	const type = `feed_${table}_${operation}`;
 
 	store.dispatch({
 		payload: record,
