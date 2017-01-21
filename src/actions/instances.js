@@ -1,6 +1,8 @@
 import * as types from 'constants/types';
 import * as dummy from 'constants/dummy';
 
+import {setSuccessBanner, setErrorBanner} from './banners';
+
 import api from 'helpers/api';
 
 export function fetchInstances() {
@@ -37,6 +39,15 @@ export function updateInstance(instanceId, data) {
 				type: types.INSTANCE_UPDATE_SUCCESS,
 				payload: {instanceId}
 			});
+
+			dispatch(setSuccessBanner('Instance saved'));
+		}).catch((message) => {
+			dispatch({
+				type: types.INSTANCE_UPDATE_FAILURE,
+				payload: {instanceId}
+			});
+
+			dispatch(setErrorBanner(message.error));
 		});
 	};
 }

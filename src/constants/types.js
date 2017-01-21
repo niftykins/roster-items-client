@@ -1,4 +1,6 @@
-export const API = 'API';
+// UI
+export const SET_BANNER = 'SET_BANNER';
+
 
 // DATA
 export const INSTANCES_FETCH_REQUEST = 'INSTANCES_FETCH_REQUEST';

@@ -2,7 +2,9 @@ import {PropTypes} from 'react';
 import {Link} from 'react-router';
 import logo from 'images/logo.png';
 
-export default function Header({onLogin, onLogout, user}) {
+import Banner from '../Utils/Banner';
+
+export default function Header({onLogin, onLogout, user, banner}) {
 	return (
 		<div className="header-nav">
 			<div className="brand">
@@ -34,6 +36,8 @@ export default function Header({onLogin, onLogout, user}) {
 					user={user}
 				/>
 			</div>
+
+			<Banner banner={banner} />
 		</div>
 	);
 }
@@ -44,6 +48,12 @@ Header.propTypes = {
 
 	user: PropTypes.shape({
 		battletag: PropTypes.string.isRequired
+	}),
+
+	banner: PropTypes.shape({
+		type: PropTypes.string,
+		message: PropTypes.string,
+		show: PropTypes.bool
 	})
 };
 

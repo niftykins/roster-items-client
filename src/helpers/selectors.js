@@ -1,7 +1,10 @@
 import * as fromUser from 'reducers/user';
+import * as fromBanner from 'reducers/banner';
 import * as fromInstances from 'reducers/instances';
 
 export const getUser = (state) => fromUser.getUser(state.user);
+
+export const getBanner = (state) => fromBanner.getBanner(state.banner);
 
 export const getInstance = (state, id, createDefault) => (
 	fromInstances.getInstance(state.instances, id, createDefault)

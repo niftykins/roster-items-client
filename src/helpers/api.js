@@ -20,12 +20,27 @@ let count = 0;
 const requests = {};
 
 class API {
+	constructor() {
+		// every minute check if there's requests we should
+		// just remove because they're obviously broken
+		setInterval(() => {
+			Object.keys(requests).forEach((key) => {
+				const request = requests[key];
+
+				// if the request is more than 5 minutes old
+				if (request.ts < Date.now() - (5 * 60 * 1000)) {
+					delete requests[key];
+				}
+			});
+		}, 60 * 1000);
+	}
+
 	call(fn, data) {
 		return new Promise((resolve, reject) => {
 			const callId = count += 1;
 
 			requests[callId] = {
-				ts: new Date(),
+				ts: Date.now(),
 				resolve,
 				reject
 			};
@@ -41,16 +56,17 @@ class API {
 		}
 
 		const request = requests[message.echo.callId];
+		if (!request) return;
+
 		delete requests[message.echo];
 
-		if (request) {
-			request.resolve(message);
-		}
+		if (message.ok) request.resolve(message);
+		else request.reject(message);
 	}
 
 	mock(fn, data, echo) {
 		const message = {
-			success: true,
+			ok: true,
 			data,
 			echo,
 			fn
