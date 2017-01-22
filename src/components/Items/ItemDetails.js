@@ -1,4 +1,5 @@
 import {Component, PropTypes} from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import classnames from 'classnames';
 import Ladda, {EXPAND_RIGHT} from 'react-ladda';
 
@@ -6,6 +7,7 @@ import checkForDisabled from 'helpers/checkForDisabled';
 
 import {ROLES, SLOTS} from 'constants/wow';
 
+import Button from 'models/button';
 import Item from 'models/item';
 
 import RoleGroups from '../Utils/RoleGroups';
@@ -26,7 +28,11 @@ export default class ItemDetails extends Component {
 			name: PropTypes.string.isRequired,
 			id: PropTypes.string.isRequired,
 			child: PropTypes.bool
-		})).isRequired
+		})).isRequired,
+
+		buttons: ImmutablePropTypes.listOf(ImmutablePropTypes.listOf(
+			PropTypes.instanceOf(Button)
+		)).isRequired
 	}
 
 	constructor(props) {
@@ -80,6 +86,27 @@ export default class ItemDetails extends Component {
 		}
 
 		this.setState({[role]: newList}, this.handleCheckForDisabled);
+	}
+
+	handleButton = (select, isReset) => {
+		const update = {};
+
+		if (isReset) {
+			Object.values(ROLES).forEach((role) => {
+				update[role] = this.state[role].clear();
+			});
+		} else {
+			Object.values(ROLES).forEach((role) => {
+				const selectRole = select[role];
+				const stateRole = this.state[role];
+
+				if (!stateRole || !selectRole) return;
+
+				update[role] = stateRole.push(...selectRole).toSet().toList();
+			});
+		}
+
+		this.setState(update, this.handleCheckForDisabled);
 	}
 
 	handleSourceChange = (sourceId) => {
@@ -146,115 +173,160 @@ export default class ItemDetails extends Component {
 
 		return (
 			<div className="view-details-container">
-				<div className="view-details items-details">
-					<h1>{item.isNew() ? 'Add new item' : 'Update item'}</h1>
+				<div className="view-details-inner">
+					<div className="view-details items-details">
+						<h1>{item.isNew() ? 'Add new item' : 'Update item'}</h1>
 
-					<div className="card">
-						<Input
-							onSubmit={this.handleAutofill}
-							ref={(r) => (this.autofill = r)}
-							label="Autofill from Wowhead"
-							note="Paste a link to the item on Wowhead and we'll attempt to automatically fill in some values based on the information we get back from Wowhead."
-							placeholder="http://www.wowhead.com/item=140793/perfectly-preserved-cake"
-							withActionButton={true}
-							autoFocus={true}
-						>
-							<div
-								className="green button"
-								onClick={this.handleAutofill}
+						<div className="card">
+							<Input
+								onSubmit={this.handleAutofill}
+								ref={(r) => (this.autofill = r)}
+								label="Autofill from Wowhead"
+								note="Paste a link to the item on Wowhead and we'll attempt to automatically fill in some values based on the information we get back from Wowhead."
+								placeholder="http://www.wowhead.com/item=140793/perfectly-preserved-cake"
+								withActionButton={true}
+								autoFocus={true}
 							>
-								Go
-							</div>
-						</Input>
-					</div>
-
-					<div className="card">
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.name = r)}
-							defaultValue={item.name}
-							placeholder="Perfectly Preserved Cake"
-							label="Name"
-						/>
-
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.wowId = r)}
-							defaultValue={item.wowId}
-							placeholder="140793"
-							label="ID"
-						/>
-
-						<Picker
-							onChange={this.handleSourceChange}
-							placeholder="Select a source"
-							value={this.state.sourceId}
-							items={this.props.sourceOptions}
-							label="Drops from"
-							labelHint="(selecting an instance implies a trash drop)"
-						/>
-
-						<Picker
-							onChange={this.handleSlotChange}
-							placeholder="Select a slot"
-							value={this.state.slot}
-							items={SLOT_ITEMS}
-							label="Slot"
-						/>
-					</div>
-
-					<div className="card">
-						<RoleGroups
-							onToggle={this.handleClassToggle}
-							{...allowed}
-						/>
-					</div>
-				</div>
-
-				<div className="view-actions-bar">
-					{this.state.confirming &&
-						<div className="button-group">
-							<Ladda
-								onClick={() => this.props.onDelete(item.id)}
-								className={deleteButtonClassName}
-								loading={item.isDeleting()}
-								data-style={EXPAND_RIGHT}
-							>
-								Confirm
-							</Ladda>
-
-							<div
-								onClick={() => this.setState({confirming: false})}
-								className="outline button"
-							>
-								Cancel
-							</div>
-						</div>
-					}
-
-					{!this.state.confirming &&
-						<div className="button-group">
-							{!item.isNew() &&
 								<div
-									onClick={() => this.setState({confirming: true})}
-									className={deleteButtonClassName}
+									className="green button"
+									onClick={this.handleAutofill}
 								>
-									Remove
+									Go
 								</div>
-							}
-
-							<Ladda
-								onClick={this.handleSave}
-								className={saveButtonClassName}
-								loading={item.isSaving()}
-								data-style={EXPAND_RIGHT}
-							>
-								Save
-							</Ladda>
+							</Input>
 						</div>
-					}
+
+						<div className="card">
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.name = r)}
+								defaultValue={item.name}
+								placeholder="Perfectly Preserved Cake"
+								label="Name"
+							/>
+
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.wowId = r)}
+								defaultValue={item.wowId}
+								placeholder="140793"
+								label="ID"
+							/>
+
+							<Picker
+								onChange={this.handleSourceChange}
+								placeholder="Select a source"
+								value={this.state.sourceId}
+								items={this.props.sourceOptions}
+								label="Drops from"
+								labelHint="(selecting an instance implies a trash drop)"
+							/>
+
+							<Picker
+								onChange={this.handleSlotChange}
+								placeholder="Select a slot"
+								value={this.state.slot}
+								items={SLOT_ITEMS}
+								label="Slot"
+							/>
+						</div>
+
+						<div className="card">
+							<RoleGroups
+								onToggle={this.handleClassToggle}
+								{...allowed}
+							/>
+						</div>
+					</div>
+
+					<div className="view-actions-bar">
+						{this.state.confirming &&
+							<div className="button-group">
+								<Ladda
+									onClick={() => this.props.onDelete(item.id)}
+									className={deleteButtonClassName}
+									loading={item.isDeleting()}
+									data-style={EXPAND_RIGHT}
+								>
+									Confirm
+								</Ladda>
+
+								<div
+									onClick={() => this.setState({confirming: false})}
+									className="outline button"
+								>
+									Cancel
+								</div>
+							</div>
+						}
+
+						{!this.state.confirming &&
+							<div className="button-group">
+								{!item.isNew() &&
+									<div
+										onClick={() => this.setState({confirming: true})}
+										className={deleteButtonClassName}
+									>
+										Remove
+									</div>
+								}
+
+								<Ladda
+									onClick={this.handleSave}
+									className={saveButtonClassName}
+									loading={item.isSaving()}
+									data-style={EXPAND_RIGHT}
+								>
+									Save
+								</Ladda>
+							</div>
+						}
+					</div>
 				</div>
+
+				<ButtonPanel
+					onClick={this.handleButton}
+					buttons={this.props.buttons}
+				/>
 			</div>
 		);
 	}
+}
+
+function ButtonPanel({onClick, buttons}) {
+	const groups = buttons.map((group, i) => {
+		const buttonItems = group.map((button) => (
+			<div
+				key={button.id}
+				onClick={() => onClick(button.select)}
+				className="small outline button"
+			>
+				{button.name}
+			</div>
+		));
+
+		return (
+			<div
+				key={i}
+				className="button-group"
+			>
+				{buttonItems}
+			</div>
+		);
+	});
+
+	return (
+		<div className="view-right-panel">
+			{groups}
+
+			<div className="button-group">
+				<div
+					onClick={() => onClick(null, true)}
+					className="small red outline button"
+				>
+					Clear selections
+				</div>
+			</div>
+		</div>
+	);
 }

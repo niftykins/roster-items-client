@@ -6,6 +6,7 @@ const Button = Record({
 	id: '',
 
 	name: '',
+	order: 20,
 
 	select: new RoleArrays(),
 

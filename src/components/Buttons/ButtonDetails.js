@@ -65,6 +65,7 @@ export default class ButtonDetails extends Component {
 
 	handleSave = () => {
 		const name = this.fields.name.getValue();
+		const order = this.fields.order.getValue();
 
 		const select = {
 			[ROLES.MELEE]: this.state[ROLES.MELEE].toJS(),
@@ -73,9 +74,10 @@ export default class ButtonDetails extends Component {
 			[ROLES.HEALERS]: this.state[ROLES.HEALERS].toJS()
 		};
 
-		if (!name) return;
+		if (!name || !order) return;
 
 		const data = {
+			order: parseInt(order, 10) || 0,
 			select,
 			name
 		};
@@ -112,70 +114,82 @@ export default class ButtonDetails extends Component {
 
 		return (
 			<div className="view-details-container">
-				<div className="view-details button-details">
-					<h1>{button.isNew() ? 'Add new button' : 'Update button'}</h1>
+				<div className="view-details-inner">
+					<div className="view-details button-details">
+						<h1>{button.isNew() ? 'Add new button' : 'Update button'}</h1>
 
-					<div className="card">
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.name = r)}
-							defaultValue={button.name}
-							placeholder="Plate"
-							label="Name"
-							autoFocus={true}
-						/>
-					</div>
+						<div className="card">
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.name = r)}
+								defaultValue={button.name}
+								placeholder="Plate"
+								label="Name"
+								autoFocus={true}
+							/>
 
-					<div className="card">
-						<RoleGroups
-							onToggle={this.handleClassToggle}
-							{...select}
-						/>
-					</div>
-				</div>
-
-				<div className="view-actions-bar">
-					{this.state.confirming &&
-						<div className="button-group">
-							<Ladda
-								onClick={() => this.props.onDelete(button.id)}
-								className={deleteButtonClassName}
-								loading={button.isDeleting()}
-								data-style={EXPAND_RIGHT}
-							>
-								Confirm
-							</Ladda>
-
-							<div
-								onClick={() => this.setState({confirming: false})}
-								className="outline button"
-							>
-								Cancel
-							</div>
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.order = r)}
+								defaultValue={String(button.order)}
+								placeholder="0"
+								label="Order group"
+								labelHint="(buttons with the same order will be grouped together)"
+								autoFocus={true}
+							/>
 						</div>
-					}
 
-					{!this.state.confirming &&
-						<div className="button-group">
-							{!button.isNew() &&
-								<div
-									onClick={() => this.setState({confirming: true})}
+						<div className="card">
+							<RoleGroups
+								onToggle={this.handleClassToggle}
+								{...select}
+							/>
+						</div>
+					</div>
+
+					<div className="view-actions-bar">
+						{this.state.confirming &&
+							<div className="button-group">
+								<Ladda
+									onClick={() => this.props.onDelete(button.id)}
 									className={deleteButtonClassName}
+									loading={button.isDeleting()}
+									data-style={EXPAND_RIGHT}
 								>
-									Remove
-								</div>
-							}
+									Confirm
+								</Ladda>
 
-							<Ladda
-								onClick={this.handleSave}
-								className={saveButtonClassName}
-								loading={button.isSaving()}
-								data-style={EXPAND_RIGHT}
-							>
-								Save
-							</Ladda>
-						</div>
-					}
+								<div
+									onClick={() => this.setState({confirming: false})}
+									className="outline button"
+								>
+									Cancel
+								</div>
+							</div>
+						}
+
+						{!this.state.confirming &&
+							<div className="button-group">
+								{!button.isNew() &&
+									<div
+										onClick={() => this.setState({confirming: true})}
+										className={deleteButtonClassName}
+									>
+										Remove
+									</div>
+								}
+
+								<Ladda
+									onClick={this.handleSave}
+									className={saveButtonClassName}
+									loading={button.isSaving()}
+									data-style={EXPAND_RIGHT}
+								>
+									Save
+								</Ladda>
+							</div>
+						}
+					</div>
 				</div>
 			</div>
 		);

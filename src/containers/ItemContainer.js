@@ -6,7 +6,11 @@ import {
 	deleteItem
 } from 'actions/items';
 
-import {getItem, getInstances} from 'helpers/selectors';
+import {
+	getInstances,
+	getButtons,
+	getItem
+} from 'helpers/selectors';
 
 import ItemDetails from 'components/Items/ItemDetails';
 
@@ -32,13 +36,30 @@ function getSouceOptions(instances) {
 	return options;
 }
 
+function getButtonsInGroups(buttons) {
+	return buttons.sort((a, b) => {
+		if (a.order !== b.order) return a.order - b.order;
+
+		const nameA = a.name.toLowerCase();
+		const nameB = b.name.toLowerCase();
+
+		if (nameA < nameB) return -1;
+		if (nameA > nameB) return 1;
+		return 0;
+	}).groupBy((b) => b.order).toList();
+}
+
 function mapStateToProps(state, {params}) {
 	const item = getItem(state, params.itemId, true);
+
+	const buttons = getButtons(state);
+	const buttonGroups = getButtonsInGroups(buttons);
 
 	const instances = getInstances(state);
 	const sourceOptions = getSouceOptions(instances);
 
 	return {
+		buttons: buttonGroups,
 		sourceOptions,
 		item
 	};

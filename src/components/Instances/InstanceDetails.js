@@ -123,101 +123,103 @@ export default class InstanceDetails extends Component {
 
 		return (
 			<div className="view-details-container">
-				<div className="view-details instance-details">
-					<h1>{instance.isNew() ? 'Add new instance' : 'Update instance'}</h1>
+				<div className="view-details-inner">
+					<div className="view-details instance-details">
+						<h1>{instance.isNew() ? 'Add new instance' : 'Update instance'}</h1>
 
-					<div className="card">
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.name = r)}
-							defaultValue={instance.name}
-							placeholder="Trial of Ulduarazan"
-							label="Name"
-							autoFocus={true}
-						/>
+						<div className="card">
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.name = r)}
+								defaultValue={instance.name}
+								placeholder="Trial of Ulduarazan"
+								label="Name"
+								autoFocus={true}
+							/>
 
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.wowId = r)}
-							defaultValue={instance.wowId}
-							placeholder="1337"
-							label="ID"
-						/>
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.wowId = r)}
+								defaultValue={instance.wowId}
+								placeholder="1337"
+								label="ID"
+							/>
 
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.release = r)}
-							defaultValue={instance.release}
-							placeholder="1485071793710"
-							label="Release time"
-							labelHint="(generally the default value will do)"
-							note="This should just be a timestamp from around release date, but doesn't need to be exact"
-						/>
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.release = r)}
+								defaultValue={instance.release}
+								placeholder="1485071793710"
+								label="Release time"
+								labelHint="(generally the default value will do)"
+								note="This should just be a timestamp from around release date, but doesn't need to be exact"
+							/>
 
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.bonuses = r)}
-							defaultValue={formatBonuses(instance.wowheadBonuses)}
-							placeholder="0,3444,3445"
-							label="Wowhead Bonus IDs"
-							labelHint="(normal, heroic, mythic)"
-						/>
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.bonuses = r)}
+								defaultValue={formatBonuses(instance.wowheadBonuses)}
+								placeholder="0,3444,3445"
+								label="Wowhead Bonus IDs"
+								labelHint="(normal, heroic, mythic)"
+							/>
 
-						<Input
-							onChange={this.handleCheckForDisabled}
-							ref={(r) => (this.fields.bosses = r)}
-							defaultValue={formatBosses(instance.bosses)}
-							placeholder={`Algalon the Observer ${DELIMITER} 32871`}
-							textareaProps={{minRows: 10}}
-							textarea={true}
-							label="Bosses"
-							note={`One boss per line in the format: name${DELIMITER}id`}
-						/>
+							<Input
+								onChange={this.handleCheckForDisabled}
+								ref={(r) => (this.fields.bosses = r)}
+								defaultValue={formatBosses(instance.bosses)}
+								placeholder={`Algalon the Observer ${DELIMITER} 32871`}
+								textareaProps={{minRows: 10}}
+								textarea={true}
+								label="Bosses"
+								note={`One boss per line in the format: name${DELIMITER}id`}
+							/>
+						</div>
 					</div>
-				</div>
 
-				<div className="view-actions-bar">
-					{this.state.confirming &&
-						<div className="button-group">
-							<Ladda
-								onClick={() => this.props.onDelete(instance.id)}
-								className={deleteButtonClassName}
-								loading={instance.isDeleting()}
-								data-style={EXPAND_RIGHT}
-							>
-								Confirm
-							</Ladda>
-
-							<div
-								onClick={() => this.setState({confirming: false})}
-								className="outline button"
-							>
-								Cancel
-							</div>
-						</div>
-					}
-
-					{!this.state.confirming &&
-						<div className="button-group">
-							{!instance.isNew() &&
-								<div
-									onClick={() => this.setState({confirming: true})}
+					<div className="view-actions-bar">
+						{this.state.confirming &&
+							<div className="button-group">
+								<Ladda
+									onClick={() => this.props.onDelete(instance.id)}
 									className={deleteButtonClassName}
+									loading={instance.isDeleting()}
+									data-style={EXPAND_RIGHT}
 								>
-									Remove
-								</div>
-							}
+									Confirm
+								</Ladda>
 
-							<Ladda
-								onClick={this.handleSave}
-								className={saveButtonClassName}
-								loading={instance.isSaving()}
-								data-style={EXPAND_RIGHT}
-							>
-								Save
-							</Ladda>
-						</div>
-					}
+								<div
+									onClick={() => this.setState({confirming: false})}
+									className="outline button"
+								>
+									Cancel
+								</div>
+							</div>
+						}
+
+						{!this.state.confirming &&
+							<div className="button-group">
+								{!instance.isNew() &&
+									<div
+										onClick={() => this.setState({confirming: true})}
+										className={deleteButtonClassName}
+									>
+										Remove
+									</div>
+								}
+
+								<Ladda
+									onClick={this.handleSave}
+									className={saveButtonClassName}
+									loading={instance.isSaving()}
+									data-style={EXPAND_RIGHT}
+								>
+									Save
+								</Ladda>
+							</div>
+						}
+					</div>
 				</div>
 			</div>
 		);

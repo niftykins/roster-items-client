@@ -204,6 +204,7 @@ export const buttons = [
 		id: newId('button'),
 
 		name: 'Intellect',
+		order: 1,
 
 		select: {
 			[ROLES.MELEE]: [],
@@ -229,6 +230,7 @@ export const buttons = [
 		id: newId('button'),
 
 		name: 'Strength',
+		order: 1,
 
 		select: {
 			[ROLES.MELEE]: [
@@ -250,6 +252,7 @@ export const buttons = [
 		id: newId('button'),
 
 		name: 'Agility',
+		order: 1,
 
 		select: {
 			[ROLES.MELEE]: [
