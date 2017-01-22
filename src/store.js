@@ -1,7 +1,6 @@
 import {createStore, applyMiddleware} from 'redux';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
-import {Iterable} from 'immutable';
 
 import createReducer from './reducers';
 
@@ -19,7 +18,7 @@ export default function configureStore(initialState = {}) {
 			Object.keys(state).forEach((key) => {
 				const sub = state[key];
 
-				if (sub.toJS) {
+				if (sub && sub.toJS) {
 					s[key] = sub.toJS();
 				} else {
 					s[key] = sub;
