@@ -1,10 +1,14 @@
 import {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
+import {fetchButtons} from 'actions/buttons';
 import {fetchInstances} from 'actions/instances';
 import {fetchItems} from 'actions/items';
 
 import {
+	getButtonsLoading,
+	getButtonsError,
+
 	getInstancesLoading,
 	getInstancesError,
 
@@ -26,6 +30,7 @@ function Broken() {
 
 class GlobalContainer extends Component {
 	static propTypes = {
+		fetchButtons: PropTypes.func.isRequired,
 		fetchInstances: PropTypes.func.isRequired,
 		fetchItems: PropTypes.func.isRequired,
 
@@ -38,6 +43,7 @@ class GlobalContainer extends Component {
 	constructor(props) {
 		super(props);
 
+		this.props.fetchButtons();
 		this.props.fetchInstances();
 		this.props.fetchItems();
 	}
@@ -58,17 +64,27 @@ class GlobalContainer extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	const isLoading = getInstancesLoading(state) || getItemsLoading(state);
-	const isBroken = !!getInstancesError(state) || !!getItemsError(state);
+function getLoading(state) {
+	return getButtonsLoading(state) ||
+		getInstancesLoading(state) ||
+		getItemsLoading(state);
+}
 
+function getError(state) {
+	return !!getButtonsError(state) ||
+		!!getInstancesError(state) ||
+		!!getItemsError(state);
+}
+
+function mapStateToProps(state) {
 	return {
-		isLoading,
-		isBroken
+		isLoading: getLoading(state),
+		isBroken: getError(state)
 	};
 }
 
 export default connect(mapStateToProps, {
+	fetchButtons,
 	fetchInstances,
 	fetchItems
 })(GlobalContainer);

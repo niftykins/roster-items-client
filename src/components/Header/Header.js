@@ -17,6 +17,13 @@ export default function Header({onLogin, onLogout, user, banner}) {
 
 			<div className="links">
 				<Link
+					to="/buttons"
+					activeClassName="active"
+				>
+					Buttons
+				</Link>
+
+				<Link
 					to="/instances"
 					activeClassName="active"
 				>

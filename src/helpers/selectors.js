@@ -1,5 +1,6 @@
 import * as fromUser from 'reducers/user';
 import * as fromBanner from 'reducers/banner';
+import * as fromButtons from 'reducers/buttons';
 import * as fromInstances from 'reducers/instances';
 import * as fromItems from 'reducers/items';
 
@@ -7,6 +8,20 @@ export const getUser = (state) => fromUser.getUser(state.user);
 
 
 export const getBanner = (state) => fromBanner.getBanner(state.banner);
+
+
+export const getButton = (state, id, useForm) => (
+	fromButtons.getButton(state.buttons, id, useForm)
+);
+export const getButtons = (state) => (
+	fromButtons.getButtons(state.buttons)
+);
+export const getButtonsLoading = (state) => (
+	fromButtons.getLoading(state.buttons)
+);
+export const getButtonsError = (state) => (
+	fromButtons.getError(state.buttons)
+);
 
 
 export const getInstance = (state, id, useForm) => (

@@ -2,15 +2,12 @@ import {Record} from 'immutable';
 
 import RoleArrays, {fixRoleArrays} from './RoleArrays';
 
-const Item = Record({
+const Button = Record({
 	id: '',
 
-	wowId: '',
 	name: '',
-	sourceId: '',
-	slot: '',
 
-	allowed: new RoleArrays(),
+	select: new RoleArrays(),
 
 	__isSaving: false,
 	__isDeleting: false
@@ -20,14 +17,14 @@ const Item = Record({
 function fixData(data = {}) {
 	const fixed = {...data};
 
-	if (data.allowed) {
-		fixed.allowed = fixRoleArrays(data.allowed);
+	if (data.select) {
+		fixed.select = fixRoleArrays(data.select);
 	}
 
 	return fixed;
 }
 
-class ItemWrapper extends Item {
+class ButtonWrapper extends Button {
 	static savingKey = '__isSaving'
 	static deletingKey = '__isDeleting'
 
@@ -52,4 +49,4 @@ class ItemWrapper extends Item {
 	}
 }
 
-export default ItemWrapper;
+export default ButtonWrapper;

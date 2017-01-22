@@ -37,6 +37,23 @@ export const ITEM_DELETE_SUCCESS = 'ITEM_DELETE_SUCCESS';
 export const ITEM_DELETE_FAILURE = 'ITEM_DELETE_FAILURE';
 
 
+export const BUTTONS_FETCH_REQUEST = 'BUTTONS_FETCH_REQUEST';
+export const BUTTONS_FETCH_SUCCESS = 'BUTTONS_FETCH_SUCCESS';
+export const BUTTONS_FETCH_FAILURE = 'BUTTONS_FETCH_FAILURE';
+
+export const BUTTON_CREATE_REQUEST = 'BUTTON_CREATE_REQUEST';
+export const BUTTON_CREATE_SUCCESS = 'BUTTON_CREATE_SUCCESS';
+export const BUTTON_CREATE_FAILURE = 'BUTTON_CREATE_FAILURE';
+
+export const BUTTON_UPDATE_REQUEST = 'BUTTON_UPDATE_REQUEST';
+export const BUTTON_UPDATE_SUCCESS = 'BUTTON_UPDATE_SUCCESS';
+export const BUTTON_UPDATE_FAILURE = 'BUTTON_UPDATE_FAILURE';
+
+export const BUTTON_DELETE_REQUEST = 'BUTTON_DELETE_REQUEST';
+export const BUTTON_DELETE_SUCCESS = 'BUTTON_DELETE_SUCCESS';
+export const BUTTON_DELETE_FAILURE = 'BUTTON_DELETE_FAILURE';
+
+
 // USER
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
@@ -53,6 +70,10 @@ export const USER_PAYLOAD_FAILURE = 'USER_PAYLOAD_FAILURE';
 
 // ---
 // RPC
+export const RPC_BUTTON_CREATE = 'button_create';
+export const RPC_BUTTON_UPDATE = 'button_update';
+export const RPC_BUTTON_DELETE = 'button_delete';
+
 export const RPC_INSTANCE_CREATE = 'instance_create';
 export const RPC_INSTANCE_UPDATE = 'instance_update';
 export const RPC_INSTANCE_DELETE = 'instance_delete';
@@ -64,6 +85,10 @@ export const RPC_ITEM_DELETE = 'item_delete';
 
 // -------
 // CHANGE FEED
+export const FEED_BUTTONS_INSERT = 'feed_buttons_insert';
+export const FEED_BUTTONS_UPDATE = 'feed_buttons_update';
+export const FEED_BUTTONS_DELETE = 'feed_buttons_delete';
+
 export const FEED_INSTANCES_INSERT = 'feed_instances_insert';
 export const FEED_INSTANCES_UPDATE = 'feed_instances_update';
 export const FEED_INSTANCES_DELETE = 'feed_instances_delete';

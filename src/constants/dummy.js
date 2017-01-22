@@ -1,3 +1,5 @@
+import {DIFFICULTIES, CLASSES, ROLES} from './wow';
+
 const typeCounts = {};
 export function newId(type = '') {
 	if (!typeCounts[type]) typeCounts[type] = 0;
@@ -22,9 +24,9 @@ export const instances = [
 		release: '1484582400',
 
 		wowheadBonuses: {
-			normal: '0',
-			heroic: '3444',
-			mythic: '3445'
+			[DIFFICULTIES.NORMAL]: '0',
+			[DIFFICULTIES.HEROIC]: '3444',
+			[DIFFICULTIES.MYTHIC]: '3445'
 		},
 
 		bosses: [
@@ -91,9 +93,9 @@ export const instances = [
 		release: '1477324800',
 
 		wowheadBonuses: {
-			normal: '0',
-			heroic: '3468',
-			mythic: '3469'
+			[DIFFICULTIES.NORMAL]: '0',
+			[DIFFICULTIES.HEROIC]: '3468',
+			[DIFFICULTIES.MYTHIC]: '3469'
 		},
 
 		bosses: [
@@ -122,9 +124,9 @@ export const instances = [
 		release: '1474300800',
 
 		wowheadBonuses: {
-			normal: '0',
-			heroic: '1805',
-			mythic: '1806'
+			[DIFFICULTIES.NORMAL]: '0',
+			[DIFFICULTIES.HEROIC]: '1805',
+			[DIFFICULTIES.MYTHIC]: '1806'
 		},
 
 		bosses: [
@@ -176,26 +178,115 @@ export const items = [
 		slot: 'trinket',
 
 		allowed: {
-			melee: [],
-			ranged: [],
-			healers: [
-				'paladin',
-				'shaman',
-				'druid',
-				'monk',
-				'priest'
+			[ROLES.MELEE]: [],
+			[ROLES.RANGED]: [],
+			[ROLES.HEALERS]: [
+				CLASSES.PALADIN,
+				CLASSES.SHAMAN,
+				CLASSES.DRUID,
+				CLASSES.MONK,
+				CLASSES.PRIEST
 			],
-			tanks: [
-				'death-knight',
-				'paladin',
-				'warrior',
-				'demon-hunter',
-				'druid',
-				'monk'
+			[ROLES.TANKS]: [
+				CLASSES.DEATH_KNIGHT,
+				CLASSES.PALADIN,
+				CLASSES.WARRIOR,
+				CLASSES.DEMON_HUNTER,
+				CLASSES.DRUID,
+				CLASSES.MONK
 			]
 		}
 	}
 ];
 
+export const buttons = [
+	{
+		id: newId('button'),
+
+		name: 'Intellect',
+
+		select: {
+			[ROLES.MELEE]: [],
+			[ROLES.RANGED]: [
+				CLASSES.SHAMAN,
+				CLASSES.DRUID,
+				CLASSES.PRIEST,
+				CLASSES.MAGE,
+				CLASSES.WARLOCK
+			],
+			[ROLES.HEALERS]: [
+				CLASSES.PALADIN,
+				CLASSES.SHAMAN,
+				CLASSES.DRUID,
+				CLASSES.MONK,
+				CLASSES.PRIEST
+			],
+			[ROLES.TANKS]: []
+		}
+	},
+
+	{
+		id: newId('button'),
+
+		name: 'Strength',
+
+		select: {
+			[ROLES.MELEE]: [
+				CLASSES.DEATH_KNIGHT,
+				CLASSES.PALADIN,
+				CLASSES.WARRIOR
+			],
+			[ROLES.RANGED]: [],
+			[ROLES.HEALERS]: [],
+			[ROLES.TANKS]: [
+				CLASSES.DEATH_KNIGHT,
+				CLASSES.PALADIN,
+				CLASSES.WARRIOR
+			]
+		}
+	},
+
+	{
+		id: newId('button'),
+
+		name: 'Agility',
+
+		select: {
+			[ROLES.MELEE]: [
+				CLASSES.SHAMAN,
+				CLASSES.DEMON_HUNTER,
+				CLASSES.DRUID,
+				CLASSES.MONK,
+				CLASSES.ROGUE
+			],
+			[ROLES.RANGED]: [
+				CLASSES.HUNTER
+			],
+			[ROLES.HEALERS]: [],
+			[ROLES.TANKS]: [
+				CLASSES.DEMON_HUNTER,
+				CLASSES.DRUID,
+				CLASSES.MONK
+			]
+		}
+	}
+];
+
+window.buttons = buttons;
 window.instances = instances;
 window.items = items;
+
+// select: {
+// 	[ROLES.MELEE]: [
+
+// 	],
+// 	[ROLES.RANGED]: [
+
+// 	],
+// 	[ROLES.HEALERS]: [
+
+// 	],
+// 	[ROLES.TANKS]: [
+
+// 	]
+// }

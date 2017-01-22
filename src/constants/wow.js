@@ -63,3 +63,54 @@ export const SLOTS = {
 	OFFHAND: 'offhand',
 	MISC: 'misc'
 };
+
+export const ROLE_GROUPS = [
+	{
+		role: ROLES.MELEE,
+		classes: [
+			CLASSES.DEATH_KNIGHT,
+			CLASSES.PALADIN,
+			CLASSES.WARRIOR,
+			CLASSES.SHAMAN,
+			CLASSES.DEMON_HUNTER,
+			CLASSES.DRUID,
+			CLASSES.MONK,
+			CLASSES.ROGUE
+		]
+	},
+
+	{
+		role: ROLES.RANGED,
+		classes: [
+			CLASSES.HUNTER,
+			CLASSES.SHAMAN,
+			CLASSES.DRUID,
+			CLASSES.MAGE,
+			CLASSES.PRIEST,
+			CLASSES.WARLOCK
+		]
+	},
+
+	{
+		role: ROLES.HEALERS,
+		classes: [
+			CLASSES.PALADIN,
+			CLASSES.SHAMAN,
+			CLASSES.DRUID,
+			CLASSES.MONK,
+			CLASSES.PRIEST
+		]
+	},
+
+	{
+		role: ROLES.TANKS,
+		classes: [
+			CLASSES.DEATH_KNIGHT,
+			CLASSES.PALADIN,
+			CLASSES.WARRIOR,
+			CLASSES.DEMON_HUNTER,
+			CLASSES.DRUID,
+			CLASSES.MONK
+		]
+	}
+];

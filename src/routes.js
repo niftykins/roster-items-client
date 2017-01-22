@@ -8,6 +8,9 @@ import ItemContainer from 'containers/ItemContainer';
 import InstancesView from 'components/Instances/InstancesView';
 import InstanceContainer from 'containers/InstanceContainer';
 
+import ButtonsView from 'components/Buttons/ButtonsView';
+import ButtonContainer from 'containers/ButtonContainer';
+
 export default function makeRouter(history) {
 	return (
 		<Router history={history}>
@@ -26,6 +29,13 @@ export default function makeRouter(history) {
 
 					<Route path="new" component={InstanceContainer} />
 					<Route path=":instanceId" component={InstanceContainer} />
+				</Route>
+
+				<Route path="/buttons" component={ButtonsView}>
+					<IndexRedirect to="new" />
+
+					<Route path="new" component={ButtonContainer} />
+					<Route path=":buttonId" component={ButtonContainer} />
 				</Route>
 			</Route>
 		</Router>

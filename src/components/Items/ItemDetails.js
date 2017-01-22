@@ -4,65 +4,15 @@ import Ladda, {EXPAND_RIGHT} from 'react-ladda';
 
 import checkForDisabled from 'helpers/checkForDisabled';
 
-import {SLOTS, CLASSES, CLASSES_DISPLAY, ROLES} from 'constants/wow';
+import {ROLES, SLOTS} from 'constants/wow';
 
 import Item from 'models/item';
 
-import Input from '../Utils/Input';
+import RoleGroups from '../Utils/RoleGroups';
 import Picker from '../Utils/Picker';
+import Input from '../Utils/Input';
 
 const SLOT_ITEMS = Object.values(SLOTS).map((s) => ({id: s, name: s}));
-
-const ROLE_GROUPS = [
-	{
-		role: ROLES.MELEE,
-		classes: [
-			CLASSES.DEATH_KNIGHT,
-			CLASSES.PALADIN,
-			CLASSES.WARRIOR,
-			CLASSES.SHAMAN,
-			CLASSES.DEMON_HUNTER,
-			CLASSES.DRUID,
-			CLASSES.MONK,
-			CLASSES.ROGUE
-		]
-	},
-
-	{
-		role: ROLES.RANGED,
-		classes: [
-			CLASSES.HUNTER,
-			CLASSES.SHAMAN,
-			CLASSES.DRUID,
-			CLASSES.MAGE,
-			CLASSES.PRIEST,
-			CLASSES.WARLOCK
-		]
-	},
-
-	{
-		role: ROLES.HEALERS,
-		classes: [
-			CLASSES.PALADIN,
-			CLASSES.SHAMAN,
-			CLASSES.DRUID,
-			CLASSES.MONK,
-			CLASSES.PRIEST
-		]
-	},
-
-	{
-		role: ROLES.TANKS,
-		classes: [
-			CLASSES.DEATH_KNIGHT,
-			CLASSES.PALADIN,
-			CLASSES.WARRIOR,
-			CLASSES.DEMON_HUNTER,
-			CLASSES.DRUID,
-			CLASSES.MONK
-		]
-	}
-];
 
 export default class ItemDetails extends Component {
 	static propTypes = {
@@ -187,14 +137,12 @@ export default class ItemDetails extends Component {
 		}, 'green button');
 
 
-		const roleGroups = ROLE_GROUPS.map((group) => (
-			<RoleGroup
-				key={group.role}
-				onToggle={this.handleClassToggle}
-				selected={this.state[group.role]}
-				{...group}
-			/>
-		));
+		const allowed = {
+			[ROLES.MELEE]: this.state[ROLES.MELEE],
+			[ROLES.RANGED]: this.state[ROLES.RANGED],
+			[ROLES.TANKS]: this.state[ROLES.TANKS],
+			[ROLES.HEALERS]: this.state[ROLES.HEALERS]
+		};
 
 		return (
 			<div className="view-details-container">
@@ -256,9 +204,10 @@ export default class ItemDetails extends Component {
 					</div>
 
 					<div className="card">
-						<div className="role-groups">
-							{roleGroups}
-						</div>
+						<RoleGroups
+							onToggle={this.handleClassToggle}
+							{...allowed}
+						/>
 					</div>
 				</div>
 
@@ -308,44 +257,4 @@ export default class ItemDetails extends Component {
 			</div>
 		);
 	}
-}
-
-function RoleGroup({onToggle, selected, role, classes}) {
-	const classItems = classes.map((cls) => (
-		<Class
-			key={cls}
-			onToggle={() => onToggle(role, cls)}
-			isToggled={selected.includes(cls)}
-			cls={cls}
-		/>
-	));
-
-	return (
-		<div className="role-group">
-			<div className="role-label">
-				{role}
-			</div>
-
-			{classItems}
-		</div>
-	);
-}
-
-function Class({onToggle, isToggled, cls}) {
-	const toggleClassName = classnames({toggled: isToggled}, 'material-icons');
-
-	return (
-		<div
-			className="class"
-			onClick={onToggle}
-		>
-			<i className={toggleClassName}>
-				{isToggled ? 'check_box' : 'check_box_outline_blank'}
-			</i>
-
-			<span className={`wow-style class-font ${cls}`}>
-				{CLASSES_DISPLAY[cls]}
-			</span>
-		</div>
-	);
 }
