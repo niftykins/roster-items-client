@@ -1,6 +1,10 @@
 import {connect} from 'react-redux';
 
-import {createInstance, updateInstance} from 'actions/instances';
+import {
+	createInstance,
+	updateInstance,
+	deleteInstance
+} from 'actions/instances';
 
 import {getInstance} from 'helpers/selectors';
 
@@ -16,5 +20,6 @@ function mapStateToProps(state, {params}) {
 
 export default connect(mapStateToProps, {
 	onCreate: createInstance,
-	onUpdate: updateInstance
+	onUpdate: updateInstance,
+	onDelete: deleteInstance
 })(Instance);

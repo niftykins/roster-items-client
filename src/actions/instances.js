@@ -78,3 +78,37 @@ export function updateInstance(instanceId, data) {
 		});
 	};
 }
+
+export function deleteInstance(instanceId) {
+	return (dispatch) => {
+		dispatch({
+			type: types.INSTANCE_DELETE_REQUEST,
+			payload: {instanceId}
+		});
+
+		api.call(types.RPC_INSTANCE_DELETE, {
+			id: instanceId
+		}).then(() => {
+			// XXX REMOVE
+			dispatch({
+				type: types.FEED_INSTANCES_DELETE,
+				payload: {id: instanceId}
+			});
+
+			dispatch({
+				type: types.INSTANCE_DELETE_SUCCESS,
+				payload: {instanceId}
+			});
+
+			dispatch(setSuccessBanner('Instance removed'));
+			browserHistory.push('/instances');
+		}).catch((message) => {
+			dispatch({
+				type: types.INSTANCE_DELETE_FAILURE,
+				payload: {instanceId}
+			});
+
+			dispatch(setErrorBanner(message.error));
+		});
+	};
+}

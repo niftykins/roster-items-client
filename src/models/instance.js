@@ -22,11 +22,13 @@ const Instance = Record({
 	wowheadBonuses: new WowheadBonuses(),
 	bosses: List(),
 
-	__isSaving: false
+	__isSaving: false,
+	__isDeleting: false
 });
 
 class InstanceWrapper extends Instance {
 	static savingKey = '__isSaving'
+	static deletingKey = '__isDeleting'
 
 	constructor(data = {}) {
 		const instance = {
@@ -63,6 +65,10 @@ class InstanceWrapper extends Instance {
 
 	isSaving() {
 		return this[this.constructor.savingKey];
+	}
+
+	isDeleting() {
+		return this[this.constructor.deletingKey];
 	}
 }
 

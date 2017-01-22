@@ -59,6 +59,7 @@ export default class InstanceDetails extends Component {
 	static propTypes = {
 		onCreate: PropTypes.func.isRequired,
 		onUpdate: PropTypes.func.isRequired,
+		onDelete: PropTypes.func.isRequired,
 
 		instance: PropTypes.instanceOf(Instance)
 	}
@@ -71,7 +72,8 @@ export default class InstanceDetails extends Component {
 		this.fields = {};
 
 		this.state = {
-			disabled: props.instance.isNew()
+			disabled: props.instance.isNew(),
+			confirming: false
 		};
 	}
 
@@ -108,8 +110,15 @@ export default class InstanceDetails extends Component {
 	render() {
 		const {instance} = this.props;
 
-		const buttonClassName = classnames({
-			disabled: this.state.disabled || instance.isSaving()
+		const isDisabled = this.state.disabled || instance.isSaving() ||
+			instance.isDeleting();
+
+		const deleteButtonClassName = classnames({
+			disabled: isDisabled
+		}, 'red outline button');
+
+		const saveButtonClassName = classnames({
+			disabled: isDisabled
 		}, 'green button');
 
 		return (
@@ -158,14 +167,47 @@ export default class InstanceDetails extends Component {
 				</div>
 
 				<div className="view-actions-bar">
-					<Ladda
-						onClick={this.handleSave}
-						className={buttonClassName}
-						loading={instance.isSaving()}
-						data-style={EXPAND_RIGHT}
-					>
-						Save
-					</Ladda>
+					{this.state.confirming &&
+						<div className="button-group">
+							<Ladda
+								onClick={() => this.props.onDelete(instance.id)}
+								className={deleteButtonClassName}
+								loading={instance.isDeleting()}
+								data-style={EXPAND_RIGHT}
+							>
+								Confirm
+							</Ladda>
+
+							<div
+								onClick={() => this.setState({confirming: false})}
+								className="outline button"
+							>
+								Cancel
+							</div>
+						</div>
+					}
+
+					{!this.state.confirming &&
+						<div className="button-group">
+							{!instance.isNew() &&
+								<div
+									onClick={() => this.setState({confirming: true})}
+									className={deleteButtonClassName}
+								>
+									Remove
+								</div>
+							}
+
+							<Ladda
+								onClick={this.handleSave}
+								className={saveButtonClassName}
+								loading={instance.isSaving()}
+								data-style={EXPAND_RIGHT}
+							>
+								Save
+							</Ladda>
+						</div>
+					}
 				</div>
 			</div>
 		);

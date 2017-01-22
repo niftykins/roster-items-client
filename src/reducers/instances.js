@@ -79,6 +79,26 @@ export default function instances(state = initialState, action) {
 			);
 		}
 
+		// DELETE
+		case types.INSTANCE_DELETE_REQUEST: {
+			return state.setIn(
+				['byId', action.payload.instanceId, Instance.deletingKey],
+				true
+			);
+		}
+
+		case types.INSTANCE_DELETE_SUCCESS:
+		case types.INSTANCE_DELETE_FAILURE: {
+			const path = ['byId', action.instanceId, Instance.deletingKey];
+
+			// only set the value if the record exists
+			if (state.hasIn(path)) {
+				return state.setIn(path, false);
+			}
+
+			return state;
+		}
+
 
 		// FEED
 		case types.FEED_INSTANCES_INSERT: {
@@ -93,6 +113,10 @@ export default function instances(state = initialState, action) {
 				['byId', action.payload.id],
 				action.payload
 			);
+		}
+
+		case types.FEED_INSTANCES_DELETE: {
+			return state.deleteIn(['byId', action.payload.id]);
 		}
 
 		default: return state;
