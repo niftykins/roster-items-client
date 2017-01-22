@@ -1,11 +1,13 @@
-// import ItemsListContainer from 'containers/ItemsListContainer';
+import {cloneElement} from 'react';
 
-export default function ItemsView({children}) {
+import ItemsListContainer from 'containers/ItemsListContainer';
+
+export default function ItemsView({children, params}) {
 	return (
 		<div className="standard-view items-view">
-			{/* <ItemsListContainer /> */}
+			<ItemsListContainer />
 
-			{children}
+			{cloneElement(children, {key: params.itemId})}
 		</div>
 	);
 }

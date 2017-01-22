@@ -83,4 +83,31 @@ export const instances = [
 	}
 ];
 
+export const items = [
+	{
+		id: newId('item'),
+
+		wowId: '124132',
+		name: 'Forward Observer\'s Camouflage Cloak',
+		sourceId: '95068',
+		slot: 'back',
+
+		allowed: {
+			melee: [
+				'shaman',
+				'druid',
+				'monk',
+				'rogue'
+			],
+			ranged: [],
+			healers: [],
+			tanks: [
+				'druid',
+				'monk'
+			]
+		}
+	}
+];
+
 window.instances = instances;
+window.items = items;

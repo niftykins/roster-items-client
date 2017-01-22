@@ -8,7 +8,7 @@ import {
 
 import {getInstance} from 'helpers/selectors';
 
-import Instance from 'components/Instances/Instance';
+import InstanceDetails from 'components/Instances/InstanceDetails';
 
 function mapStateToProps(state, {params}) {
 	const instance = getInstance(state, params.instanceId, true);
@@ -22,4 +22,4 @@ export default connect(mapStateToProps, {
 	onCreate: createInstance,
 	onUpdate: updateInstance,
 	onDelete: deleteInstance
-})(Instance);
+})(InstanceDetails);

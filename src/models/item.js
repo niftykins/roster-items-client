@@ -1,26 +1,23 @@
 import {Record, List} from 'immutable';
 
-import {DIFFICULTIES} from 'constants/wow';
+import {ROLES} from 'constants/wow';
 
-const Boss = Record({
-	wowId: '',
-	name: ''
+const Allowed = Record({
+	[ROLES.MELEE]: List(),
+	[ROLES.RANGED]: List(),
+	[ROLES.TANKS]: List(),
+	[ROLES.HEALERS]: List()
 });
 
-const WowheadBonuses = Record({
-	[DIFFICULTIES.NORMAL]: '0',
-	[DIFFICULTIES.HEROIC]: '0',
-	[DIFFICULTIES.MYTHIC]: '0'
-});
-
-const Instance = Record({
+const Item = Record({
 	id: '',
 
 	wowId: '',
 	name: '',
+	sourceId: '',
+	slot: '',
 
-	wowheadBonuses: new WowheadBonuses(),
-	bosses: List(),
+	allowed: new Allowed(),
 
 	__isSaving: false,
 	__isDeleting: false
@@ -30,18 +27,19 @@ const Instance = Record({
 function fixData(data = {}) {
 	const fixed = {...data};
 
-	if (data.wowheadBonuses) {
-		fixed.wowheadBonuses = new WowheadBonuses(data.wowheadBonuses);
-	}
+	if (data.allowed) {
+		const allowed = {};
+		Object.keys(data.allowed).forEach((key) => {
+			allowed[key] = List(data.allowed[key]);
+		});
 
-	if (data.bosses) {
-		fixed.bosses = List(data.bosses.map((b) => new Boss(b)));
+		fixed.allowed = new Allowed(allowed);
 	}
 
 	return fixed;
 }
 
-class InstanceWrapper extends Instance {
+class ItemWrapper extends Item {
 	static savingKey = '__isSaving'
 	static deletingKey = '__isDeleting'
 
@@ -66,4 +64,4 @@ class InstanceWrapper extends Instance {
 	}
 }
 
-export default InstanceWrapper;
+export default ItemWrapper;

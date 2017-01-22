@@ -1,7 +1,6 @@
 import {Record} from 'immutable';
 
 import * as types from 'constants/types';
-// import * as dummy from 'constants/dummy';
 
 import InstanceMap from 'models/instanceMap';
 import Instance from 'models/instance';
@@ -9,6 +8,7 @@ import Instance from 'models/instance';
 const initialState = new Record({
 	formCreateNew: new Instance(),
 	byId: new InstanceMap(),
+
 	isLoading: false,
 	error: null
 })();

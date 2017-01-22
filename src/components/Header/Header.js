@@ -24,7 +24,7 @@ export default function Header({onLogin, onLogout, user, banner}) {
 				</Link>
 
 				<Link
-					to="/"
+					to="/items"
 					activeClassName="active"
 				>
 					Items

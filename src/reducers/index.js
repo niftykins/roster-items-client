@@ -5,6 +5,7 @@ import banner from './banner';
 import user from './user';
 
 import instances from './instances';
+import items from './items';
 
 export default function createReducer() {
 	return combineReducers({
@@ -13,6 +14,7 @@ export default function createReducer() {
 		banner,
 		user,
 
-		instances
+		instances,
+		items
 	});
 }

@@ -20,6 +20,23 @@ export const INSTANCE_DELETE_SUCCESS = 'INSTANCE_DELETE_SUCCESS';
 export const INSTANCE_DELETE_FAILURE = 'INSTANCE_DELETE_FAILURE';
 
 
+export const ITEMS_FETCH_REQUEST = 'ITEMS_FETCH_REQUEST';
+export const ITEMS_FETCH_SUCCESS = 'ITEMS_FETCH_SUCCESS';
+export const ITEMS_FETCH_FAILURE = 'ITEMS_FETCH_FAILURE';
+
+export const ITEM_CREATE_REQUEST = 'ITEM_CREATE_REQUEST';
+export const ITEM_CREATE_SUCCESS = 'ITEM_CREATE_SUCCESS';
+export const ITEM_CREATE_FAILURE = 'ITEM_CREATE_FAILURE';
+
+export const ITEM_UPDATE_REQUEST = 'ITEM_UPDATE_REQUEST';
+export const ITEM_UPDATE_SUCCESS = 'ITEM_UPDATE_SUCCESS';
+export const ITEM_UPDATE_FAILURE = 'ITEM_UPDATE_FAILURE';
+
+export const ITEM_DELETE_REQUEST = 'ITEM_DELETE_REQUEST';
+export const ITEM_DELETE_SUCCESS = 'ITEM_DELETE_SUCCESS';
+export const ITEM_DELETE_FAILURE = 'ITEM_DELETE_FAILURE';
+
+
 // USER
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
@@ -38,6 +55,11 @@ export const USER_PAYLOAD_FAILURE = 'USER_PAYLOAD_FAILURE';
 // RPC
 export const RPC_INSTANCE_CREATE = 'instance_create';
 export const RPC_INSTANCE_UPDATE = 'instance_update';
+export const RPC_INSTANCE_DELETE = 'instance_delete';
+
+export const RPC_ITEM_CREATE = 'item_create';
+export const RPC_ITEM_UPDATE = 'item_update';
+export const RPC_ITEM_DELETE = 'item_delete';
 
 
 // -------
@@ -45,3 +67,7 @@ export const RPC_INSTANCE_UPDATE = 'instance_update';
 export const FEED_INSTANCES_INSERT = 'feed_instances_insert';
 export const FEED_INSTANCES_UPDATE = 'feed_instances_update';
 export const FEED_INSTANCES_DELETE = 'feed_instances_delete';
+
+export const FEED_ITEMS_INSERT = 'feed_items_insert';
+export const FEED_ITEMS_UPDATE = 'feed_items_update';
+export const FEED_ITEMS_DELETE = 'feed_items_delete';

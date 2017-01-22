@@ -2,8 +2,15 @@ import {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
 import {fetchInstances} from 'actions/instances';
+import {fetchItems} from 'actions/items';
 
-import {getInstanceLoading, getInstanceError} from 'helpers/selectors';
+import {
+	getInstancesLoading,
+	getInstancesError,
+
+	getItemsLoading,
+	getItemsError
+} from 'helpers/selectors';
 
 import HeaderContainer from './HeaderContainer';
 
@@ -20,6 +27,7 @@ function Broken() {
 class GlobalContainer extends Component {
 	static propTypes = {
 		fetchInstances: PropTypes.func.isRequired,
+		fetchItems: PropTypes.func.isRequired,
 
 		isLoading: PropTypes.bool.isRequired,
 		isBroken: PropTypes.bool.isRequired,
@@ -31,6 +39,7 @@ class GlobalContainer extends Component {
 		super(props);
 
 		this.props.fetchInstances();
+		this.props.fetchItems();
 	}
 
 	render() {
@@ -50,8 +59,8 @@ class GlobalContainer extends Component {
 }
 
 function mapStateToProps(state) {
-	const isLoading = getInstanceLoading(state);
-	const isBroken = !!getInstanceError(state);
+	const isLoading = getInstancesLoading(state) || getItemsLoading(state);
+	const isBroken = !!getInstancesError(state) || !!getItemsError(state);
 
 	return {
 		isLoading,
@@ -60,5 +69,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-	fetchInstances
+	fetchInstances,
+	fetchItems
 })(GlobalContainer);

@@ -1,10 +1,13 @@
 import * as fromUser from 'reducers/user';
 import * as fromBanner from 'reducers/banner';
 import * as fromInstances from 'reducers/instances';
+import * as fromItems from 'reducers/items';
 
 export const getUser = (state) => fromUser.getUser(state.user);
 
+
 export const getBanner = (state) => fromBanner.getBanner(state.banner);
+
 
 export const getInstance = (state, id, useForm) => (
 	fromInstances.getInstance(state.instances, id, useForm)
@@ -12,9 +15,23 @@ export const getInstance = (state, id, useForm) => (
 export const getInstances = (state) => (
 	fromInstances.getInstances(state.instances)
 );
-export const getInstanceLoading = (state) => (
+export const getInstancesLoading = (state) => (
 	fromInstances.getLoading(state.instances)
 );
-export const getInstanceError = (state) => (
+export const getInstancesError = (state) => (
 	fromInstances.getError(state.instances)
+);
+
+
+export const getItem = (state, id, useForm) => (
+	fromItems.getItem(state.items, id, useForm)
+);
+export const getItems = (state) => (
+	fromItems.getItems(state.items)
+);
+export const getItemsLoading = (state) => (
+	fromItems.getLoading(state.items)
+);
+export const getItemsError = (state) => (
+	fromItems.getError(state.items)
 );
