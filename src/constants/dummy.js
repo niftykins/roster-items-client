@@ -19,6 +19,7 @@ export const instances = [
 
 		wowId: '8025',
 		name: 'The Nighthold',
+		release: '1484582400',
 
 		wowheadBonuses: {
 			normal: '0',
@@ -78,6 +79,88 @@ export const instances = [
 			{
 				wowId: '105503',
 				name: 'Gul\'dan'
+			}
+		]
+	},
+
+	{
+		id: newId('instance'),
+
+		wowId: '8440',
+		name: 'Trial of Valor',
+		release: '1477324800',
+
+		wowheadBonuses: {
+			normal: '0',
+			heroic: '3468',
+			mythic: '3469'
+		},
+
+		bosses: [
+			{
+				wowId: '95676',
+				name: 'Odyn'
+			},
+
+			{
+				wowId: '114344',
+				name: 'Guarm'
+			},
+
+			{
+				wowId: '114537',
+				name: 'Helya'
+			}
+		]
+	},
+
+	{
+		id: newId('instance'),
+
+		wowId: '8026',
+		name: 'The Emerald Nightmare',
+		release: '1474300800',
+
+		wowheadBonuses: {
+			normal: '0',
+			heroic: '1805',
+			mythic: '1806'
+		},
+
+		bosses: [
+			{
+				wowId: '103160',
+				name: 'Nythendra'
+			},
+
+			{
+				wowId: '105393',
+				name: 'Il\'gynoth, Heart of Corruption'
+			},
+
+			{
+				wowId: '106087',
+				name: 'Elerethe Renferal'
+			},
+
+			{
+				wowId: '100497',
+				name: 'Ursoc'
+			},
+
+			{
+				wowId: '39407',
+				name: 'Dragons of Nightmare'
+			},
+
+			{
+				wowId: '113534',
+				name: 'Cenarius'
+			},
+
+			{
+				wowId: '102206',
+				name: 'Xavius'
 			}
 		]
 	}

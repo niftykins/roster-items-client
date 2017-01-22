@@ -146,6 +146,16 @@ export default class InstanceDetails extends Component {
 
 						<Input
 							onChange={this.handleCheckForDisabled}
+							ref={(r) => (this.fields.release = r)}
+							defaultValue={instance.release}
+							placeholder="1485071793710"
+							label="Release time"
+							labelHint="(generally the default value will do)"
+							note="This should just be a timestamp from around release date, but doesn't need to be exact"
+						/>
+
+						<Input
+							onChange={this.handleCheckForDisabled}
 							ref={(r) => (this.fields.bonuses = r)}
 							defaultValue={formatBonuses(instance.wowheadBonuses)}
 							placeholder="0,3444,3445"

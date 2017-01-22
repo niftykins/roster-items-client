@@ -19,6 +19,8 @@ const Instance = Record({
 	wowId: '',
 	name: '',
 
+	release: '0',
+
 	wowheadBonuses: new WowheadBonuses(),
 	bosses: List(),
 
@@ -45,8 +47,13 @@ class InstanceWrapper extends Instance {
 	static savingKey = '__isSaving'
 	static deletingKey = '__isDeleting'
 
-	constructor(data) {
-		super(fixData(data));
+	constructor(data = {}) {
+		const instance = {...data};
+		if (!data.release) {
+			instance.release = Math.floor(Date.now() / 1000).toString();
+		}
+
+		super(fixData(instance));
 	}
 
 	merge(...args) {
