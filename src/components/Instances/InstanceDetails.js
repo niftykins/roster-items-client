@@ -61,7 +61,7 @@ export default class InstanceDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
-		instance: PropTypes.instanceOf(Instance)
+		instance: PropTypes.instanceOf(Instance).isRequired
 	}
 
 	constructor(props) {

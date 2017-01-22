@@ -2,6 +2,8 @@ import {PropTypes} from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import {Link} from 'react-router';
 
+import Instance from 'models/instance';
+
 export default function InstancesList({instances}) {
 	const instanceItems = instances.map((instance) => (
 		<InstanceItem key={instance.id} instance={instance} />
@@ -25,10 +27,7 @@ export default function InstancesList({instances}) {
 }
 
 InstancesList.propTypes = {
-	instances: ImmutablePropTypes.listOf(ImmutablePropTypes.shape({
-		id: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired
-	}))
+	instances: ImmutablePropTypes.listOf(PropTypes.instanceOf(Instance))
 };
 
 

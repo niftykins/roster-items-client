@@ -170,21 +170,26 @@ export const items = [
 	{
 		id: newId('item'),
 
-		wowId: '124132',
-		name: 'Forward Observer\'s Camouflage Cloak',
-		sourceId: '95068',
-		slot: 'back',
+		wowId: '140793',
+		name: 'Perfectly Preserved Cake',
+		sourceId: '104288',
+		slot: 'trinket',
 
 		allowed: {
-			melee: [
+			melee: [],
+			ranged: [],
+			healers: [
+				'paladin',
 				'shaman',
 				'druid',
 				'monk',
-				'rogue'
+				'priest'
 			],
-			ranged: [],
-			healers: [],
 			tanks: [
+				'death-knight',
+				'paladin',
+				'warrior',
+				'demon-hunter',
 				'druid',
 				'monk'
 			]

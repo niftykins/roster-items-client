@@ -1,5 +1,8 @@
-// import {PropTypes} from 'react';
+import {PropTypes} from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import {Link} from 'react-router';
+
+import Item from 'models/item';
 
 export default function ItemsList({items}) {
 	const itemItems = items.map((item) => (
@@ -22,6 +25,11 @@ export default function ItemsList({items}) {
 		</div>
 	);
 }
+
+ItemsList.propTypes = {
+	items: ImmutablePropTypes.listOf(PropTypes.instanceOf(Item))
+};
+
 
 function ItemItem({item}) {
 	return (

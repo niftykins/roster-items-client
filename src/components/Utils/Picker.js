@@ -10,11 +10,14 @@ export default class Picker extends Component {
 		placeholder: PropTypes.string,
 		value: PropTypes.string,
 		label: PropTypes.string,
+		labelHint: PropTypes.string,
 		size: PropTypes.string,
 
 		items: PropTypes.arrayOf(PropTypes.shape({
 			name: PropTypes.string.isRequired,
-			id: PropTypes.string.isRequired
+			id: PropTypes.string.isRequired,
+			heading: PropTypes.bool,
+			child: PropTypes.bool
 		})).isRequired
 	}
 
@@ -40,7 +43,9 @@ export default class Picker extends Component {
 		let item;
 		const opts = this.props.items.map((i) => {
 			const optionClass = classnames({
-				selected: i.id === this.props.value
+				selected: i.id === this.props.value,
+				heading: i.heading,
+				child: i.child
 			});
 
 			if (i.id === this.props.value) {
@@ -58,12 +63,22 @@ export default class Picker extends Component {
 			);
 		});
 
+		const hint = this.props.labelHint && (
+			<span className="hint">
+				{this.props.labelHint}
+			</span>
+		);
+
 		return (
 			<div
 				className={pickerClassName}
 				onClick={this.handleToggleMenu}
 			>
-				{this.props.label && <label>{this.props.label}</label>}
+				{this.props.label &&
+					<label>
+						{this.props.label} {hint}
+					</label>
+				}
 
 				<div className={inputClassName}>
 					{item ? item.name : this.props.placeholder}

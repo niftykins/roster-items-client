@@ -70,7 +70,13 @@ export default class ItemDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
-		item: PropTypes.instanceOf(Item)
+		item: PropTypes.instanceOf(Item).isRequired,
+
+		sourceOptions: PropTypes.arrayOf(PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			id: PropTypes.string.isRequired,
+			child: PropTypes.bool
+		})).isRequired
 	}
 
 	constructor(props) {
@@ -84,6 +90,7 @@ export default class ItemDetails extends Component {
 			disabled: props.item.isNew(),
 			confirming: false,
 
+			sourceId: props.item.sourceId,
 			slot: props.item.slot,
 
 			[ROLES.MELEE]: props.item.allowed[ROLES.MELEE],
@@ -94,6 +101,7 @@ export default class ItemDetails extends Component {
 	}
 
 	checkForDisabled() {
+		if (!this.state.sourceId) return true;
 		if (!this.state.slot) return true;
 
 		const totalSize = this.state[ROLES.MELEE].size +
@@ -124,6 +132,10 @@ export default class ItemDetails extends Component {
 		this.setState({[role]: newList}, this.handleCheckForDisabled);
 	}
 
+	handleSourceChange = (sourceId) => {
+		this.setState({sourceId}, this.handleCheckForDisabled);
+	}
+
 	handleSlotChange = (slot) => {
 		this.setState({slot}, this.handleCheckForDisabled);
 	}
@@ -132,6 +144,7 @@ export default class ItemDetails extends Component {
 		const name = this.fields.name.getValue();
 		const wowId = this.fields.wowId.getValue();
 
+		const sourceId = this.state.sourceId;
 		const slot = this.state.slot;
 
 		const allowed = {
@@ -141,9 +154,10 @@ export default class ItemDetails extends Component {
 			[ROLES.HEALERS]: this.state[ROLES.HEALERS].toJS()
 		};
 
-		if (!name || !wowId || !slot) return;
+		if (!name || !wowId || !sourceId || !slot) return;
 
 		const data = {
+			sourceId,
 			allowed,
 			wowId,
 			name,
@@ -193,7 +207,7 @@ export default class ItemDetails extends Component {
 							ref={(r) => (this.autofill = r)}
 							label="Autofill from Wowhead"
 							note="Paste a link to the item on Wowhead and we'll attempt to automatically fill in some values based on the information we get back from Wowhead."
-							placeholder="http://www.wowhead.com/item=142422/radiant-soul-sabatons"
+							placeholder="http://www.wowhead.com/item=140793/perfectly-preserved-cake"
 							withActionButton={true}
 							autoFocus={true}
 						>
@@ -211,7 +225,7 @@ export default class ItemDetails extends Component {
 							onChange={this.handleCheckForDisabled}
 							ref={(r) => (this.fields.name = r)}
 							defaultValue={item.name}
-							placeholder="Radiant Soul Sabatons"
+							placeholder="Perfectly Preserved Cake"
 							label="Name"
 						/>
 
@@ -219,8 +233,17 @@ export default class ItemDetails extends Component {
 							onChange={this.handleCheckForDisabled}
 							ref={(r) => (this.fields.wowId = r)}
 							defaultValue={item.wowId}
-							placeholder="142422"
+							placeholder="140793"
 							label="ID"
+						/>
+
+						<Picker
+							onChange={this.handleSourceChange}
+							placeholder="Select a source"
+							value={this.state.sourceId}
+							items={this.props.sourceOptions}
+							label="Drops from"
+							labelHint="(selecting an instance implies a trash drop)"
 						/>
 
 						<Picker
