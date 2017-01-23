@@ -7,6 +7,13 @@ import {setSuccessBanner, setErrorBanner} from './banners';
 
 import api from 'helpers/api';
 
+export function searchItems(search) {
+	return {
+		type: types.SEARCH_ITEMS,
+		payload: search
+	};
+}
+
 export function fetchItems() {
 	return (dispatch) => {
 		dispatch({type: types.ITEMS_FETCH_REQUEST});

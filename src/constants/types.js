@@ -1,5 +1,6 @@
 // UI
 export const SET_BANNER = 'SET_BANNER';
+export const SEARCH_ITEMS = 'SEARCH_ITEMS';
 
 
 // DATA

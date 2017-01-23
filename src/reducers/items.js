@@ -6,6 +6,8 @@ import ItemMap from 'models/itemMap';
 import Item from 'models/item';
 
 const initialState = new Record({
+	search: '',
+
 	formCreateNew: new Item(),
 	byId: new ItemMap(),
 
@@ -15,6 +17,12 @@ const initialState = new Record({
 
 export default function items(state = initialState, action) {
 	switch (action.type) {
+		// UI
+		case types.SEARCH_ITEMS: {
+			return state.set('search', action.payload);
+		}
+
+
 		// FETCH
 		case types.ITEMS_FETCH_REQUEST: {
 			return state.merge({
@@ -132,7 +140,12 @@ export function getItem(state, id, useForm) {
 }
 
 export function getItems(state) {
-	return state.byId.toList();
+	return state.byId.toList()
+		.sortBy((item) => item.name.toLowerCase());
+}
+
+export function getSearch(state) {
+	return state.search;
 }
 
 export function getLoading(state) {

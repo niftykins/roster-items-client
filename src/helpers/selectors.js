@@ -44,6 +44,9 @@ export const getItem = (state, id, useForm) => (
 export const getItems = (state) => (
 	fromItems.getItems(state.items)
 );
+export const getItemsSearch = (state) => (
+	fromItems.getSearch(state.items)
+);
 export const getItemsLoading = (state) => (
 	fromItems.getLoading(state.items)
 );

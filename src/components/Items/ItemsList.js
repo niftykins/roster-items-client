@@ -4,7 +4,9 @@ import {Link} from 'react-router';
 
 import Item from 'models/item';
 
-export default function ItemsList({items}) {
+import Input from '../Utils/Input';
+
+export default function ItemsList({onSearch, search, items}) {
 	const itemItems = items.map((item) => (
 		<ItemItem key={item.id} item={item} />
 	));
@@ -12,6 +14,14 @@ export default function ItemsList({items}) {
 	return (
 		<div className="view-list-container">
 			<div className="view-list">
+				<div className="search">
+					<Input
+						onChange={(e) => onSearch(e.target.value)}
+						value={search}
+						placeholder="Search items"
+					/>
+				</div>
+
 				<Link
 					className="view-list-item add-new"
 					activeClassName="active"
@@ -27,6 +37,10 @@ export default function ItemsList({items}) {
 }
 
 ItemsList.propTypes = {
+	onSearch: PropTypes.func.isRequired,
+
+	search: PropTypes.string,
+
 	items: ImmutablePropTypes.listOf(PropTypes.instanceOf(Item))
 };
 
