@@ -4,10 +4,16 @@
 	flex-direction row
 
 	.view-list-container
+		display flex
+		flex-direction column
 		flex-shrink 0
 		width 18rem
 		border-right 1px solid $card-border-dark
 		background-color $white
+
+	.view-list
+		$overflow-auto()
+		flex 1 1 auto
 
 	.view-list-item
 		display block

@@ -132,7 +132,8 @@ export function getButton(state, id, useForm) {
 }
 
 export function getButtons(state) {
-	return state.byId.toList();
+	return state.byId.toList()
+		.sortBy((button) => button.name);
 }
 
 export function getLoading(state) {

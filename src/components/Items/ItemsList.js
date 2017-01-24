@@ -13,15 +13,15 @@ export default function ItemsList({onSearch, search, items}) {
 
 	return (
 		<div className="view-list-container">
-			<div className="view-list">
-				<div className="search">
-					<Input
-						onChange={(e) => onSearch(e.target.value)}
-						value={search}
-						placeholder="Search items"
-					/>
-				</div>
+			<div className="search">
+				<Input
+					onChange={(e) => onSearch(e.target.value)}
+					value={search}
+					placeholder="Search items"
+				/>
+			</div>
 
+			<div className="view-list">
 				<Link
 					className="view-list-item add-new"
 					activeClassName="active"

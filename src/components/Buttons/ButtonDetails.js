@@ -135,7 +135,6 @@ export default class ButtonDetails extends Component {
 								placeholder="0"
 								label="Order group"
 								labelHint="(buttons with the same order will be grouped together)"
-								autoFocus={true}
 							/>
 						</div>
 
