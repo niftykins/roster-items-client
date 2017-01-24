@@ -6,30 +6,35 @@ import createReducer from './reducers';
 
 export default function configureStore(initialState = {}) {
 	const reducer = createReducer();
+	const wares = [thunk];
 
-	const logger = createLogger({
-		duration: true,
-		timestamp: false,
-		collapsed: true,
+	if (process.env.NODE_ENV !== 'production') {
+		const logger = createLogger({
+			duration: true,
+			timestamp: false,
+			collapsed: true,
 
-		stateTransformer(state) {
-			const s = {};
+			stateTransformer(state) {
+				const s = {};
 
-			Object.keys(state).forEach((key) => {
-				const sub = state[key];
+				Object.keys(state).forEach((key) => {
+					const sub = state[key];
 
-				if (sub && sub.toJS) {
-					s[key] = sub.toJS();
-				} else {
-					s[key] = sub;
-				}
-			});
+					if (sub && sub.toJS) {
+						s[key] = sub.toJS();
+					} else {
+						s[key] = sub;
+					}
+				});
 
-			return s;
-		}
-	});
+				return s;
+			}
+		});
 
-	const middlware = applyMiddleware(thunk, logger);
+		wares.push(logger);
+	}
+
+	const middlware = applyMiddleware(...wares);
 
 	const store = createStore(reducer, initialState, middlware);
 

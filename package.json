@@ -6,7 +6,9 @@
       "start": "node server.js",
       "lint": "eslint --cache src",
       "full-lint": "eslint src",
-      "lint-stylus": "stylint src"
+      "lint-stylus": "stylint src",
+
+      "build": "NODE_ENV=production webpack -p --config ./webpack.config.prod.js"
    },
    "private": true,
    "devDependencies": {
