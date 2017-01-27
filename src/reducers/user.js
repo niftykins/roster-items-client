@@ -1,8 +1,8 @@
 import * as types from 'constants/types';
-import * as dummy from 'constants/dummy';
+// import * as dummy from 'constants/dummy';
 
 import User from 'models/user';
-const initialState = new User(dummy.user);
+const initialState = null;
 
 export default function user(state = initialState, action) {
 	switch (action.type) {

@@ -31,6 +31,8 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 
 		new webpack.DefinePlugin({
+			'process.env.HTTP_API_URL': JSON.stringify(process.env.HTTP_API_URL),
+			'process.env.WS_API_URL': JSON.stringify(process.env.WS_API_URL),
 			'process.env.NODE_ENV': JSON.stringify('development')
 		})
 	],

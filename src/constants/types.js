@@ -4,6 +4,11 @@ export const SEARCH_ITEMS = 'SEARCH_ITEMS';
 
 
 // DATA
+export const USER_FETCH_REQUEST = 'USER_FETCH_REQUEST';
+export const USER_FETCH_SUCCESS = 'USER_FETCH_SUCCESS';
+export const USER_FETCH_FAILURE = 'USER_FETCH_FAILURE';
+
+
 export const INSTANCES_FETCH_REQUEST = 'INSTANCES_FETCH_REQUEST';
 export const INSTANCES_FETCH_SUCCESS = 'INSTANCES_FETCH_SUCCESS';
 export const INSTANCES_FETCH_FAILURE = 'INSTANCES_FETCH_FAILURE';
@@ -71,6 +76,8 @@ export const USER_PAYLOAD_FAILURE = 'USER_PAYLOAD_FAILURE';
 
 // ---
 // RPC
+export const RPC_USER_FETCH = 'user_fetch';
+
 export const RPC_BUTTON_CREATE = 'button_create';
 export const RPC_BUTTON_UPDATE = 'button_update';
 export const RPC_BUTTON_DELETE = 'button_delete';

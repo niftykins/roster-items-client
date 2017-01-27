@@ -1,6 +1,11 @@
 /* eslint class-methods-use-this:0 */
 
+import Socket from './socket';
+
 // this.url = 'wss://api.guildsy.io/u/ws';
+
+export const HTTP_API_URL = process.env.HTTP_API_URL;
+const WS_API_URL = process.env.WS_API_URL;
 
 let store;
 export const syncApiWithStore = (s) => (store = s);
@@ -33,6 +38,16 @@ class API {
 				}
 			});
 		}, 60 * 1000);
+
+		this.socket = new Socket(WS_API_URL, this.handleMessage);
+		this.socket.connect();
+	}
+
+	callHTTP(endpoint, opts = {}) {
+		return fetch(`${HTTP_API_URL}${endpoint}`, {
+			...opts,
+			credentials: 'include'
+		}).then((r) => r.json());
 	}
 
 	call(fn, data) {
@@ -76,4 +91,6 @@ class API {
 	}
 }
 
-export default new API();
+const api = new API();
+export default api;
+window.api = api;
