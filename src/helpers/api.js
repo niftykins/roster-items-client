@@ -34,10 +34,15 @@ class API {
 
 				// if the request is more than 5 minutes old
 				if (request.ts < Date.now() - (5 * 60 * 1000)) {
+					request.reject({
+						error: 'Request timed out',
+						ok: false
+					});
+
 					delete requests[key];
 				}
 			});
-		}, 60 * 1000);
+		}, 10 * 1000);
 
 		this.socket = new Socket(WS_API_URL, this.handleMessage);
 		this.socket.connect();
@@ -50,7 +55,7 @@ class API {
 		}).then((r) => r.json());
 	}
 
-	call(fn, data) {
+	call(fn, data = {}, isReal) {
 		return new Promise((resolve, reject) => {
 			const callId = count += 1;
 
@@ -60,7 +65,14 @@ class API {
 				reject
 			};
 
-			this.mock(fn, data, {callId});
+			const message = {
+				echo: {callId},
+				data,
+				fn
+			};
+
+			if (isReal) this.socket.send(message);
+			else this.mock(message);
 		});
 	}
 
@@ -71,7 +83,10 @@ class API {
 		}
 
 		const request = requests[message.echo.callId];
-		if (!request) return;
+		if (!request) {
+			console.warn('API request not found for:', message);
+			return;
+		}
 
 		delete requests[message.echo];
 
@@ -79,15 +94,13 @@ class API {
 		else request.reject(message);
 	}
 
-	mock(fn, data, echo) {
-		const message = {
-			ok: true,
-			data,
-			echo,
-			fn
+	mock(message) {
+		const mock = {
+			...message,
+			ok: true
 		};
 
-		setTimeout(() => this.handleMessage(message), 750);
+		setTimeout(() => this.handleMessage(mock), 750);
 	}
 }
 

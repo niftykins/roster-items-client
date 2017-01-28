@@ -1,13 +1,12 @@
 import * as types from 'constants/types';
-// import * as dummy from 'constants/dummy';
 
 import User from 'models/user';
-const initialState = null;
+const initialState = new User();
 
 export default function user(state = initialState, action) {
 	switch (action.type) {
-		case types.USER_LOGIN_SUCCESS:
-			return new User(action.payload.user);
+		case types.USER_FETCH_SUCCESS:
+			return new User(action.payload);
 
 		case types.USER_LOGOUT_SUCCESS:
 			return null;

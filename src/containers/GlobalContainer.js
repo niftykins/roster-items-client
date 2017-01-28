@@ -1,16 +1,17 @@
 import {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
-import {fetchButtons} from 'actions/buttons';
 import {fetchInstances} from 'actions/instances';
+import {fetchButtons} from 'actions/buttons';
 import {fetchItems} from 'actions/items';
+import {fetchUser} from 'actions/auth';
 
 import {
-	getButtonsLoading,
-	getButtonsError,
-
 	getInstancesLoading,
 	getInstancesError,
+
+	getButtonsLoading,
+	getButtonsError,
 
 	getItemsLoading,
 	getItemsError
@@ -30,9 +31,10 @@ function Broken() {
 
 class GlobalContainer extends Component {
 	static propTypes = {
-		fetchButtons: PropTypes.func.isRequired,
 		fetchInstances: PropTypes.func.isRequired,
+		fetchButtons: PropTypes.func.isRequired,
 		fetchItems: PropTypes.func.isRequired,
+		fetchUser: PropTypes.func.isRequired,
 
 		isLoading: PropTypes.bool.isRequired,
 		isBroken: PropTypes.bool.isRequired,
@@ -43,6 +45,7 @@ class GlobalContainer extends Component {
 	constructor(props) {
 		super(props);
 
+		this.props.fetchUser();
 		this.props.fetchButtons();
 		this.props.fetchInstances();
 		this.props.fetchItems();
@@ -84,7 +87,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-	fetchButtons,
 	fetchInstances,
-	fetchItems
+	fetchButtons,
+	fetchItems,
+	fetchUser
 })(GlobalContainer);

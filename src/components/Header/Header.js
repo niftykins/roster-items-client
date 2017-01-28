@@ -4,6 +4,8 @@ import logo from 'images/logo.png';
 
 import Banner from '../Utils/Banner';
 
+import User from 'models/user';
+
 export default function Header({onLogin, onLogout, user, banner}) {
 	return (
 		<div className="header-nav">
@@ -53,9 +55,7 @@ Header.propTypes = {
 	onLogin: PropTypes.func.isRequired,
 	onLogout: PropTypes.func.isRequired,
 
-	user: PropTypes.shape({
-		battletag: PropTypes.string.isRequired
-	}),
+	user: PropTypes.instanceOf(User).isRequired,
 
 	banner: PropTypes.shape({
 		type: PropTypes.string,
@@ -66,10 +66,10 @@ Header.propTypes = {
 
 
 function UserButton({onLogin, onLogout, user}) {
-	if (user) {
+	if (!user.isNew()) {
 		return (
 			<div onClick={onLogout}>
-				{user.battletag}
+				{user.battletag || 'Log out'}
 			</div>
 		);
 	}

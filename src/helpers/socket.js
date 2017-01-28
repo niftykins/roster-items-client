@@ -135,7 +135,7 @@ export default class Socket {
 		const message = JSON.parse(e.data);
 		console.warn('[SOCKET] message:', message);
 
-		if (!message.success && message.fn !== 'change') {
+		if (!message.ok && message.fn !== 'change') {
 			console.error('[SOCKET] message failed:', message);
 		}
 
