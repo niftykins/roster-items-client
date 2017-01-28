@@ -14,6 +14,13 @@ export default function configureStore(initialState = {}) {
 			timestamp: false,
 			collapsed: true,
 
+			level: {
+				prevState: 'log',
+				action: 'log',
+				nextState: 'log',
+				error: 'error'
+			},
+
 			stateTransformer(state) {
 				const s = {};
 

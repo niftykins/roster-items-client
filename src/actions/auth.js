@@ -8,16 +8,20 @@ export function fetchUser() {
 	return (dispatch) => {
 		dispatch({type: types.USER_FETCH_REQUEST});
 
-		api.call(types.RPC_USER_FETCH, {}, true).then((message) => {
-			dispatch({
-				type: types.USER_FETCH_SUCCESS,
-				payload: message.data
-			});
-		}).catch((message) => {
-			dispatch({type: types.USER_FETCH_FAILURE});
+		api.call(types.RPC_USER_FETCH).then(
+			(message) => {
+				dispatch({
+					type: types.USER_FETCH_SUCCESS,
+					payload: {user: message.data}
+				});
+			},
 
-			dispatch(setErrorBanner(message.error));
-		});
+			(message) => {
+				dispatch({type: types.USER_FETCH_FAILURE});
+
+				dispatch(setErrorBanner(message.error));
+			}
+		);
 	};
 }
 

@@ -11,12 +11,21 @@ export function fetchInstances() {
 	return (dispatch) => {
 		dispatch({type: types.INSTANCES_FETCH_REQUEST});
 
-		setTimeout(() => {
-			dispatch({
-				type: types.INSTANCES_FETCH_SUCCESS,
-				payload: {instances: dummy.instances}
-			});
-		}, 150);
+		api.call(types.RPC_INSTANCES_FETCH, {}, true).then(
+			() => {
+				dispatch({
+					type: types.INSTANCES_FETCH_SUCCESS,
+					payload: {instances: dummy.instances}
+				});
+			},
+
+			(message) => {
+				dispatch({
+					type: types.INSTANCES_FETCH_FAILURE,
+					payload: message.error
+				});
+			}
+		);
 	};
 }
 
@@ -24,24 +33,28 @@ export function createInstance(data) {
 	return (dispatch) => {
 		dispatch({type: types.INSTANCE_CREATE_REQUEST});
 
-		api.call(types.RPC_INSTANCE_CREATE, data).then(() => {
-			dispatch({type: types.INSTANCE_CREATE_SUCCESS});
+		api.call(types.RPC_INSTANCE_CREATE, data, true).then(
+			() => {
+				dispatch({type: types.INSTANCE_CREATE_SUCCESS});
 
-			dispatch(setSuccessBanner('Instance saved'));
+				dispatch(setSuccessBanner('Instance saved'));
 
-			// XXX REMOVE
-			const id = dummy.newId('instance');
-			dispatch({
-				type: types.FEED_INSTANCES_INSERT,
-				payload: {id, ...data}
-			});
+				// XXX REMOVE
+				const id = dummy.newId('instance');
+				dispatch({
+					type: types.FEED_INSTANCES_INSERT,
+					payload: {id, ...data}
+				});
 
-			browserHistory.push(`/instances/${id}`);
-		}).catch((message) => {
-			dispatch({type: types.INSTANCE_CREATE_FAILURE});
+				browserHistory.push(`/instances/${id}`);
+			},
 
-			dispatch(setErrorBanner(message.error));
-		});
+			(message) => {
+				dispatch({type: types.INSTANCE_CREATE_FAILURE});
+
+				dispatch(setErrorBanner(message.error));
+			}
+		);
 	};
 }
 
@@ -55,27 +68,31 @@ export function updateInstance(instanceId, data) {
 		api.call(types.RPC_INSTANCE_UPDATE, {
 			id: instanceId,
 			...data
-		}).then(() => {
-			dispatch({
-				type: types.INSTANCE_UPDATE_SUCCESS,
-				payload: {instanceId}
-			});
+		}, true).then(
+			() => {
+				dispatch({
+					type: types.INSTANCE_UPDATE_SUCCESS,
+					payload: {instanceId}
+				});
 
-			dispatch(setSuccessBanner('Instance saved'));
+				dispatch(setSuccessBanner('Instance saved'));
 
-			// XXX REMOVE
-			dispatch({
-				type: types.FEED_INSTANCES_UPDATE,
-				payload: {id: instanceId, ...data}
-			});
-		}).catch((message) => {
-			dispatch({
-				type: types.INSTANCE_UPDATE_FAILURE,
-				payload: {instanceId}
-			});
+				// XXX REMOVE
+				dispatch({
+					type: types.FEED_INSTANCES_UPDATE,
+					payload: {id: instanceId, ...data}
+				});
+			},
 
-			dispatch(setErrorBanner(message.error));
-		});
+			(message) => {
+				dispatch({
+					type: types.INSTANCE_UPDATE_FAILURE,
+					payload: {instanceId}
+				});
+
+				dispatch(setErrorBanner(message.error));
+			}
+		);
 	};
 }
 
@@ -86,29 +103,31 @@ export function deleteInstance(instanceId) {
 			payload: {instanceId}
 		});
 
-		api.call(types.RPC_INSTANCE_DELETE, {
-			id: instanceId
-		}).then(() => {
-			// XXX REMOVE
-			dispatch({
-				type: types.FEED_INSTANCES_DELETE,
-				payload: {id: instanceId}
-			});
+		api.call(types.RPC_INSTANCE_DELETE, {id: instanceId}, true).then(
+			() => {
+				// XXX REMOVE
+				dispatch({
+					type: types.FEED_INSTANCES_DELETE,
+					payload: {id: instanceId}
+				});
 
-			dispatch({
-				type: types.INSTANCE_DELETE_SUCCESS,
-				payload: {instanceId}
-			});
+				dispatch({
+					type: types.INSTANCE_DELETE_SUCCESS,
+					payload: {instanceId}
+				});
 
-			dispatch(setSuccessBanner('Instance removed'));
-			browserHistory.push('/instances');
-		}).catch((message) => {
-			dispatch({
-				type: types.INSTANCE_DELETE_FAILURE,
-				payload: {instanceId}
-			});
+				dispatch(setSuccessBanner('Instance removed'));
+				browserHistory.push('/instances');
+			},
 
-			dispatch(setErrorBanner(message.error));
-		});
+			(message) => {
+				dispatch({
+					type: types.INSTANCE_DELETE_FAILURE,
+					payload: {instanceId}
+				});
+
+				dispatch(setErrorBanner(message.error));
+			}
+		);
 	};
 }

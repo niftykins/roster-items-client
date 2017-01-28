@@ -55,7 +55,7 @@ class API {
 		}).then((r) => r.json());
 	}
 
-	call(fn, data = {}, isReal) {
+	call(fn, data = {}, isMock) {
 		return new Promise((resolve, reject) => {
 			const callId = count += 1;
 
@@ -71,7 +71,7 @@ class API {
 				fn
 			};
 
-			if (isReal) this.socket.send(message);
+			if (!isMock) this.socket.send(message);
 			else this.mock(message);
 		});
 	}

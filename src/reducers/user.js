@@ -6,7 +6,7 @@ const initialState = new User();
 export default function user(state = initialState, action) {
 	switch (action.type) {
 		case types.USER_FETCH_SUCCESS:
-			return new User(action.payload);
+			return new User(action.payload.user);
 
 		case types.USER_LOGOUT_SUCCESS:
 			return null;
