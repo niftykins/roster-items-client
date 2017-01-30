@@ -11,7 +11,8 @@ import {getInstance} from 'helpers/selectors';
 import InstanceDetails from 'components/Instances/InstanceDetails';
 
 function mapStateToProps(state, {params}) {
-	const instance = getInstance(state, params.instanceId, true);
+	const instanceId = parseInt(params.instanceId, 10);
+	const instance = getInstance(state, instanceId, true);
 
 	return {
 		instance

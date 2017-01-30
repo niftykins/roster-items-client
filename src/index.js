@@ -13,6 +13,9 @@ import configureStore from './store';
 const store = configureStore();
 window.store = store;
 
+import {syncApiWithStore} from 'helpers/api';
+syncApiWithStore(store);
+
 import {Provider} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {syncHistoryWithStore} from 'react-router-redux';

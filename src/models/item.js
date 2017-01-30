@@ -3,7 +3,7 @@ import {Record} from 'immutable';
 import RoleArrays, {fixRoleArrays} from './RoleArrays';
 
 const Item = Record({
-	id: '',
+	id: null,
 
 	wowId: '',
 	name: '',
@@ -40,7 +40,7 @@ class ItemWrapper extends Item {
 	}
 
 	isNew() {
-		return !this.id;
+		return this.id === null;
 	}
 
 	isSaving() {

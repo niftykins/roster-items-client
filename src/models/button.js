@@ -3,7 +3,7 @@ import {Record} from 'immutable';
 import RoleArrays, {fixRoleArrays} from './RoleArrays';
 
 const Button = Record({
-	id: '',
+	id: null,
 
 	name: '',
 	order: 20,
@@ -38,7 +38,7 @@ class ButtonWrapper extends Button {
 	}
 
 	isNew() {
-		return !this.id;
+		return this.id === null;
 	}
 
 	isSaving() {

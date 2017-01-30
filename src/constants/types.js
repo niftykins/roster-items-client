@@ -75,6 +75,7 @@ export const RPC_BUTTON_CREATE = 'button_create';
 export const RPC_BUTTON_UPDATE = 'button_update';
 export const RPC_BUTTON_DELETE = 'button_delete';
 
+export const RPC_INSTANCES_FETCH = 'instances_fetch';
 export const RPC_INSTANCE_CREATE = 'instance_create';
 export const RPC_INSTANCE_UPDATE = 'instance_update';
 export const RPC_INSTANCE_DELETE = 'instance_delete';

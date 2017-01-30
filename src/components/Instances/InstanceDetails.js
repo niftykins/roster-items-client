@@ -61,7 +61,8 @@ export default class InstanceDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
-		instance: PropTypes.instanceOf(Instance).isRequired
+		instance: PropTypes.instanceOf(Instance).isRequired,
+		params: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -80,6 +81,7 @@ export default class InstanceDetails extends Component {
 	handleSave = () => {
 		const name = this.fields.name.getValue();
 		const wowId = this.fields.wowId.getValue();
+		const release = this.fields.release.getValue();
 
 		const bossText = this.fields.bosses.getValue();
 		const bosses = extractBosses(bossText);
@@ -87,13 +89,15 @@ export default class InstanceDetails extends Component {
 		const bonusesText = this.fields.bonuses.getValue();
 		const bonuses = extractBonuses(bonusesText);
 
-		if (!name || !wowId || !validateBosses(bosses) ||
+		if (!name || !wowId || !release ||
+			!validateBosses(bosses) ||
 			!validateBonuses(bonuses)) {
 			return;
 		}
 
 		const data = {
 			wowheadBonuses: bonuses,
+			release,
 			bosses,
 			wowId,
 			name
@@ -109,6 +113,11 @@ export default class InstanceDetails extends Component {
 
 	render() {
 		const {instance} = this.props;
+
+		// looking at an instance that isn't loaded / doesn't exist
+		if (instance.isNew() && this.props.params.instanceId !== undefined) {
+			return null;
+		}
 
 		const isDisabled = this.state.disabled || instance.isSaving() ||
 			instance.isDeleting();

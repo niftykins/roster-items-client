@@ -1,7 +1,6 @@
 import {browserHistory} from 'react-router';
 
 import * as types from 'constants/types';
-import * as dummy from 'constants/dummy';
 
 import {setSuccessBanner, setErrorBanner} from './banners';
 
@@ -11,11 +10,11 @@ export function fetchInstances() {
 	return (dispatch) => {
 		dispatch({type: types.INSTANCES_FETCH_REQUEST});
 
-		api.call(types.RPC_INSTANCES_FETCH, {}, true).then(
-			() => {
+		api.call(types.RPC_INSTANCES_FETCH).then(
+			(message) => {
 				dispatch({
 					type: types.INSTANCES_FETCH_SUCCESS,
-					payload: {instances: dummy.instances}
+					payload: {instances: message.data}
 				});
 			},
 
@@ -33,20 +32,13 @@ export function createInstance(data) {
 	return (dispatch) => {
 		dispatch({type: types.INSTANCE_CREATE_REQUEST});
 
-		api.call(types.RPC_INSTANCE_CREATE, data, true).then(
-			() => {
+		api.call(types.RPC_INSTANCE_CREATE, data).then(
+			(message) => {
 				dispatch({type: types.INSTANCE_CREATE_SUCCESS});
 
 				dispatch(setSuccessBanner('Instance saved'));
 
-				// XXX REMOVE
-				const id = dummy.newId('instance');
-				dispatch({
-					type: types.FEED_INSTANCES_INSERT,
-					payload: {id, ...data}
-				});
-
-				browserHistory.push(`/instances/${id}`);
+				browserHistory.push(`/instances/${message.data.id}`);
 			},
 
 			(message) => {
@@ -57,6 +49,77 @@ export function createInstance(data) {
 		);
 	};
 }
+
+// window.add = function() {
+// 	const i = {
+// 		wowId: '8025',
+// 		name: 'The Nighthold',
+// 		release: '1484582400',
+
+// 		wowheadBonuses: {
+// 			normal: '0',
+// 			heroic: '3444',
+// 			mythic: '3445'
+// 		},
+
+// 		bosses: [
+// 			{
+// 				wowId: '102263',
+// 				name: 'Skorpyron'
+// 			},
+
+// 			{
+// 				wowId: '104415',
+// 				name: 'Chronomatic Anomaly'
+// 			},
+
+// 			{
+// 				wowId: '104288',
+// 				name: 'Trilliax'
+// 			},
+
+
+// 			{
+// 				wowId: '107699',
+// 				name: 'Spellblade Aluriel'
+// 			},
+
+// 			{
+// 				wowId: '104528',
+// 				name: 'High Botanist Tel\'arn'
+// 			},
+
+// 			{
+// 				wowId: '103758',
+// 				name: 'Star Augur Etraeus'
+// 			},
+
+
+// 			{
+// 				wowId: '103685',
+// 				name: 'Tichondrius'
+// 			},
+
+// 			{
+// 				wowId: '101002',
+// 				name: 'Krosus'
+// 			},
+
+// 			{
+// 				wowId: '110965',
+// 				name: 'Elisande'
+// 			},
+
+
+// 			{
+// 				wowId: '105503',
+// 				name: 'Gul\'dan'
+// 			}
+// 		]
+// 	};
+
+// 	createInstance(i)(window.store.dispatch);
+// };
 
 export function updateInstance(instanceId, data) {
 	return (dispatch) => {

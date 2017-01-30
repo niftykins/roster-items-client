@@ -8,7 +8,7 @@ const User = Record({
 
 class UserWrapper extends User {
 	isNew() {
-		return !this.id;
+		return this.id === null;
 	}
 }
 

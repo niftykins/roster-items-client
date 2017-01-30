@@ -14,7 +14,7 @@ const WowheadBonuses = Record({
 });
 
 const Instance = Record({
-	id: '',
+	id: null,
 
 	wowId: '',
 	name: '',
@@ -61,7 +61,7 @@ class InstanceWrapper extends Instance {
 	}
 
 	isNew() {
-		return !this.id;
+		return this.id === null;
 	}
 
 	isSaving() {

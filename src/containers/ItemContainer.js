@@ -50,7 +50,8 @@ function getButtonsInGroups(buttons) {
 }
 
 function mapStateToProps(state, {params}) {
-	const item = getItem(state, params.itemId, true);
+	const itemId = parseInt(params.itemId, 10);
+	const item = getItem(state, itemId, true);
 
 	const buttons = getButtons(state);
 	const buttonGroups = getButtonsInGroups(buttons);
