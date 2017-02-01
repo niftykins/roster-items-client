@@ -95,7 +95,7 @@ export default class Input extends Component {
 
 		let input = <input {...p} />;
 		if (disabled) input = <div {...p}>{this.props.defaultValue}</div>;
-		if (textarea) input = <Textarea {...p} {...textareaProps} />;
+		else if (textarea) input = <Textarea {...p} {...textareaProps} />;
 
 		const wrapperClassName = classnames({
 			'with-action-button': withActionButton

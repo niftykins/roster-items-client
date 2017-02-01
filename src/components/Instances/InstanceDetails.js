@@ -14,7 +14,7 @@ const DELIMITER = '@';
 
 
 function formatBonuses(bonuses) {
-	return [bonuses[DIFFICULTIES.NORMAL], bonuses[DIFFICULTIES.HEROIC], bonuses[DIFFICULTIES.MYTHIC]].join(',');
+	return [bonuses[DIFFICULTIES.NORMAL], bonuses[DIFFICULTIES.HEROIC], bonuses[DIFFICULTIES.MYTHIC]].join(', ');
 }
 
 function extractBonuses(text) {
@@ -73,6 +73,9 @@ export default class InstanceDetails extends Component {
 		this.fields = {};
 
 		this.state = {
+			// editing if the thing is new and isn't meant to be something
+			editing: props.instance.isNew() && !props.params.instanceId,
+
 			disabled: props.instance.isNew(),
 			confirming: false
 		};
@@ -114,21 +117,20 @@ export default class InstanceDetails extends Component {
 	render() {
 		const {instance} = this.props;
 
-		// looking at an instance that isn't loaded / doesn't exist
-		if (instance.isNew() && this.props.params.instanceId !== undefined) {
-			return null;
-		}
-
 		const isDisabled = this.state.disabled || instance.isSaving() ||
 			instance.isDeleting();
 
 		const deleteButtonClassName = classnames({
 			disabled: isDisabled
-		}, 'red outline button');
+		}, 'left red outline button');
 
 		const saveButtonClassName = classnames({
 			disabled: isDisabled
 		}, 'green button');
+
+		const editButtonClassName = classnames({
+			// disabled: someKindOfPermission
+		}, 'blue button');
 
 		return (
 			<div className="view-details-container">
@@ -140,6 +142,7 @@ export default class InstanceDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.name = r)}
+								disabled={!this.state.editing}
 								defaultValue={instance.name}
 								placeholder="Trial of Ulduarazan"
 								label="Name"
@@ -149,6 +152,7 @@ export default class InstanceDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.wowId = r)}
+								disabled={!this.state.editing}
 								defaultValue={instance.wowId}
 								placeholder="1337"
 								label="ID"
@@ -157,6 +161,7 @@ export default class InstanceDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.released = r)}
+								disabled={!this.state.editing}
 								defaultValue={instance.released}
 								placeholder="1485071793710"
 								label="Release time"
@@ -167,6 +172,7 @@ export default class InstanceDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.bonuses = r)}
+								disabled={!this.state.editing}
 								defaultValue={formatBonuses(instance.wowheadBonuses)}
 								placeholder="0,3444,3445"
 								label="Wowhead Bonus IDs"
@@ -176,6 +182,7 @@ export default class InstanceDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.bosses = r)}
+								disabled={!this.state.editing}
 								defaultValue={formatBosses(instance.bosses)}
 								placeholder={`Algalon the Observer ${DELIMITER} 32871`}
 								textareaProps={{minRows: 10}}
@@ -207,7 +214,7 @@ export default class InstanceDetails extends Component {
 							</div>
 						}
 
-						{!this.state.confirming &&
+						{!this.state.confirming && this.state.editing &&
 							<div className="button-group">
 								{!instance.isNew() &&
 									<div
@@ -218,6 +225,13 @@ export default class InstanceDetails extends Component {
 									</div>
 								}
 
+								<div
+									onClick={() => this.setState({editing: false})}
+									className="outline button"
+								>
+									Cancel
+								</div>
+
 								<Ladda
 									onClick={this.handleSave}
 									className={saveButtonClassName}
@@ -226,6 +240,17 @@ export default class InstanceDetails extends Component {
 								>
 									Save
 								</Ladda>
+							</div>
+						}
+
+						{!this.state.editing &&
+							<div className="button-group">
+								<div
+									onClick={() => this.setState({editing: true})}
+									className={editButtonClassName}
+								>
+									Edit
+								</div>
 							</div>
 						}
 					</div>
