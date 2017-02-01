@@ -21,7 +21,7 @@ export const instances = [
 
 		wowId: '8025',
 		name: 'The Nighthold',
-		release: '1484582400',
+		released: '1484582400',
 
 		wowheadBonuses: {
 			[DIFFICULTIES.NORMAL]: '0',
@@ -90,7 +90,7 @@ export const instances = [
 
 		wowId: '8440',
 		name: 'Trial of Valor',
-		release: '1477324800',
+		released: '1477324800',
 
 		wowheadBonuses: {
 			[DIFFICULTIES.NORMAL]: '0',
@@ -121,7 +121,7 @@ export const instances = [
 
 		wowId: '8026',
 		name: 'The Emerald Nightmare',
-		release: '1474300800',
+		released: '1474300800',
 
 		wowheadBonuses: {
 			[DIFFICULTIES.NORMAL]: '0',

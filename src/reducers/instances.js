@@ -133,7 +133,7 @@ export function getInstance(state, id, useForm) {
 
 export function getInstances(state) {
 	return state.byId.toList()
-		.sortBy((instance) => instance.release)
+		.sortBy((instance) => instance.released)
 		.reverse();
 }
 

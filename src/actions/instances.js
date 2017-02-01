@@ -54,7 +54,7 @@ export function createInstance(data) {
 // 	const i = {
 // 		wowId: '8025',
 // 		name: 'The Nighthold',
-// 		release: '1484582400',
+// 		released: '1484582400',
 
 // 		wowheadBonuses: {
 // 			normal: '0',

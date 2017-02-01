@@ -19,7 +19,7 @@ const Instance = Record({
 	wowId: '',
 	name: '',
 
-	release: '0',
+	released: '0',
 
 	wowheadBonuses: new WowheadBonuses(),
 	bosses: List(),
@@ -49,8 +49,8 @@ class InstanceWrapper extends Instance {
 
 	constructor(data = {}) {
 		const instance = {...data};
-		if (!data.release) {
-			instance.release = Math.floor(Date.now() / 1000).toString();
+		if (!data.released) {
+			instance.released = Math.floor(Date.now() / 1000).toString();
 		}
 
 		super(fixData(instance));

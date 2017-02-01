@@ -81,7 +81,7 @@ export default class InstanceDetails extends Component {
 	handleSave = () => {
 		const name = this.fields.name.getValue();
 		const wowId = this.fields.wowId.getValue();
-		const release = this.fields.release.getValue();
+		const released = this.fields.released.getValue();
 
 		const bossText = this.fields.bosses.getValue();
 		const bosses = extractBosses(bossText);
@@ -89,7 +89,7 @@ export default class InstanceDetails extends Component {
 		const bonusesText = this.fields.bonuses.getValue();
 		const bonuses = extractBonuses(bonusesText);
 
-		if (!name || !wowId || !release ||
+		if (!name || !wowId || !released ||
 			!validateBosses(bosses) ||
 			!validateBonuses(bonuses)) {
 			return;
@@ -97,7 +97,7 @@ export default class InstanceDetails extends Component {
 
 		const data = {
 			wowheadBonuses: bonuses,
-			release,
+			released,
 			bosses,
 			wowId,
 			name
@@ -156,8 +156,8 @@ export default class InstanceDetails extends Component {
 
 							<Input
 								onChange={this.handleCheckForDisabled}
-								ref={(r) => (this.fields.release = r)}
-								defaultValue={instance.release}
+								ref={(r) => (this.fields.released = r)}
+								defaultValue={instance.released}
 								placeholder="1485071793710"
 								label="Release time"
 								labelHint="(generally the default value will do)"
