@@ -1,11 +1,11 @@
 import * as types from 'constants/types';
 
-import api, {HTTP_API_URL} from 'helpers/api';
+import {HTTP_API_URL} from 'helpers/api';
 
 import {setErrorBanner} from './banners';
 
 export function fetchUser() {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({type: types.USER_FETCH_REQUEST});
 
 		api.call(types.RPC_USER_FETCH).then(
@@ -32,7 +32,7 @@ export function login() {
 }
 
 export function logout() {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		api.callHTTP('/auth/logout').then(({ok}) => {
 			if (ok) dispatch({type: types.USER_LOGOUT_SUCCESS});
 		});

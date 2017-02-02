@@ -5,8 +5,6 @@ import * as dummy from 'constants/dummy';
 
 import {setSuccessBanner, setErrorBanner} from './banners';
 
-import api from 'helpers/api';
-
 export function searchItems(search) {
 	return {
 		type: types.SEARCH_ITEMS,
@@ -28,7 +26,7 @@ export function fetchItems() {
 }
 
 export function createItem(data) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({type: types.ITEM_CREATE_REQUEST});
 
 		api.call(types.RPC_ITEM_CREATE, data, true).then(
@@ -57,7 +55,7 @@ export function createItem(data) {
 }
 
 export function updateItem(itemId, data) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.ITEM_UPDATE_REQUEST,
 			payload: {itemId}
@@ -95,7 +93,7 @@ export function updateItem(itemId, data) {
 }
 
 export function deleteItem(itemId) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.ITEM_DELETE_REQUEST,
 			payload: {itemId}

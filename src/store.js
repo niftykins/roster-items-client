@@ -2,11 +2,13 @@ import {createStore, applyMiddleware} from 'redux';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
+import api from 'helpers/api';
+
 import createReducer from './reducers';
 
 export default function configureStore(initialState = {}) {
 	const reducer = createReducer();
-	const wares = [thunk];
+	const wares = [thunk.withExtraArgument(api)];
 
 	if (process.env.NODE_ENV !== 'production') {
 		const logger = createLogger({

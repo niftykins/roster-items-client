@@ -4,10 +4,8 @@ import * as types from 'constants/types';
 
 import {setSuccessBanner, setErrorBanner} from './banners';
 
-import api from 'helpers/api';
-
 export function fetchInstances() {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({type: types.INSTANCES_FETCH_REQUEST});
 
 		api.call(types.RPC_INSTANCES_FETCH).then(
@@ -29,7 +27,7 @@ export function fetchInstances() {
 }
 
 export function createInstance(data) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({type: types.INSTANCE_CREATE_REQUEST});
 
 		api.call(types.RPC_INSTANCE_CREATE, data).then(
@@ -50,79 +48,8 @@ export function createInstance(data) {
 	};
 }
 
-// window.add = function() {
-// 	const i = {
-// 		wowId: '8025',
-// 		name: 'The Nighthold',
-// 		released: '1484582400',
-
-// 		wowheadBonuses: {
-// 			normal: '0',
-// 			heroic: '3444',
-// 			mythic: '3445'
-// 		},
-
-// 		bosses: [
-// 			{
-// 				wowId: '102263',
-// 				name: 'Skorpyron'
-// 			},
-
-// 			{
-// 				wowId: '104415',
-// 				name: 'Chronomatic Anomaly'
-// 			},
-
-// 			{
-// 				wowId: '104288',
-// 				name: 'Trilliax'
-// 			},
-
-
-// 			{
-// 				wowId: '107699',
-// 				name: 'Spellblade Aluriel'
-// 			},
-
-// 			{
-// 				wowId: '104528',
-// 				name: 'High Botanist Tel\'arn'
-// 			},
-
-// 			{
-// 				wowId: '103758',
-// 				name: 'Star Augur Etraeus'
-// 			},
-
-
-// 			{
-// 				wowId: '103685',
-// 				name: 'Tichondrius'
-// 			},
-
-// 			{
-// 				wowId: '101002',
-// 				name: 'Krosus'
-// 			},
-
-// 			{
-// 				wowId: '110965',
-// 				name: 'Elisande'
-// 			},
-
-
-// 			{
-// 				wowId: '105503',
-// 				name: 'Gul\'dan'
-// 			}
-// 		]
-// 	};
-
-// 	createInstance(i)(window.store.dispatch);
-// };
-
 export function updateInstance(instanceId, data) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.INSTANCE_UPDATE_REQUEST,
 			payload: {instanceId}
@@ -131,7 +58,7 @@ export function updateInstance(instanceId, data) {
 		api.call(types.RPC_INSTANCE_UPDATE, {
 			id: instanceId,
 			...data
-		}, true).then(
+		}).then(
 			() => {
 				dispatch({
 					type: types.INSTANCE_UPDATE_SUCCESS,
@@ -139,12 +66,6 @@ export function updateInstance(instanceId, data) {
 				});
 
 				dispatch(setSuccessBanner('Instance saved'));
-
-				// XXX REMOVE
-				dispatch({
-					type: types.FEED_INSTANCES_UPDATE,
-					payload: {id: instanceId, ...data}
-				});
 			},
 
 			(message) => {
@@ -160,7 +81,7 @@ export function updateInstance(instanceId, data) {
 }
 
 export function deleteInstance(instanceId) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.INSTANCE_DELETE_REQUEST,
 			payload: {instanceId}

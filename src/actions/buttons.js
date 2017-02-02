@@ -5,8 +5,6 @@ import * as dummy from 'constants/dummy';
 
 import {setSuccessBanner, setErrorBanner} from './banners';
 
-import api from 'helpers/api';
-
 export function fetchButtons() {
 	return (dispatch) => {
 		dispatch({type: types.BUTTONS_FETCH_REQUEST});
@@ -21,7 +19,7 @@ export function fetchButtons() {
 }
 
 export function createButton(data) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({type: types.BUTTON_CREATE_REQUEST});
 
 		api.call(types.RPC_BUTTON_CREATE, data, true).then(
@@ -50,7 +48,7 @@ export function createButton(data) {
 }
 
 export function updateButton(buttonId, data) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.BUTTON_UPDATE_REQUEST,
 			payload: {buttonId}
@@ -88,7 +86,7 @@ export function updateButton(buttonId, data) {
 }
 
 export function deleteButton(buttonId) {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.BUTTON_DELETE_REQUEST,
 			payload: {buttonId}
