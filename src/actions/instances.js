@@ -87,14 +87,8 @@ export function deleteInstance(instanceId) {
 			payload: {instanceId}
 		});
 
-		api.call(types.RPC_INSTANCE_DELETE, {id: instanceId}, true).then(
+		api.call(types.RPC_INSTANCE_DELETE, {id: instanceId}).then(
 			() => {
-				// XXX REMOVE
-				dispatch({
-					type: types.FEED_INSTANCES_DELETE,
-					payload: {id: instanceId}
-				});
-
 				dispatch({
 					type: types.INSTANCE_DELETE_SUCCESS,
 					payload: {instanceId}
