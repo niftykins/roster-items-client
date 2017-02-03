@@ -13,6 +13,8 @@ export default class Picker extends Component {
 		labelHint: PropTypes.string,
 		size: PropTypes.string,
 
+		disabled: PropTypes.bool,
+
 		items: PropTypes.arrayOf(PropTypes.shape({
 			name: PropTypes.string.isRequired,
 			id: PropTypes.string.isRequired,
@@ -35,7 +37,8 @@ export default class Picker extends Component {
 
 	render() {
 		const pickerClassName = classnames({
-			expanded: this.state.expanded
+			expanded: this.state.expanded,
+			disabled: this.props.disabled
 		}, 'picker input-group');
 
 		const inputClassName = classnames('input', this.props.size);
@@ -68,6 +71,25 @@ export default class Picker extends Component {
 				{this.props.labelHint}
 			</span>
 		);
+
+		if (this.props.disabled) {
+			return (
+				<div
+					className={pickerClassName}
+					onClick={!this.props.disabled && this.handleToggleMenu}
+				>
+					{this.props.label &&
+						<label>
+							{this.props.label} {hint}
+						</label>
+					}
+
+					<div className={inputClassName}>
+						{item ? item.name : this.props.placeholder}
+					</div>
+				</div>
+			);
+		}
 
 		return (
 			<div

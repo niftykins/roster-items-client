@@ -48,7 +48,7 @@ export function createInstance(data) {
 	};
 }
 
-export function updateInstance(instanceId, data) {
+export function updateInstance(instanceId, data, cb) {
 	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.INSTANCE_UPDATE_REQUEST,
@@ -66,6 +66,8 @@ export function updateInstance(instanceId, data) {
 				});
 
 				dispatch(setSuccessBanner('Instance saved'));
+
+				if (cb) cb();
 			},
 
 			(message) => {

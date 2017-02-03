@@ -110,7 +110,9 @@ export default class InstanceDetails extends Component {
 		if (this.props.instance.isNew()) {
 			this.props.onCreate(data);
 		} else {
-			this.props.onUpdate(this.props.instance.id, data);
+			this.props.onUpdate(this.props.instance.id, data, () => {
+				this.setState({editing: false});
+			});
 		}
 	}
 

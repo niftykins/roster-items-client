@@ -80,6 +80,7 @@ export const RPC_INSTANCE_CREATE = 'instance_create';
 export const RPC_INSTANCE_UPDATE = 'instance_update';
 export const RPC_INSTANCE_DELETE = 'instance_delete';
 
+export const RPC_ITEMS_FETCH = 'items_fetch';
 export const RPC_ITEM_CREATE = 'item_create';
 export const RPC_ITEM_UPDATE = 'item_update';
 export const RPC_ITEM_DELETE = 'item_delete';

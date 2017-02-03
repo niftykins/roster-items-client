@@ -32,7 +32,9 @@ export default class ItemDetails extends Component {
 
 		buttons: ImmutablePropTypes.listOf(ImmutablePropTypes.listOf(
 			PropTypes.instanceOf(Button)
-		)).isRequired
+		)).isRequired,
+
+		params: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -43,16 +45,25 @@ export default class ItemDetails extends Component {
 		this.fields = {};
 
 		this.state = {
+			// editing if the thing is new and isn't meant to be something
+			editing: props.item.isNew() && !props.params.itemId,
+
 			disabled: props.item.isNew(),
 			confirming: false,
 
-			sourceId: props.item.sourceId,
-			slot: props.item.slot,
+			...this.getInitialFieldState()
+		};
+	}
 
-			[ROLES.MELEE]: props.item.allowed[ROLES.MELEE],
-			[ROLES.RANGED]: props.item.allowed[ROLES.RANGED],
-			[ROLES.TANKS]: props.item.allowed[ROLES.TANKS],
-			[ROLES.HEALERS]: props.item.allowed[ROLES.HEALERS]
+	getInitialFieldState() {
+		return {
+			sourceId: this.props.item.sourceId,
+			slot: this.props.item.slot,
+
+			[ROLES.MELEE]: this.props.item.allowed[ROLES.MELEE],
+			[ROLES.RANGED]: this.props.item.allowed[ROLES.RANGED],
+			[ROLES.TANKS]: this.props.item.allowed[ROLES.TANKS],
+			[ROLES.HEALERS]: this.props.item.allowed[ROLES.HEALERS]
 		};
 	}
 
@@ -145,8 +156,18 @@ export default class ItemDetails extends Component {
 		if (this.props.item.isNew()) {
 			this.props.onCreate(data);
 		} else {
-			this.props.onUpdate(this.props.item.id, data);
+			this.props.onUpdate(this.props.item.id, data, () => {
+				this.handleEditing(false);
+			});
 		}
+	}
+
+	handleEditing = (editing) => {
+		this.setState({
+			editing,
+
+			...this.getInitialFieldState()
+		});
 	}
 
 	render() {
@@ -157,19 +178,31 @@ export default class ItemDetails extends Component {
 
 		const deleteButtonClassName = classnames({
 			disabled: isDisabled
-		}, 'red outline button');
+		}, 'left red outline button');
 
 		const saveButtonClassName = classnames({
 			disabled: isDisabled
 		}, 'green button');
 
+		const editButtonClassName = classnames({
+			// disabled: someKindOfPermission
+		}, 'blue button');
 
-		const allowed = {
-			[ROLES.MELEE]: this.state[ROLES.MELEE],
-			[ROLES.RANGED]: this.state[ROLES.RANGED],
-			[ROLES.TANKS]: this.state[ROLES.TANKS],
-			[ROLES.HEALERS]: this.state[ROLES.HEALERS]
+
+		let allowed = {
+			[ROLES.MELEE]: this.props.item.allowed[ROLES.MELEE],
+			[ROLES.RANGED]: this.props.item.allowed[ROLES.RANGED],
+			[ROLES.TANKS]: this.props.item.allowed[ROLES.TANKS],
+			[ROLES.HEALERS]: this.props.item.allowed[ROLES.HEALERS]
 		};
+		if (this.state.editing) {
+			allowed = {
+				[ROLES.MELEE]: this.state[ROLES.MELEE],
+				[ROLES.RANGED]: this.state[ROLES.RANGED],
+				[ROLES.TANKS]: this.state[ROLES.TANKS],
+				[ROLES.HEALERS]: this.state[ROLES.HEALERS]
+			};
+		}
 
 		return (
 			<div className="view-details-container">
@@ -177,29 +210,32 @@ export default class ItemDetails extends Component {
 					<div className="view-details items-details">
 						<h1>{item.isNew() ? 'Add new item' : 'Update item'}</h1>
 
-						<div className="card">
-							<Input
-								onSubmit={this.handleAutofill}
-								ref={(r) => (this.autofill = r)}
-								label="Autofill from Wowhead"
-								note="Paste a link to the item on Wowhead and we'll attempt to automatically fill in some values based on the information we get back from Wowhead."
-								placeholder="http://www.wowhead.com/item=140793/perfectly-preserved-cake"
-								withActionButton={true}
-								autoFocus={true}
-							>
-								<div
-									className="green button"
-									onClick={this.handleAutofill}
+						{this.state.editing &&
+							<div className="card">
+								<Input
+									onSubmit={this.handleAutofill}
+									ref={(r) => (this.autofill = r)}
+									label="Autofill from Wowhead"
+									note="Paste a link to the item on Wowhead and we'll attempt to automatically fill in some values based on the information we get back from Wowhead."
+									placeholder="http://www.wowhead.com/item=140793/perfectly-preserved-cake"
+									withActionButton={true}
+									autoFocus={true}
 								>
-									Go
-								</div>
-							</Input>
-						</div>
+									<div
+										className="green button"
+										onClick={this.handleAutofill}
+									>
+										Go
+									</div>
+								</Input>
+							</div>
+						}
 
 						<div className="card">
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.name = r)}
+								disabled={!this.state.editing}
 								defaultValue={item.name}
 								placeholder="Perfectly Preserved Cake"
 								label="Name"
@@ -208,6 +244,7 @@ export default class ItemDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.wowId = r)}
+								disabled={!this.state.editing}
 								defaultValue={item.wowId}
 								placeholder="140793"
 								label="ID"
@@ -215,8 +252,9 @@ export default class ItemDetails extends Component {
 
 							<Picker
 								onChange={this.handleSourceChange}
+								disabled={!this.state.editing}
 								placeholder="Select a source"
-								value={this.state.sourceId}
+								value={this.state.editing ? this.state.sourceId : this.props.item.sourceId}
 								items={this.props.sourceOptions}
 								label="Drops from"
 								labelHint="(selecting an instance implies a trash drop)"
@@ -224,8 +262,9 @@ export default class ItemDetails extends Component {
 
 							<Picker
 								onChange={this.handleSlotChange}
+								disabled={!this.state.editing}
 								placeholder="Select a slot"
-								value={this.state.slot}
+								value={this.state.editing ? this.state.slot : this.props.item.slot}
 								items={SLOT_ITEMS}
 								label="Slot"
 							/>
@@ -234,6 +273,7 @@ export default class ItemDetails extends Component {
 						<div className="card">
 							<RoleGroups
 								onToggle={this.handleClassToggle}
+								isDisabled={!this.state.editing}
 								{...allowed}
 							/>
 						</div>
@@ -260,7 +300,7 @@ export default class ItemDetails extends Component {
 							</div>
 						}
 
-						{!this.state.confirming &&
+						{!this.state.confirming && this.state.editing &&
 							<div className="button-group">
 								{!item.isNew() &&
 									<div
@@ -270,6 +310,13 @@ export default class ItemDetails extends Component {
 										Remove
 									</div>
 								}
+
+								<div
+									onClick={() => this.handleEditing(false)}
+									className="outline button"
+								>
+									Cancel
+								</div>
 
 								<Ladda
 									onClick={this.handleSave}
@@ -281,13 +328,26 @@ export default class ItemDetails extends Component {
 								</Ladda>
 							</div>
 						}
+
+						{!this.state.editing &&
+							<div className="button-group">
+								<div
+									onClick={() => this.handleEditing(true)}
+									className={editButtonClassName}
+								>
+									Edit
+								</div>
+							</div>
+						}
 					</div>
 				</div>
 
-				<ButtonPanel
-					onClick={this.handleButton}
-					buttons={this.props.buttons}
-				/>
+				{this.state.editing &&
+					<ButtonPanel
+						onClick={this.handleButton}
+						buttons={this.props.buttons}
+					/>
+				}
 			</div>
 		);
 	}

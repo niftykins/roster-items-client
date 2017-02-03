@@ -1,7 +1,6 @@
 import {browserHistory} from 'react-router';
 
 import * as types from 'constants/types';
-import * as dummy from 'constants/dummy';
 
 import {setSuccessBanner, setErrorBanner} from './banners';
 
@@ -13,15 +12,24 @@ export function searchItems(search) {
 }
 
 export function fetchItems() {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({type: types.ITEMS_FETCH_REQUEST});
 
-		setTimeout(() => {
-			dispatch({
-				type: types.ITEMS_FETCH_SUCCESS,
-				payload: {items: dummy.items}
-			});
-		}, 150);
+		api.call(types.RPC_ITEMS_FETCH).then(
+			(message) => {
+				dispatch({
+					type: types.ITEMS_FETCH_SUCCESS,
+					payload: {items: message.data}
+				});
+			},
+
+			(message) => {
+				dispatch({
+					type: types.ITEMS_FETCH_FAILURE,
+					payload: message.error
+				});
+			}
+		);
 	};
 }
 
@@ -29,20 +37,13 @@ export function createItem(data) {
 	return (dispatch, getState, api) => {
 		dispatch({type: types.ITEM_CREATE_REQUEST});
 
-		api.call(types.RPC_ITEM_CREATE, data, true).then(
-			() => {
+		api.call(types.RPC_ITEM_CREATE, data).then(
+			(message) => {
 				dispatch({type: types.ITEM_CREATE_SUCCESS});
 
 				dispatch(setSuccessBanner('Item saved'));
 
-				// XXX REMOVE
-				const id = dummy.newId('item');
-				dispatch({
-					type: types.FEED_ITEMS_INSERT,
-					payload: {id, ...data}
-				});
-
-				browserHistory.push(`/items/${id}`);
+				browserHistory.push(`/items/${message.data.id}`);
 			},
 
 			(message) => {
@@ -54,7 +55,7 @@ export function createItem(data) {
 	};
 }
 
-export function updateItem(itemId, data) {
+export function updateItem(itemId, data, cb) {
 	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.ITEM_UPDATE_REQUEST,
@@ -64,7 +65,7 @@ export function updateItem(itemId, data) {
 		api.call(types.RPC_ITEM_UPDATE, {
 			id: itemId,
 			...data
-		}, true).then(
+		}).then(
 			() => {
 				dispatch({
 					type: types.ITEM_UPDATE_SUCCESS,
@@ -73,11 +74,7 @@ export function updateItem(itemId, data) {
 
 				dispatch(setSuccessBanner('Item saved'));
 
-				// XXX REMOVE
-				dispatch({
-					type: types.FEED_ITEMS_UPDATE,
-					payload: {id: itemId, ...data}
-				});
+				if (cb) cb();
 			},
 
 			(message) => {
@@ -99,14 +96,8 @@ export function deleteItem(itemId) {
 			payload: {itemId}
 		});
 
-		api.call(types.RPC_ITEM_DELETE, {id: itemId}, true).then(
+		api.call(types.RPC_ITEM_DELETE, {id: itemId}).then(
 			() => {
-				// XXX REMOVE
-				dispatch({
-					type: types.FEED_ITEMS_DELETE,
-					payload: {id: itemId}
-				});
-
 				dispatch({
 					type: types.ITEM_DELETE_SUCCESS,
 					payload: {itemId}
