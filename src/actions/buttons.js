@@ -1,20 +1,28 @@
 import {browserHistory} from 'react-router';
 
 import * as types from 'constants/types';
-import * as dummy from 'constants/dummy';
 
 import {setSuccessBanner, setErrorBanner} from './banners';
 
 export function fetchButtons() {
-	return (dispatch) => {
+	return (dispatch, getState, api) => {
 		dispatch({type: types.BUTTONS_FETCH_REQUEST});
 
-		setTimeout(() => {
-			dispatch({
-				type: types.BUTTONS_FETCH_SUCCESS,
-				payload: {buttons: dummy.buttons}
-			});
-		}, 150);
+		api.call(types.RPC_BUTTONS_FETCH).then(
+			(message) => {
+				dispatch({
+					type: types.BUTTONS_FETCH_SUCCESS,
+					payload: {buttons: message.data}
+				});
+			},
+
+			(message) => {
+				dispatch({
+					type: types.BUTTONS_FETCH_FAILURE,
+					payload: message.error
+				});
+			}
+		);
 	};
 }
 
@@ -22,20 +30,13 @@ export function createButton(data) {
 	return (dispatch, getState, api) => {
 		dispatch({type: types.BUTTON_CREATE_REQUEST});
 
-		api.call(types.RPC_BUTTON_CREATE, data, true).then(
-			() => {
+		api.call(types.RPC_BUTTON_CREATE, data).then(
+			(message) => {
 				dispatch({type: types.BUTTON_CREATE_SUCCESS});
 
 				dispatch(setSuccessBanner('Button saved'));
 
-				// XXX REMOVE
-				const id = dummy.newId('button');
-				dispatch({
-					type: types.FEED_BUTTONS_INSERT,
-					payload: {id, ...data}
-				});
-
-				browserHistory.push(`/buttons/${id}`);
+				browserHistory.push(`/buttons/${message.data.id}`);
 			},
 
 			(message) => {
@@ -47,7 +48,7 @@ export function createButton(data) {
 	};
 }
 
-export function updateButton(buttonId, data) {
+export function updateButton(buttonId, data, cb) {
 	return (dispatch, getState, api) => {
 		dispatch({
 			type: types.BUTTON_UPDATE_REQUEST,
@@ -57,7 +58,7 @@ export function updateButton(buttonId, data) {
 		api.call(types.RPC_BUTTON_UPDATE, {
 			id: buttonId,
 			...data
-		}, true).then(
+		}).then(
 			() => {
 				dispatch({
 					type: types.BUTTON_UPDATE_SUCCESS,
@@ -66,11 +67,7 @@ export function updateButton(buttonId, data) {
 
 				dispatch(setSuccessBanner('Button saved'));
 
-				// XXX REMOVE
-				dispatch({
-					type: types.FEED_BUTTONS_UPDATE,
-					payload: {id: buttonId, ...data}
-				});
+				if (cb) cb();
 			},
 
 			(message) => {
@@ -92,14 +89,8 @@ export function deleteButton(buttonId) {
 			payload: {buttonId}
 		});
 
-		api.call(types.RPC_BUTTON_DELETE, {id: buttonId}, true).then(
+		api.call(types.RPC_BUTTON_DELETE, {id: buttonId}).then(
 			() => {
-				// XXX REMOVE
-				dispatch({
-					type: types.FEED_BUTTONS_DELETE,
-					payload: {id: buttonId}
-				});
-
 				dispatch({
 					type: types.BUTTON_DELETE_SUCCESS,
 					payload: {buttonId}

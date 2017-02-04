@@ -17,7 +17,9 @@ export default class ButtonDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
-		button: PropTypes.instanceOf(Button).isRequired
+		button: PropTypes.instanceOf(Button).isRequired,
+
+		params: PropTypes.object.isRequired
 	}
 
 	constructor(props) {
@@ -28,13 +30,22 @@ export default class ButtonDetails extends Component {
 		this.fields = {};
 
 		this.state = {
+			// editing if the thing is new and isn't meant to be something
+			editing: props.button.isNew() && !props.params.buttonId,
+
 			disabled: props.button.isNew(),
 			confirming: false,
 
-			[ROLES.MELEE]: props.button.select[ROLES.MELEE],
-			[ROLES.RANGED]: props.button.select[ROLES.RANGED],
-			[ROLES.TANKS]: props.button.select[ROLES.TANKS],
-			[ROLES.HEALERS]: props.button.select[ROLES.HEALERS]
+			...this.getInitialFieldState()
+		};
+	}
+
+	getInitialFieldState() {
+		return {
+			[ROLES.MELEE]: this.props.button.select[ROLES.MELEE],
+			[ROLES.RANGED]: this.props.button.select[ROLES.RANGED],
+			[ROLES.TANKS]: this.props.button.select[ROLES.TANKS],
+			[ROLES.HEALERS]: this.props.button.select[ROLES.HEALERS]
 		};
 	}
 
@@ -86,8 +97,18 @@ export default class ButtonDetails extends Component {
 		if (this.props.button.isNew()) {
 			this.props.onCreate(data);
 		} else {
-			this.props.onUpdate(this.props.button.id, data);
+			this.props.onUpdate(this.props.button.id, data, () => {
+				this.handleEditing(false);
+			});
 		}
+	}
+
+	handleEditing = (editing) => {
+		this.setState({
+			editing,
+
+			...this.getInitialFieldState()
+		});
 	}
 
 	render() {
@@ -98,19 +119,31 @@ export default class ButtonDetails extends Component {
 
 		const deleteButtonClassName = classnames({
 			disabled: isDisabled
-		}, 'red outline button');
+		}, 'left red outline button');
 
 		const saveButtonClassName = classnames({
 			disabled: isDisabled
 		}, 'green button');
 
+		const editButtonClassName = classnames({
+			// disabled: someKindOfPermission
+		}, 'blue button');
 
-		const select = {
-			[ROLES.MELEE]: this.state[ROLES.MELEE],
-			[ROLES.RANGED]: this.state[ROLES.RANGED],
-			[ROLES.TANKS]: this.state[ROLES.TANKS],
-			[ROLES.HEALERS]: this.state[ROLES.HEALERS]
+
+		let select = {
+			[ROLES.MELEE]: this.props.button.select[ROLES.MELEE],
+			[ROLES.RANGED]: this.props.button.select[ROLES.RANGED],
+			[ROLES.TANKS]: this.props.button.select[ROLES.TANKS],
+			[ROLES.HEALERS]: this.props.button.select[ROLES.HEALERS]
 		};
+		if (this.state.editing) {
+			select = {
+				[ROLES.MELEE]: this.state[ROLES.MELEE],
+				[ROLES.RANGED]: this.state[ROLES.RANGED],
+				[ROLES.TANKS]: this.state[ROLES.TANKS],
+				[ROLES.HEALERS]: this.state[ROLES.HEALERS]
+			};
+		}
 
 		return (
 			<div className="view-details-container">
@@ -122,6 +155,7 @@ export default class ButtonDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.name = r)}
+								disabled={!this.state.editing}
 								defaultValue={button.name}
 								placeholder="Plate"
 								label="Name"
@@ -131,6 +165,7 @@ export default class ButtonDetails extends Component {
 							<Input
 								onChange={this.handleCheckForDisabled}
 								ref={(r) => (this.fields.order = r)}
+								disabled={!this.state.editing}
 								defaultValue={String(button.order)}
 								placeholder="0"
 								label="Order group"
@@ -141,6 +176,7 @@ export default class ButtonDetails extends Component {
 						<div className="card">
 							<RoleGroups
 								onToggle={this.handleClassToggle}
+								isDisabled={!this.state.editing}
 								{...select}
 							/>
 						</div>
@@ -167,7 +203,7 @@ export default class ButtonDetails extends Component {
 							</div>
 						}
 
-						{!this.state.confirming &&
+						{!this.state.confirming && this.state.editing &&
 							<div className="button-group">
 								{!button.isNew() &&
 									<div
@@ -178,6 +214,13 @@ export default class ButtonDetails extends Component {
 									</div>
 								}
 
+								<div
+									onClick={() => this.handleEditing(false)}
+									className="outline button"
+								>
+									Cancel
+								</div>
+
 								<Ladda
 									onClick={this.handleSave}
 									className={saveButtonClassName}
@@ -186,6 +229,17 @@ export default class ButtonDetails extends Component {
 								>
 									Save
 								</Ladda>
+							</div>
+						}
+
+						{!this.state.editing &&
+							<div className="button-group">
+								<div
+									onClick={() => this.handleEditing(true)}
+									className={editButtonClassName}
+								>
+									Edit
+								</div>
 							</div>
 						}
 					</div>

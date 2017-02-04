@@ -71,6 +71,7 @@ export const BUTTON_DELETE_FAILURE = 'BUTTON_DELETE_FAILURE';
 // RPC
 export const RPC_USER_FETCH = 'user_fetch';
 
+export const RPC_BUTTONS_FETCH = 'buttons_fetch';
 export const RPC_BUTTON_CREATE = 'button_create';
 export const RPC_BUTTON_UPDATE = 'button_update';
 export const RPC_BUTTON_DELETE = 'button_delete';
