@@ -18,6 +18,7 @@ const SLOT_ITEMS = Object.values(SLOTS).map((s) => ({id: s, name: s}));
 
 export default class ItemDetails extends Component {
 	static propTypes = {
+		onAutofill: PropTypes.func.isRequired,
 		onCreate: PropTypes.func.isRequired,
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
@@ -82,7 +83,57 @@ export default class ItemDetails extends Component {
 	}
 
 	handleAutofill = () => {
-		console.log(this.autofill.getValue());
+		const url = this.autofill.getValue();
+		if (!url) return;
+
+		this.props.onAutofill(url, (item) => {
+			if (!this.state.editing) return;
+
+			const update = {
+				sourceId: '',
+				slot: ''
+			};
+
+			this.fields.name.setValue(item.name);
+			this.fields.wowId.setValue(item.id);
+
+			SLOT_ITEMS.some((option) => {
+				const slot = item.slot.name || 'misc';
+
+				if (option.name.toLowerCase() === slot.toLowerCase()) {
+					update.slot = option.id;
+					return true;
+				}
+
+				return false;
+			});
+
+			this.props.sourceOptions.some((option) => {
+				if (option.name === item.sourceName) {
+					update.sourceId = option.id;
+					return true;
+				}
+
+				return false;
+			});
+
+
+			// try to auto apply some buttons
+			// subclass covers armour types and relics
+			const subclass = (item.subclass.name || '').toLowerCase();
+
+			this.props.buttons.flatten(1).forEach((button) => {
+				const name = button.name.toLowerCase();
+				let apply = false;
+
+				if (subclass.indexOf(name) === 0) apply = true;
+
+				if (apply) this.handleButton(button.select);
+			});
+
+
+			this.setState(update);
+		});
 	}
 
 	handleClassToggle = (role, cls) => {

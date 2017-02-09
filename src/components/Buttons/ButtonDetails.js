@@ -159,6 +159,7 @@ export default class ButtonDetails extends Component {
 								defaultValue={button.name}
 								placeholder="Plate"
 								label="Name"
+								note="Names are important as they're used to auto apply the button during an item autofill"
 								autoFocus={true}
 							/>
 

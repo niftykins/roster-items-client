@@ -33,6 +33,26 @@ export function fetchItems() {
 	};
 }
 
+export function autofillItem(url, cb) {
+	return (dispatch, getState, api) => {
+		dispatch({type: types.ITEM_AUTOFILL_REQUEST});
+
+		api.call(types.RPC_ITEM_AUTOFILL, {url}).then(
+			(message) => {
+				dispatch({type: types.ITEM_AUTOFILL_SUCCESS});
+
+				if (cb) cb(message.data);
+			},
+
+			(message) => {
+				dispatch({type: types.ITEM_AUTOFILL_FAILURE});
+
+				dispatch(setErrorBanner(message.error));
+			}
+		);
+	};
+}
+
 export function createItem(data) {
 	return (dispatch, getState, api) => {
 		dispatch({type: types.ITEM_CREATE_REQUEST});

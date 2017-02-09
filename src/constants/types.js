@@ -37,6 +37,10 @@ export const ITEMS_FETCH_REQUEST = 'ITEMS_FETCH_REQUEST';
 export const ITEMS_FETCH_SUCCESS = 'ITEMS_FETCH_SUCCESS';
 export const ITEMS_FETCH_FAILURE = 'ITEMS_FETCH_FAILURE';
 
+export const ITEM_AUTOFILL_REQUEST = 'ITEM_AUTOFILL_REQUEST';
+export const ITEM_AUTOFILL_SUCCESS = 'ITEM_AUTOFILL_SUCCESS';
+export const ITEM_AUTOFILL_FAILURE = 'ITEM_AUTOFILL_FAILURE';
+
 export const ITEM_CREATE_REQUEST = 'ITEM_CREATE_REQUEST';
 export const ITEM_CREATE_SUCCESS = 'ITEM_CREATE_SUCCESS';
 export const ITEM_CREATE_FAILURE = 'ITEM_CREATE_FAILURE';
@@ -82,6 +86,7 @@ export const RPC_INSTANCE_UPDATE = 'instance_update';
 export const RPC_INSTANCE_DELETE = 'instance_delete';
 
 export const RPC_ITEMS_FETCH = 'items_fetch';
+export const RPC_ITEM_AUTOFILL = 'item_autofill';
 export const RPC_ITEM_CREATE = 'item_create';
 export const RPC_ITEM_UPDATE = 'item_update';
 export const RPC_ITEM_DELETE = 'item_delete';

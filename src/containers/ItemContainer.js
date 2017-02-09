@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 
 import {
+	autofillItem,
 	createItem,
 	updateItem,
 	deleteItem
@@ -67,6 +68,7 @@ function mapStateToProps(state, {params}) {
 }
 
 export default connect(mapStateToProps, {
+	onAutofill: autofillItem,
 	onCreate: createItem,
 	onUpdate: updateItem,
 	onDelete: deleteItem
