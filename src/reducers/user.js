@@ -12,7 +12,7 @@ export default function user(state = initialState, action) {
 			return new User(action.payload.user);
 
 		case types.SELF_LOGOUT_SUCCESS:
-			return null;
+			return initialState;
 
 		default: return state;
 	}
