@@ -1,5 +1,7 @@
 /* eslint class-methods-use-this:0 */
 
+import * as types from 'constants/types';
+
 import Socket from './socket';
 
 // this.url = 'wss://api.guildsy.io/u/ws';
@@ -17,6 +19,13 @@ function handleChange({table, operation, record}) {
 	store.dispatch({
 		payload: record,
 		type
+	});
+}
+
+function handleSelfUpdate(message) {
+	store.dispatch({
+		payload: {user: message.data},
+		type: types.RPC_SELF_UPDATE
 	});
 }
 
@@ -57,7 +66,8 @@ class API {
 
 	call(fn, data = {}, isMock) {
 		return new Promise((resolve, reject) => {
-			const callId = count += 1;
+			count += 1;
+			const callId = count;
 
 			requests[callId] = {
 				ts: Date.now(),
@@ -79,6 +89,11 @@ class API {
 	handleMessage(message) {
 		if (message.fn === 'change') {
 			handleChange(message);
+			return;
+		}
+
+		if (message.fn === 'self_update') {
+			handleSelfUpdate(message);
 			return;
 		}
 

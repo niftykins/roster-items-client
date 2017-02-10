@@ -2,18 +2,18 @@
 export const SET_BANNER = 'SET_BANNER';
 export const SEARCH_ITEMS = 'SEARCH_ITEMS';
 
-export const USER_LOGOUT_REQUEST = 'USER_LOGOUT_REQUEST';
-export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS';
-export const USER_LOGOUT_FAILURE = 'USER_LOGOUT_FAILURE';
+export const SELF_LOGOUT_REQUEST = 'SELF_LOGOUT_REQUEST';
+export const SELF_LOGOUT_SUCCESS = 'SELF_LOGOUT_SUCCESS';
+export const SELF_LOGOUT_FAILURE = 'SELF_LOGOUT_FAILURE';
 
 
 // ----
 // DATA
 
 // USER
-export const USER_FETCH_REQUEST = 'USER_FETCH_REQUEST';
-export const USER_FETCH_SUCCESS = 'USER_FETCH_SUCCESS';
-export const USER_FETCH_FAILURE = 'USER_FETCH_FAILURE';
+export const SELF_FETCH_REQUEST = 'SELF_FETCH_REQUEST';
+export const SELF_FETCH_SUCCESS = 'SELF_FETCH_SUCCESS';
+export const SELF_FETCH_FAILURE = 'SELF_FETCH_FAILURE';
 
 // INSTANCES
 export const INSTANCES_FETCH_REQUEST = 'INSTANCES_FETCH_REQUEST';
@@ -73,7 +73,8 @@ export const BUTTON_DELETE_FAILURE = 'BUTTON_DELETE_FAILURE';
 
 // ---
 // RPC
-export const RPC_USER_FETCH = 'user_fetch';
+export const RPC_SELF_FETCH = 'self_fetch';
+export const RPC_SELF_UPDATE = 'self_update';
 
 export const RPC_BUTTONS_FETCH = 'buttons_fetch';
 export const RPC_BUTTON_CREATE = 'button_create';

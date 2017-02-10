@@ -5,10 +5,13 @@ const initialState = new User();
 
 export default function user(state = initialState, action) {
 	switch (action.type) {
-		case types.USER_FETCH_SUCCESS:
+		case types.RPC_SELF_UPDATE:
 			return new User(action.payload.user);
 
-		case types.USER_LOGOUT_SUCCESS:
+		case types.SELF_FETCH_SUCCESS:
+			return new User(action.payload.user);
+
+		case types.SELF_LOGOUT_SUCCESS:
 			return null;
 
 		default: return state;

@@ -4,7 +4,9 @@ const typeCounts = {};
 export function newId(type = '') {
 	if (!typeCounts[type]) typeCounts[type] = 0;
 
-	const count = typeCounts[type] += 1;
+	typeCounts[type] += 1;
+
+	const count = typeCounts[type];
 	return `${type}${count}`;
 }
 
