@@ -14,13 +14,16 @@ export default function configureStore(initialState = {}) {
 		const logger = createLogger({
 			duration: true,
 			timestamp: false,
-			collapsed: true,
 
 			level: {
 				prevState: 'log',
 				action: 'log',
 				nextState: 'log',
 				error: 'error'
+			},
+
+			collapsed(getState, action, logEntry) {
+				return !logEntry.error;
 			},
 
 			stateTransformer(state) {
