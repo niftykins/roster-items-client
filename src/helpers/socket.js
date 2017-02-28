@@ -1,8 +1,9 @@
 export default class Socket {
-	constructor(url, messageHandler) {
+	constructor(url, messageHandler, reconnectHandler) {
 		this.url = url;
 
 		this.messageHandler = messageHandler;
+		this.reconnectHandler = reconnectHandler;
 
 		this.retry = true;
 		this.queue = [];
@@ -66,6 +67,10 @@ export default class Socket {
 				this.lastPeriod = 120 * 1000;
 			}
 
+			if (this.reconnectHandler) {
+				this.reconnectHandler(this.lastPeriod);
+			}
+
 			this.reconnect();
 		}
 	}
@@ -117,6 +122,10 @@ export default class Socket {
 		}
 
 		if (this.retry) this.start();
+
+		if (this.reconnectHandler) {
+			this.reconnectHandler(null);
+		}
 	}
 
 	onClose = () => {

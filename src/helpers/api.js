@@ -2,6 +2,8 @@
 
 import * as types from 'constants/types';
 
+import {setSocketBanner, clearBanner} from 'actions/banners';
+
 import Socket from './socket';
 
 // this.url = 'wss://api.guildsy.io/u/ws';
@@ -53,7 +55,7 @@ class API {
 			});
 		}, 10 * 1000);
 
-		this.socket = new Socket(WS_API_URL, this.handleMessage);
+		this.socket = new Socket(WS_API_URL, this.handleMessage, this.handleConnectionDropout);
 		this.socket.connect();
 	}
 
@@ -107,6 +109,15 @@ class API {
 
 		if (message.ok) request.resolve(message);
 		else request.reject(message);
+	}
+
+	handleConnectionDropout(lastPeriod) {
+		if (lastPeriod) {
+			setSocketBanner()(store.dispatch);
+			return;
+		}
+
+		clearBanner()(store.dispatch);
 	}
 
 	mock(message) {
