@@ -2,7 +2,7 @@ import {browserHistory} from 'react-router';
 
 import * as types from 'constants/types';
 
-import {setSuccessBanner, setErrorBanner} from './banners';
+import {addSuccessBanner, addErrorBanner} from './banners';
 
 export function searchItems(search) {
 	return {
@@ -47,7 +47,7 @@ export function autofillItem(url, cb) {
 			(message) => {
 				dispatch({type: types.ITEM_AUTOFILL_FAILURE});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
@@ -61,7 +61,7 @@ export function createItem(data) {
 			(message) => {
 				dispatch({type: types.ITEM_CREATE_SUCCESS});
 
-				dispatch(setSuccessBanner('Item saved'));
+				dispatch(addSuccessBanner('Item saved'));
 
 				browserHistory.push(`/items/${message.data.id}`);
 			},
@@ -69,7 +69,7 @@ export function createItem(data) {
 			(message) => {
 				dispatch({type: types.ITEM_CREATE_FAILURE});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
@@ -92,7 +92,7 @@ export function updateItem(itemId, data, cb) {
 					payload: {itemId}
 				});
 
-				dispatch(setSuccessBanner('Item saved'));
+				dispatch(addSuccessBanner('Item saved'));
 
 				if (cb) cb();
 			},
@@ -103,7 +103,7 @@ export function updateItem(itemId, data, cb) {
 					payload: {itemId}
 				});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
@@ -123,7 +123,7 @@ export function deleteItem(itemId) {
 					payload: {itemId}
 				});
 
-				dispatch(setSuccessBanner('Item removed'));
+				dispatch(addSuccessBanner('Item removed'));
 				browserHistory.push('/items');
 			},
 
@@ -133,7 +133,7 @@ export function deleteItem(itemId) {
 					payload: {itemId}
 				});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};

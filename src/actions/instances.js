@@ -2,7 +2,7 @@ import {browserHistory} from 'react-router';
 
 import * as types from 'constants/types';
 
-import {setSuccessBanner, setErrorBanner} from './banners';
+import {addSuccessBanner, addErrorBanner} from './banners';
 
 export function fetchInstances() {
 	return (dispatch, getState, api) => {
@@ -34,7 +34,7 @@ export function createInstance(data) {
 			(message) => {
 				dispatch({type: types.INSTANCE_CREATE_SUCCESS});
 
-				dispatch(setSuccessBanner('Instance saved'));
+				dispatch(addSuccessBanner('Instance saved'));
 
 				browserHistory.push(`/instances/${message.data.id}`);
 			},
@@ -42,7 +42,7 @@ export function createInstance(data) {
 			(message) => {
 				dispatch({type: types.INSTANCE_CREATE_FAILURE});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
@@ -65,7 +65,7 @@ export function updateInstance(instanceId, data, cb) {
 					payload: {instanceId}
 				});
 
-				dispatch(setSuccessBanner('Instance saved'));
+				dispatch(addSuccessBanner('Instance saved'));
 
 				if (cb) cb();
 			},
@@ -76,7 +76,7 @@ export function updateInstance(instanceId, data, cb) {
 					payload: {instanceId}
 				});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
@@ -96,7 +96,7 @@ export function deleteInstance(instanceId) {
 					payload: {instanceId}
 				});
 
-				dispatch(setSuccessBanner('Instance removed'));
+				dispatch(addSuccessBanner('Instance removed'));
 				browserHistory.push('/instances');
 			},
 
@@ -106,7 +106,7 @@ export function deleteInstance(instanceId) {
 					payload: {instanceId}
 				});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};

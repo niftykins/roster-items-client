@@ -1,5 +1,8 @@
 // UI
-export const SET_BANNER = 'SET_BANNER';
+export const BANNER_ADD = 'BANNER_ADD';
+export const BANNER_REMOVE = 'BANNER_REMOVE';
+export const BANNER_REMOVE_SOCKET = 'BANNER_REMOVE_SOCKET';
+
 export const SEARCH_ITEMS = 'SEARCH_ITEMS';
 
 export const SELF_LOGOUT_REQUEST = 'SELF_LOGOUT_REQUEST';

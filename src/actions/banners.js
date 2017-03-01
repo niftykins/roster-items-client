@@ -1,23 +1,15 @@
 import * as types from 'constants/types';
 
-export function clearBanner() {
-	return (dispatch) => {
-		dispatch({
-			type: types.SET_BANNER,
-			payload: {show: false}
-		});
-	};
-}
-
-let bannerTimeoutId;
+let bannerId = 0;
 function setBanner(type, message, showForever) {
 	return (dispatch) => {
-		if (bannerTimeoutId) clearTimeout(bannerTimeoutId);
+		bannerId += 1;
+		const id = bannerId;
 
 		dispatch({
-			type: types.SET_BANNER,
+			type: types.BANNER_ADD,
 			payload: {
-				show: true,
+				id,
 				message,
 				type
 			}
@@ -27,21 +19,33 @@ function setBanner(type, message, showForever) {
 			// clear the banner after some time
 			const timer = type !== 'error' ? 3500 : 7000;
 
-			bannerTimeoutId = setTimeout(() => {
-				clearBanner()(dispatch);
+			setTimeout(() => {
+				dispatch({
+					type: types.BANNER_REMOVE,
+					paylaod: {id}
+				});
 			}, timer);
 		}
 	};
 }
 
-export function setSuccessBanner(message) {
+export function addSuccessBanner(message) {
 	return setBanner('success', message);
 }
 
-export function setErrorBanner(message) {
+export function addErrorBanner(message) {
 	return setBanner('error', message || 'Something went boom :(');
 }
 
-export function setSocketBanner() {
-	return setBanner('error', 'Connection to the server has gone loco', true);
+export function addSocketBanner() {
+	return setBanner('socket', 'Connection to the server has gone loco', true);
+}
+
+export function removeSocketBanner() {
+	return (dispatch) => {
+		dispatch({
+			type: types.BANNER_REMOVE_SOCKET,
+			payload: {show: false}
+		});
+	};
 }

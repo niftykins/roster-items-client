@@ -61,7 +61,7 @@ export default class Socket {
 			console.warn('[SOCKET] client reconnecting', this.lastPeriod);
 
 			this.lastCheck = Date.now();
-			this.lastPeriod = this.lastPeriod * 2;
+			this.lastPeriod = this.lastPeriod * 1.25;
 
 			if (this.lastPeriod > 120 * 1000) {
 				this.lastPeriod = 120 * 1000;

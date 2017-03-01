@@ -2,7 +2,7 @@ import {browserHistory} from 'react-router';
 
 import * as types from 'constants/types';
 
-import {setSuccessBanner, setErrorBanner} from './banners';
+import {addSuccessBanner, addErrorBanner} from './banners';
 
 export function fetchButtons() {
 	return (dispatch, getState, api) => {
@@ -34,7 +34,7 @@ export function createButton(data) {
 			(message) => {
 				dispatch({type: types.BUTTON_CREATE_SUCCESS});
 
-				dispatch(setSuccessBanner('Button saved'));
+				dispatch(addSuccessBanner('Button saved'));
 
 				browserHistory.push(`/buttons/${message.data.id}`);
 			},
@@ -42,7 +42,7 @@ export function createButton(data) {
 			(message) => {
 				dispatch({type: types.BUTTON_CREATE_FAILURE});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
@@ -65,7 +65,7 @@ export function updateButton(buttonId, data, cb) {
 					payload: {buttonId}
 				});
 
-				dispatch(setSuccessBanner('Button saved'));
+				dispatch(addSuccessBanner('Button saved'));
 
 				if (cb) cb();
 			},
@@ -76,7 +76,7 @@ export function updateButton(buttonId, data, cb) {
 					payload: {buttonId}
 				});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
@@ -96,7 +96,7 @@ export function deleteButton(buttonId) {
 					payload: {buttonId}
 				});
 
-				dispatch(setSuccessBanner('Button removed'));
+				dispatch(addSuccessBanner('Button removed'));
 				browserHistory.push('/buttons');
 			},
 
@@ -106,7 +106,7 @@ export function deleteButton(buttonId) {
 					payload: {buttonId}
 				});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};

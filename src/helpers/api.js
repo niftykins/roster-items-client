@@ -2,7 +2,7 @@
 
 import * as types from 'constants/types';
 
-import {setSocketBanner, clearBanner} from 'actions/banners';
+import {addSocketBanner, removeSocketBanner} from 'actions/banners';
 
 import Socket from './socket';
 
@@ -113,11 +113,11 @@ class API {
 
 	handleConnectionDropout(lastPeriod) {
 		if (lastPeriod) {
-			setSocketBanner()(store.dispatch);
+			addSocketBanner()(store.dispatch);
 			return;
 		}
 
-		clearBanner()(store.dispatch);
+		removeSocketBanner()(store.dispatch);
 	}
 
 	mock(message) {

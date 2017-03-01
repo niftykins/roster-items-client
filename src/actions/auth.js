@@ -2,7 +2,7 @@ import * as types from 'constants/types';
 
 import {HTTP_API_URL} from 'helpers/api';
 
-import {setErrorBanner} from './banners';
+import {addErrorBanner} from './banners';
 
 export function fetchUser() {
 	return (dispatch, getState, api) => {
@@ -19,7 +19,7 @@ export function fetchUser() {
 			(message) => {
 				dispatch({type: types.SELF_FETCH_FAILURE});
 
-				dispatch(setErrorBanner(message.error));
+				dispatch(addErrorBanner(message.error));
 			}
 		);
 	};
