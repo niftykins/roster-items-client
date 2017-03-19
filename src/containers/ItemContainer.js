@@ -9,6 +9,7 @@ import {
 
 import {
 	getSocketStatus,
+	getUser,
 
 	getInstances,
 	getButtons,
@@ -62,7 +63,10 @@ function mapStateToProps(state, {params}) {
 	const instances = getInstances(state);
 	const sourceOptions = getSouceOptions(instances);
 
+	const user = getUser(state);
+
 	return {
+		canManageItems: user.canManageItems(),
 		isConnected: getSocketStatus(state),
 
 		buttons: buttonGroups,

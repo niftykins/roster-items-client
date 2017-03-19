@@ -2,7 +2,11 @@ import {connect} from 'react-redux';
 
 import {searchItems} from 'actions/items';
 
-import {getItems, getItemsSearch} from 'helpers/selectors';
+import {
+	getItemsSearch,
+	getItems,
+	getUser
+} from 'helpers/selectors';
 
 import ItemsList from 'components/Items/ItemsList';
 
@@ -16,10 +20,12 @@ function mapStateToProps(state) {
 	const items = getItems(state);
 	const search = getItemsSearch(state);
 
-	const filteredItems = getFilteredItems(items, search);
+	const user = getUser(state);
 
 	return {
-		items: filteredItems,
+		canManageItems: user.canManageItems(),
+
+		items: getFilteredItems(items, search),
 		search
 	};
 }

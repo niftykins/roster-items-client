@@ -17,6 +17,7 @@ export default class ButtonDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
+		canManageButtons: PropTypes.bool.isRequired,
 		isConnected: PropTypes.bool.isRequired,
 
 		button: PropTypes.instanceOf(Button).isRequired,
@@ -116,7 +117,13 @@ export default class ButtonDetails extends Component {
 	render() {
 		const {button} = this.props;
 
-		const isDisabled = !this.props.isConnected ||
+		if (!this.props.canManageButtons && button.isNew()) {
+			return null;
+		}
+
+
+		const isDisabled = !this.props.canManageButtons ||
+			!this.props.isConnected ||
 			this.state.disabled ||
 			button.isSaving() ||
 			button.isDeleting();
@@ -128,10 +135,6 @@ export default class ButtonDetails extends Component {
 		const saveButtonClassName = classnames({
 			disabled: isDisabled
 		}, 'green button');
-
-		const editButtonClassName = classnames({
-			// disabled: someKindOfPermission
-		}, 'blue button');
 
 
 		let select = {
@@ -187,67 +190,69 @@ export default class ButtonDetails extends Component {
 						</div>
 					</div>
 
-					<div className="view-actions-bar">
-						{this.state.confirming &&
-							<div className="button-group">
-								<Ladda
-									onClick={() => this.props.onDelete(button.id)}
-									className={deleteButtonClassName}
-									loading={button.isDeleting()}
-									data-style={EXPAND_RIGHT}
-								>
-									Confirm
-								</Ladda>
-
-								<div
-									onClick={() => this.setState({confirming: false})}
-									className="outline button"
-								>
-									Cancel
-								</div>
-							</div>
-						}
-
-						{!this.state.confirming && this.state.editing &&
-							<div className="button-group">
-								{!button.isNew() &&
-									<div
-										onClick={() => this.setState({confirming: true})}
+					{this.props.canManageButtons &&
+						<div className="view-actions-bar">
+							{this.state.confirming &&
+								<div className="button-group">
+									<Ladda
+										onClick={() => this.props.onDelete(button.id)}
 										className={deleteButtonClassName}
+										loading={button.isDeleting()}
+										data-style={EXPAND_RIGHT}
 									>
-										Remove
+										Confirm
+									</Ladda>
+
+									<div
+										onClick={() => this.setState({confirming: false})}
+										className="outline button"
+									>
+										Cancel
 									</div>
-								}
-
-								<div
-									onClick={() => this.handleEditing(false)}
-									className="outline button"
-								>
-									Cancel
 								</div>
+							}
 
-								<Ladda
-									onClick={this.handleSave}
-									className={saveButtonClassName}
-									loading={button.isSaving()}
-									data-style={EXPAND_RIGHT}
-								>
-									Save
-								</Ladda>
-							</div>
-						}
+							{!this.state.confirming && this.state.editing &&
+								<div className="button-group">
+									{!button.isNew() &&
+										<div
+											onClick={() => this.setState({confirming: true})}
+											className={deleteButtonClassName}
+										>
+											Remove
+										</div>
+									}
 
-						{!this.state.editing &&
-							<div className="button-group">
-								<div
-									onClick={() => this.handleEditing(true)}
-									className={editButtonClassName}
-								>
-									Edit
+									<div
+										onClick={() => this.handleEditing(false)}
+										className="outline button"
+									>
+										Cancel
+									</div>
+
+									<Ladda
+										onClick={this.handleSave}
+										className={saveButtonClassName}
+										loading={button.isSaving()}
+										data-style={EXPAND_RIGHT}
+									>
+										Save
+									</Ladda>
 								</div>
-							</div>
-						}
-					</div>
+							}
+
+							{!this.state.editing &&
+								<div className="button-group">
+									<div
+										onClick={() => this.handleEditing(true)}
+										className="blue button"
+									>
+										Edit
+									</div>
+								</div>
+							}
+						</div>
+					}
 				</div>
 			</div>
 		);

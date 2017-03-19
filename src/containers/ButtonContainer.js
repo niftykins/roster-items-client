@@ -6,7 +6,11 @@ import {
 	deleteButton
 } from 'actions/buttons';
 
-import {getSocketStatus, getButton} from 'helpers/selectors';
+import {
+	getSocketStatus,
+	getButton,
+	getUser
+} from 'helpers/selectors';
 
 import ButtonDetails from 'components/Buttons/ButtonDetails';
 
@@ -14,7 +18,10 @@ function mapStateToProps(state, {params}) {
 	const buttonId = parseInt(params.buttonId, 10);
 	const button = getButton(state, buttonId, true);
 
+	const user = getUser(state);
+
 	return {
+		canManageButtons: user.canManageButtons(),
 		isConnected: getSocketStatus(state),
 
 		button

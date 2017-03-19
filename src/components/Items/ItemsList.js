@@ -6,7 +6,7 @@ import Item from 'models/item';
 
 import Input from '../Utils/Input';
 
-export default function ItemsList({onSearch, search, items}) {
+export default function ItemsList({onSearch, canManageItems, search, items}) {
 	const itemItems = items.map((item) => (
 		<ItemItem key={item.id} item={item} />
 	));
@@ -22,13 +22,15 @@ export default function ItemsList({onSearch, search, items}) {
 			</div>
 
 			<div className="view-list">
-				<Link
-					className="view-list-item add-new"
-					activeClassName="active"
-					to="/items/new"
-				>
-					Add new item
-				</Link>
+				{canManageItems &&
+					<Link
+						className="view-list-item add-new"
+						activeClassName="active"
+						to="/items/new"
+					>
+						Add new item
+					</Link>
+				}
 
 				{itemItems}
 			</div>
@@ -39,6 +41,7 @@ export default function ItemsList({onSearch, search, items}) {
 ItemsList.propTypes = {
 	onSearch: PropTypes.func.isRequired,
 
+	canManageItems: PropTypes.bool.isRequired,
 	search: PropTypes.string,
 
 	items: ImmutablePropTypes.listOf(PropTypes.instanceOf(Item))

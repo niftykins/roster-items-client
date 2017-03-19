@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 
 import Button from 'models/button';
 
-export default function ButtonsList({buttons}) {
+export default function ButtonsList({canManageButtons, buttons}) {
 	const buttonItems = buttons.map((button) => (
 		<ButtonItem key={button.id} button={button} />
 	));
@@ -12,13 +12,15 @@ export default function ButtonsList({buttons}) {
 	return (
 		<div className="view-list-container">
 			<div className="view-list">
-				<Link
-					className="view-list-item add-new"
-					activeClassName="active"
-					to="/buttons/new"
-				>
-					Add new button
-				</Link>
+				{canManageButtons &&
+					<Link
+						className="view-list-item add-new"
+						activeClassName="active"
+						to="/buttons/new"
+					>
+						Add new button
+					</Link>
+				}
 
 				{buttonItems}
 			</div>
@@ -27,6 +29,7 @@ export default function ButtonsList({buttons}) {
 }
 
 ButtonsList.propTypes = {
+	canManageButtons: PropTypes.bool.isRequired,
 	buttons: ImmutablePropTypes.listOf(PropTypes.instanceOf(Button))
 };
 

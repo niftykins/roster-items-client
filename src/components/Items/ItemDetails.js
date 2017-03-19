@@ -23,6 +23,7 @@ export default class ItemDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
+		canManageItems: PropTypes.bool.isRequired,
 		isConnected: PropTypes.bool.isRequired,
 
 		item: PropTypes.instanceOf(Item).isRequired,
@@ -226,7 +227,13 @@ export default class ItemDetails extends Component {
 	render() {
 		const {item} = this.props;
 
-		const isDisabled = !this.props.isConnected ||
+		if (!this.props.canManageItems && item.isNew()) {
+			return null;
+		}
+
+
+		const isDisabled = !this.props.canManageItems ||
+			!this.props.isConnected ||
 			this.state.disabled ||
 			item.isSaving() ||
 			item.isDeleting();
@@ -238,10 +245,6 @@ export default class ItemDetails extends Component {
 		const saveButtonClassName = classnames({
 			disabled: isDisabled
 		}, 'green button');
-
-		const editButtonClassName = classnames({
-			// disabled: someKindOfPermission
-		}, 'blue button');
 
 
 		let allowed = {
@@ -334,70 +337,72 @@ export default class ItemDetails extends Component {
 						</div>
 					</div>
 
-					<div className="view-actions-bar">
-						{this.state.confirming &&
-							<div className="button-group">
-								<Ladda
-									onClick={() => this.props.onDelete(item.id)}
-									className={deleteButtonClassName}
-									loading={item.isDeleting()}
-									data-style={EXPAND_RIGHT}
-								>
-									Confirm
-								</Ladda>
-
-								<div
-									onClick={() => this.setState({confirming: false})}
-									className="outline button"
-								>
-									Cancel
-								</div>
-							</div>
-						}
-
-						{!this.state.confirming && this.state.editing &&
-							<div className="button-group">
-								{!item.isNew() &&
-									<div
-										onClick={() => this.setState({confirming: true})}
+					{this.props.canManageItems &&
+						<div className="view-actions-bar">
+							{this.state.confirming &&
+								<div className="button-group">
+									<Ladda
+										onClick={() => this.props.onDelete(item.id)}
 										className={deleteButtonClassName}
+										loading={item.isDeleting()}
+										data-style={EXPAND_RIGHT}
 									>
-										Remove
+										Confirm
+									</Ladda>
+
+									<div
+										onClick={() => this.setState({confirming: false})}
+										className="outline button"
+									>
+										Cancel
 									</div>
-								}
-
-								<div
-									onClick={() => this.handleEditing(false)}
-									className="outline button"
-								>
-									Cancel
 								</div>
+							}
 
-								<Ladda
-									onClick={this.handleSave}
-									className={saveButtonClassName}
-									loading={item.isSaving()}
-									data-style={EXPAND_RIGHT}
-								>
-									Save
-								</Ladda>
-							</div>
-						}
+							{!this.state.confirming && this.state.editing &&
+								<div className="button-group">
+									{!item.isNew() &&
+										<div
+											onClick={() => this.setState({confirming: true})}
+											className={deleteButtonClassName}
+										>
+											Remove
+										</div>
+									}
 
-						{!this.state.editing &&
-							<div className="button-group">
-								<div
-									onClick={() => this.handleEditing(true)}
-									className={editButtonClassName}
-								>
-									Edit
+									<div
+										onClick={() => this.handleEditing(false)}
+										className="outline button"
+									>
+										Cancel
+									</div>
+
+									<Ladda
+										onClick={this.handleSave}
+										className={saveButtonClassName}
+										loading={item.isSaving()}
+										data-style={EXPAND_RIGHT}
+									>
+										Save
+									</Ladda>
 								</div>
-							</div>
-						}
-					</div>
+							}
+
+							{!this.state.editing &&
+								<div className="button-group">
+									<div
+										onClick={() => this.handleEditing(true)}
+										className="blue button"
+									>
+										Edit
+									</div>
+								</div>
+							}
+						</div>
+					}
 				</div>
 
-				{this.state.editing &&
+				{this.props.canManageItems && this.state.editing &&
 					<ButtonPanel
 						onClick={this.handleButton}
 						buttons={this.props.buttons}

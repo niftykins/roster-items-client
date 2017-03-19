@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 
 import Instance from 'models/instance';
 
-export default function InstancesList({instances}) {
+export default function InstancesList({canManageInstances, instances}) {
 	const instanceItems = instances.map((instance) => (
 		<InstanceItem key={instance.id} instance={instance} />
 	));
@@ -12,13 +12,15 @@ export default function InstancesList({instances}) {
 	return (
 		<div className="view-list-container">
 			<div className="view-list">
-				<Link
-					className="view-list-item add-new"
-					activeClassName="active"
-					to="/instances/new"
-				>
-					Add new instance
-				</Link>
+				{canManageInstances &&
+					<Link
+						className="view-list-item add-new"
+						activeClassName="active"
+						to="/instances/new"
+					>
+						Add new instance
+					</Link>
+				}
 
 				{instanceItems}
 			</div>
@@ -27,6 +29,7 @@ export default function InstancesList({instances}) {
 }
 
 InstancesList.propTypes = {
+	canManageInstances: PropTypes.bool.isRequired,
 	instances: ImmutablePropTypes.listOf(PropTypes.instanceOf(Instance))
 };
 
