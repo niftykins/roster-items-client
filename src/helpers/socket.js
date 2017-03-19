@@ -1,12 +1,16 @@
 export default class Socket {
 	constructor(url, opts = {}) {
-		this.url = url;
+		this.handlers = {
+			onMessage: opts.onMessage,
 
-		this.messageHandler = opts.messageHandler;
-		this.reconnectHandler = opts.reconnectHandler;
+			onReconnect: opts.onReconnect,
+			onClose: opts.onClose
+		};
 
-		this.retry = true;
+
+		this.hasPreviouslyConnected = false;
 		this.queue = [];
+		this.url = url;
 	}
 
 	connect(cb) {
@@ -15,7 +19,9 @@ export default class Socket {
 			this.socket.close();
 		}
 
-		this.onConnectCallback = cb;
+
+		if (cb) this.handlers.onConnect = cb;
+
 
 		this.lastCheck = 0;
 		this.lastPing = Date.now();
@@ -23,14 +29,8 @@ export default class Socket {
 		this.reconnect();
 	}
 
-	disconnect() {
-		this.stop();
-
+	reconnect() {
 		if (this.socket) this.socket.close();
-	}
-
-	reconnect(disconnect) {
-		if (disconnect) this.disconnect();
 
 		this.socket = new WebSocket(this.url);
 		this.socket.onopen = this.onOpen;
@@ -39,16 +39,12 @@ export default class Socket {
 		this.socket.onmessage = this.onMessage;
 	}
 
-	start() {
+	startChecker() {
 		this.lastCheck = Date.now();
 		this.lastPeriod = 1000;
 
 		clearInterval(this.interval);
 		this.interval = setInterval(this.checker, 1000);
-	}
-
-	stop() {
-		clearInterval(this.interval);
 	}
 
 	checker = () => {
@@ -66,10 +62,6 @@ export default class Socket {
 			const max = 30 * 1000;
 			if (this.lastPeriod > max) {
 				this.lastPeriod = max;
-			}
-
-			if (this.reconnectHandler) {
-				this.reconnectHandler(false, this.lastPeriod);
 			}
 
 			this.reconnect();
@@ -108,35 +100,45 @@ export default class Socket {
 
 	onOpen = () => {
 		console.warn('[SOCKET] client connected', this.url);
+		this.startChecker();
 
-		if (this.onConnectCallback) {
-			this.onConnectCallback();
-			delete this.onConnectCallback;
-		}
 
 		// send any queued messages so far
 		while (this.queue.length) {
 			const message = this.queue.shift();
-			console.warn('[SOCKET] sending queued', message);
+
+			console.warn('[SOCKET] sending queued', JSON.parse(message));
 
 			this.socket.send(message);
 		}
 
-		if (this.retry) this.start();
 
-		if (this.reconnectHandler) {
-			this.reconnectHandler(true);
+		if (this.handlers.onConnect) {
+			this.handlers.onConnect();
+
+			delete this.handlers.onConnect;
 		}
+
+		// only want to trigger this on a reconnection
+		if (this.hasPreviousConnected && this.handlers.onReconnect) {
+			this.handlers.onReconnect();
+		}
+
+		this.hasPreviousConnected = true;
 	}
 
 	onClose = () => {
 		console.warn('[SOCKET] client closed');
+
+		if (this.handlers.onClose) {
+			this.handlers.onClose();
+		}
 	}
 
 	onError = (e) => {
 		console.warn('[SOCKET] client error', e);
 
-		if (this.retry && !this.lastCheck) this.start(0);
+		if (!this.lastCheck) this.startChecker();
 	}
 
 	onMessage = (e) => {
@@ -149,6 +151,6 @@ export default class Socket {
 			console.error('[SOCKET] message failed:', message);
 		}
 
-		this.messageHandler(message);
+		this.handlers.onMessage(message);
 	}
 }

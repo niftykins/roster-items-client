@@ -56,11 +56,13 @@ class API {
 
 
 		this.socket = new Socket(WS_API_URL, {
-			reconnectHandler: this.handleReconnectAttempt,
-			messageHandler: this.handleMessage
+			onReconnect: this.handleSocketReconnect,
+			onClose: this.handleSocketClose,
+
+			onMessage: this.handleSocketMessage
 		});
 
-		this.socket.connect();
+		this.socket.connect(this.handleSocketConnect);
 	}
 
 	callHTTP(endpoint, opts = {}) {
@@ -92,7 +94,8 @@ class API {
 		});
 	}
 
-	handleMessage(message) {
+
+	handleSocketMessage(message) {
 		if (message.fn === 'change') {
 			handleChange(message);
 			return;
@@ -115,14 +118,20 @@ class API {
 		else request.reject(message);
 	}
 
-	handleReconnectAttempt(connected) {
-		if (connected) {
-			removeSocketBanner()(store.dispatch);
-			return;
-		}
+	// need to trigger a banner being removed on connection
+	// in case theres issues during the initial connection
+	handleSocketConnect() {
+		removeSocketBanner()(store.dispatch);
+	}
 
+	handleSocketReconnect() {
+		removeSocketBanner()(store.dispatch);
+	}
+
+	handleSocketClose() {
 		addSocketBanner()(store.dispatch);
 	}
+
 
 	mock(message) {
 		const mock = {
