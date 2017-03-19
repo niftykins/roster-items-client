@@ -48,7 +48,7 @@ export default class Socket {
 	}
 
 	checker = () => {
-		if (this.socket.readyState <= 1) {
+		if (this.socket.readyState === 1) {
 			this.ping();
 			return;
 		}
