@@ -22,7 +22,7 @@ function setBanner(type, message, showForever) {
 			setTimeout(() => {
 				dispatch({
 					type: types.BANNER_REMOVE,
-					paylaod: {id}
+					payload: {id}
 				});
 			}, timer);
 		}

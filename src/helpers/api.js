@@ -5,6 +5,7 @@ import * as types from 'constants/types';
 import {addSocketBanner, removeSocketBanner} from 'actions/banners';
 import {setSocketStatus} from 'actions/socket';
 
+import {getSocketStatus} from './selectors';
 import Socket from './socket';
 
 
@@ -38,6 +39,7 @@ const requests = {};
 class API {
 	constructor() {
 		this.reconnectionHandlers = [];
+		this.hasBeenConnected = false;
 
 		// every so often check if there's requests we should
 		// just remove because they're obviously broken
@@ -75,8 +77,20 @@ class API {
 		}).then((r) => r.json());
 	}
 
-	call(fn, data = {}, isMock) {
+	call(fn, data = {}) {
 		return new Promise((resolve, reject) => {
+			// if isn't pre-connection queuing and the socket is down
+			// we want to just error out and tell them what happened
+			if (this.hasBeenConnected && !getSocketStatus(store.getState())) {
+				reject({
+					error: 'Unable to make request while connection is down',
+					ok: false
+				});
+
+				return;
+			}
+
+
 			count += 1;
 			const callId = count;
 
@@ -92,8 +106,7 @@ class API {
 				fn
 			};
 
-			if (!isMock) this.socket.send(message);
-			else this.mock(message);
+			this.socket.send(message);
 		});
 	}
 
@@ -122,6 +135,8 @@ class API {
 	}
 
 	handleSocketConnect = () => {
+		this.hasBeenConnected = true;
+
 		store.dispatch(setSocketStatus(true));
 
 		// need to trigger a banner being removed on connection
@@ -147,16 +162,6 @@ class API {
 		if (!this.reconnectionHandlers.includes(fn)) {
 			this.reconnectionHandlers.push(fn);
 		}
-	}
-
-
-	mock(message) {
-		const mock = {
-			...message,
-			ok: true
-		};
-
-		setTimeout(() => this.handleMessage(mock), 750);
 	}
 }
 
