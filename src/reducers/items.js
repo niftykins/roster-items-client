@@ -31,6 +31,13 @@ export default function items(state = initialState, action) {
 			});
 		}
 
+		case types.ITEMS_FETCH_REFETCH: {
+			return state.merge({
+				isLoading: false,
+				error: null
+			});
+		}
+
 		case types.ITEMS_FETCH_SUCCESS: {
 			const data = action.payload.items.map((item) => {
 				return [item.id, new Item(item)];

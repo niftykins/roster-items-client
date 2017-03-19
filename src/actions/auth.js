@@ -4,9 +4,11 @@ import {HTTP_API_URL} from 'helpers/api';
 
 import {addErrorBanner} from './banners';
 
-export function fetchUser() {
+export function fetchUser(isRefetch) {
 	return (dispatch, getState, api) => {
-		dispatch({type: types.SELF_FETCH_REQUEST});
+		dispatch({
+			type: isRefetch ? types.SELF_FETCH_REFETCH : types.SELF_FETCH_REQUEST
+		});
 
 		api.call(types.RPC_SELF_FETCH).then(
 			(message) => {

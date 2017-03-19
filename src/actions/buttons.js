@@ -4,9 +4,11 @@ import * as types from 'constants/types';
 
 import {addSuccessBanner, addErrorBanner} from './banners';
 
-export function fetchButtons() {
+export function fetchButtons(isRefetch) {
 	return (dispatch, getState, api) => {
-		dispatch({type: types.BUTTONS_FETCH_REQUEST});
+		dispatch({
+			type: isRefetch ? types.BUTTONS_FETCH_REFETCH : types.BUTTONS_FETCH_REQUEST
+		});
 
 		api.call(types.RPC_BUTTONS_FETCH).then(
 			(message) => {

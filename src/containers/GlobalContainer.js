@@ -1,6 +1,8 @@
 import {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
+import api from 'helpers/api';
+
 import {fetchInstances} from 'actions/instances';
 import {fetchButtons} from 'actions/buttons';
 import {fetchItems} from 'actions/items';
@@ -20,6 +22,7 @@ import {
 import HeaderContainer from './HeaderContainer';
 
 import Loading from 'components/Utils/Loading';
+
 
 function Broken() {
 	return (
@@ -45,10 +48,16 @@ class GlobalContainer extends Component {
 	constructor(props) {
 		super(props);
 
-		this.props.fetchUser();
-		this.props.fetchButtons();
-		this.props.fetchInstances();
-		this.props.fetchItems();
+		this.handleFetchData(false);
+
+		api.registerReconnectionHandler(this.handleFetchData);
+	}
+
+	handleFetchData = (isReconnect) => {
+		this.props.fetchUser(isReconnect);
+		this.props.fetchButtons(isReconnect);
+		this.props.fetchInstances(isReconnect);
+		this.props.fetchItems(isReconnect);
 	}
 
 	render() {

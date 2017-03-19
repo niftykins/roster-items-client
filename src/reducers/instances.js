@@ -23,6 +23,13 @@ export default function instances(state = initialState, action) {
 			});
 		}
 
+		case types.INSTANCES_FETCH_REFETCH: {
+			return state.merge({
+				isLoading: false,
+				error: null
+			});
+		}
+
 		case types.INSTANCES_FETCH_SUCCESS: {
 			const data = action.payload.instances.map((instance) => {
 				return [instance.id, new Instance(instance)];

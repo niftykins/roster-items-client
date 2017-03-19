@@ -4,9 +4,11 @@ import * as types from 'constants/types';
 
 import {addSuccessBanner, addErrorBanner} from './banners';
 
-export function fetchInstances() {
+export function fetchInstances(isRefetch) {
 	return (dispatch, getState, api) => {
-		dispatch({type: types.INSTANCES_FETCH_REQUEST});
+		dispatch({
+			type: isRefetch ? types.INSTANCES_FETCH_REFETCH : types.INSTANCES_FETCH_REQUEST
+		});
 
 		api.call(types.RPC_INSTANCES_FETCH).then(
 			(message) => {

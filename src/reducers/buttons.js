@@ -23,6 +23,13 @@ export default function buttons(state = initialState, action) {
 			});
 		}
 
+		case types.BUTTONS_FETCH_REFETCH: {
+			return state.merge({
+				isLoading: false,
+				error: null
+			});
+		}
+
 		case types.BUTTONS_FETCH_SUCCESS: {
 			const data = action.payload.buttons.map((button) => {
 				return [button.id, new Button(button)];

@@ -11,9 +11,11 @@ export function searchItems(search) {
 	};
 }
 
-export function fetchItems() {
+export function fetchItems(isRefetch) {
 	return (dispatch, getState, api) => {
-		dispatch({type: types.ITEMS_FETCH_REQUEST});
+		dispatch({
+			type: isRefetch ? types.ITEMS_FETCH_REFETCH : types.ITEMS_FETCH_REQUEST
+		});
 
 		api.call(types.RPC_ITEMS_FETCH).then(
 			(message) => {

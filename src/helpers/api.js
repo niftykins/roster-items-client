@@ -36,6 +36,8 @@ const requests = {};
 
 class API {
 	constructor() {
+		this.reconnectionHandlers = [];
+
 		// every so often check if there's requests we should
 		// just remove because they're obviously broken
 		setInterval(() => {
@@ -120,16 +122,26 @@ class API {
 
 	// need to trigger a banner being removed on connection
 	// in case theres issues during the initial connection
-	handleSocketConnect() {
+	handleSocketConnect = () => {
 		removeSocketBanner()(store.dispatch);
 	}
 
-	handleSocketReconnect() {
+	handleSocketReconnect = () => {
 		removeSocketBanner()(store.dispatch);
+
+		// call any reconnection handlers we have
+		this.reconnectionHandlers.forEach((fn) => fn(true));
 	}
 
-	handleSocketClose() {
+	handleSocketClose = () => {
 		addSocketBanner()(store.dispatch);
+	}
+
+
+	registerReconnectionHandler(fn) {
+		if (!this.reconnectionHandlers.includes(fn)) {
+			this.reconnectionHandlers.push(fn);
+		}
 	}
 
 
