@@ -1,9 +1,9 @@
 export default class Socket {
-	constructor(url, messageHandler, reconnectHandler) {
+	constructor(url, opts = {}) {
 		this.url = url;
 
-		this.messageHandler = messageHandler;
-		this.reconnectHandler = reconnectHandler;
+		this.messageHandler = opts.messageHandler;
+		this.reconnectHandler = opts.reconnectHandler;
 
 		this.retry = true;
 		this.queue = [];
@@ -63,12 +63,13 @@ export default class Socket {
 			this.lastCheck = Date.now();
 			this.lastPeriod = this.lastPeriod * 1.25;
 
-			if (this.lastPeriod > 120 * 1000) {
-				this.lastPeriod = 120 * 1000;
+			const max = 30 * 1000;
+			if (this.lastPeriod > max) {
+				this.lastPeriod = max;
 			}
 
 			if (this.reconnectHandler) {
-				this.reconnectHandler(this.lastPeriod);
+				this.reconnectHandler(false, this.lastPeriod);
 			}
 
 			this.reconnect();
@@ -124,7 +125,7 @@ export default class Socket {
 		if (this.retry) this.start();
 
 		if (this.reconnectHandler) {
-			this.reconnectHandler(null);
+			this.reconnectHandler(true);
 		}
 	}
 

@@ -6,7 +6,6 @@ import {addSocketBanner, removeSocketBanner} from 'actions/banners';
 
 import Socket from './socket';
 
-// this.url = 'wss://api.guildsy.io/u/ws';
 
 export const HTTP_API_URL = process.env.HTTP_API_URL;
 const WS_API_URL = process.env.WS_API_URL;
@@ -37,13 +36,13 @@ const requests = {};
 
 class API {
 	constructor() {
-		// every minute check if there's requests we should
+		// every so often check if there's requests we should
 		// just remove because they're obviously broken
 		setInterval(() => {
 			Object.keys(requests).forEach((key) => {
 				const request = requests[key];
 
-				// if the request is more than 5 minutes old
+				// timeout if the request is more than 5 minutes old
 				if (request.ts < Date.now() - (5 * 60 * 1000)) {
 					request.reject({
 						error: 'Request timed out',
@@ -55,7 +54,12 @@ class API {
 			});
 		}, 10 * 1000);
 
-		this.socket = new Socket(WS_API_URL, this.handleMessage, this.handleConnectionDropout);
+
+		this.socket = new Socket(WS_API_URL, {
+			reconnectHandler: this.handleReconnectAttempt,
+			messageHandler: this.handleMessage
+		});
+
 		this.socket.connect();
 	}
 
@@ -111,13 +115,13 @@ class API {
 		else request.reject(message);
 	}
 
-	handleConnectionDropout(lastPeriod) {
-		if (lastPeriod) {
-			addSocketBanner()(store.dispatch);
+	handleReconnectAttempt(connected) {
+		if (connected) {
+			removeSocketBanner()(store.dispatch);
 			return;
 		}
 
-		removeSocketBanner()(store.dispatch);
+		addSocketBanner()(store.dispatch);
 	}
 
 	mock(message) {
