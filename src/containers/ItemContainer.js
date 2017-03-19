@@ -8,6 +8,8 @@ import {
 } from 'actions/items';
 
 import {
+	getSocketStatus,
+
 	getInstances,
 	getButtons,
 	getItem
@@ -61,6 +63,8 @@ function mapStateToProps(state, {params}) {
 	const sourceOptions = getSouceOptions(instances);
 
 	return {
+		isConnected: getSocketStatus(state),
+
 		buttons: buttonGroups,
 		sourceOptions,
 		item

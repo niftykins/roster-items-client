@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 
+import socket from './socket';
 import banner from './banner';
 import user from './user';
 
@@ -12,6 +13,7 @@ export default function createReducer() {
 	return combineReducers({
 		routing: routerReducer,
 
+		socket,
 		banner,
 		user,
 

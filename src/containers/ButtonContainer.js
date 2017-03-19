@@ -6,7 +6,7 @@ import {
 	deleteButton
 } from 'actions/buttons';
 
-import {getButton} from 'helpers/selectors';
+import {getSocketStatus, getButton} from 'helpers/selectors';
 
 import ButtonDetails from 'components/Buttons/ButtonDetails';
 
@@ -15,6 +15,8 @@ function mapStateToProps(state, {params}) {
 	const button = getButton(state, buttonId, true);
 
 	return {
+		isConnected: getSocketStatus(state),
+
 		button
 	};
 }

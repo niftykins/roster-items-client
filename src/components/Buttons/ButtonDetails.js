@@ -17,6 +17,8 @@ export default class ButtonDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
+		isConnected: PropTypes.bool.isRequired,
+
 		button: PropTypes.instanceOf(Button).isRequired,
 
 		params: PropTypes.object.isRequired
@@ -114,7 +116,9 @@ export default class ButtonDetails extends Component {
 	render() {
 		const {button} = this.props;
 
-		const isDisabled = this.state.disabled || button.isSaving() ||
+		const isDisabled = !this.props.isConnected ||
+			this.state.disabled ||
+			button.isSaving() ||
 			button.isDeleting();
 
 		const deleteButtonClassName = classnames({

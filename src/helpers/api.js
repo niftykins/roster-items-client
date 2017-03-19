@@ -3,6 +3,7 @@
 import * as types from 'constants/types';
 
 import {addSocketBanner, removeSocketBanner} from 'actions/banners';
+import {setSocketStatus} from 'actions/socket';
 
 import Socket from './socket';
 
@@ -120,13 +121,16 @@ class API {
 		else request.reject(message);
 	}
 
-	// need to trigger a banner being removed on connection
-	// in case theres issues during the initial connection
 	handleSocketConnect = () => {
+		store.dispatch(setSocketStatus(true));
+
+		// need to trigger a banner being removed on connection
+		// in case theres issues during the initial connection
 		removeSocketBanner()(store.dispatch);
 	}
 
 	handleSocketReconnect = () => {
+		store.dispatch(setSocketStatus(true));
 		removeSocketBanner()(store.dispatch);
 
 		// call any reconnection handlers we have
@@ -134,6 +138,7 @@ class API {
 	}
 
 	handleSocketClose = () => {
+		store.dispatch(setSocketStatus(false));
 		addSocketBanner()(store.dispatch);
 	}
 

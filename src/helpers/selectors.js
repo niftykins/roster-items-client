@@ -1,11 +1,14 @@
-import * as fromUser from 'reducers/user';
+import * as fromSocket from 'reducers/socket';
 import * as fromBanner from 'reducers/banner';
+
+import * as fromUser from 'reducers/user';
 import * as fromButtons from 'reducers/buttons';
 import * as fromInstances from 'reducers/instances';
 import * as fromItems from 'reducers/items';
 
 export const getUser = (state) => fromUser.getUser(state.user);
 
+export const getSocketStatus = (state) => fromSocket.getSocketStatus(state.socket);
 
 export const getBanner = (state) => fromBanner.getBanner(state.banner);
 

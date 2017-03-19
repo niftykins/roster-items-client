@@ -23,6 +23,8 @@ export default class ItemDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
+		isConnected: PropTypes.bool.isRequired,
+
 		item: PropTypes.instanceOf(Item).isRequired,
 
 		sourceOptions: PropTypes.arrayOf(PropTypes.shape({
@@ -224,7 +226,9 @@ export default class ItemDetails extends Component {
 	render() {
 		const {item} = this.props;
 
-		const isDisabled = this.state.disabled || item.isSaving() ||
+		const isDisabled = !this.props.isConnected ||
+			this.state.disabled ||
+			item.isSaving() ||
 			item.isDeleting();
 
 		const deleteButtonClassName = classnames({

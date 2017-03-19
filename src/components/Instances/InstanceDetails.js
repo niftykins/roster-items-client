@@ -61,6 +61,8 @@ export default class InstanceDetails extends Component {
 		onUpdate: PropTypes.func.isRequired,
 		onDelete: PropTypes.func.isRequired,
 
+		isConnected: PropTypes.bool.isRequired,
+
 		instance: PropTypes.instanceOf(Instance).isRequired,
 		params: PropTypes.object.isRequired
 	}
@@ -119,7 +121,9 @@ export default class InstanceDetails extends Component {
 	render() {
 		const {instance} = this.props;
 
-		const isDisabled = this.state.disabled || instance.isSaving() ||
+		const isDisabled = !this.props.isConnected ||
+			this.state.disabled ||
+			instance.isSaving() ||
 			instance.isDeleting();
 
 		const deleteButtonClassName = classnames({

@@ -6,7 +6,7 @@ import {
 	deleteInstance
 } from 'actions/instances';
 
-import {getInstance} from 'helpers/selectors';
+import {getSocketStatus, getInstance} from 'helpers/selectors';
 
 import InstanceDetails from 'components/Instances/InstanceDetails';
 
@@ -15,6 +15,8 @@ function mapStateToProps(state, {params}) {
 	const instance = getInstance(state, instanceId, true);
 
 	return {
+		isConnected: getSocketStatus(state),
+
 		instance
 	};
 }

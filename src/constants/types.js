@@ -1,4 +1,6 @@
 // UI
+export const SOCKET_STATUS = 'SOCKET_STATUS';
+
 export const BANNER_ADD = 'BANNER_ADD';
 export const BANNER_REMOVE = 'BANNER_REMOVE';
 export const BANNER_REMOVE_SOCKET = 'BANNER_REMOVE_SOCKET';
