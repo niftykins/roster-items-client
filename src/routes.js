@@ -1,4 +1,4 @@
-import {Router, Route, IndexRedirect} from 'react-router';
+import {Router, Route, IndexRedirect, IndexRoute} from 'react-router';
 
 import GlobalContainer from 'containers/GlobalContainer';
 
@@ -11,7 +11,23 @@ import InstanceContainer from 'containers/InstanceContainer';
 import ButtonsView from 'components/Buttons/ButtonsView';
 import ButtonContainer from 'containers/ButtonContainer';
 
-export default function makeRouter(history) {
+
+import {getInstances} from 'helpers/selectors';
+
+function redirectIndex(store) {
+	return (nextState, replace) => {
+		let path = 'new';
+
+		const instances = getInstances(store.getState());
+
+		const item = instances && instances.first();
+		if (item) path = item.id;
+
+		replace(`${location.pathname}/${path}`);
+	};
+}
+
+export default function makeRouter(history, store) {
 	return (
 		<Router history={history}>
 			<Route path="/" component={GlobalContainer}>
@@ -25,7 +41,7 @@ export default function makeRouter(history) {
 				</Route>
 
 				<Route path="/instances" component={InstancesView}>
-					<IndexRedirect to="new" />
+					<IndexRoute onEnter={redirectIndex(store)} />
 
 					<Route path="new" component={InstanceContainer} />
 					<Route path=":instanceId" component={InstanceContainer} />

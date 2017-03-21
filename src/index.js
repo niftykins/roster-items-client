@@ -21,7 +21,7 @@ import {browserHistory} from 'react-router';
 import {syncHistoryWithStore} from 'react-router-redux';
 import makeRouter from './routes';
 const history = syncHistoryWithStore(browserHistory, store);
-const router = makeRouter(history);
+const router = makeRouter(history, store);
 
 render(
 	<Provider store={store}>
